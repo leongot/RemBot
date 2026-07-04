@@ -188,11 +188,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d26377d4f678d7049af560c6c091e439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserProjectile
-  speed: 35
+  speed: 25
   lifeTime: 2
   laserBody: {fileID: 8658727845737205804}
   laserLength: 2
-  laserRadius: 0.08
+  laserRadius: 0.2
   damage: 10
 --- !u!136 &4773159796826580477
 CapsuleCollider:
