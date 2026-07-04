@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: 860662202a3c21549b18e8ede6f8abd0
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - prefabAvanti: {fileID: 4430852701626833204, guid: 2a3da40765c21184d804389e556b75a1, type: 3}
+  - prefabSinistra: {fileID: 4430852701626833204, guid: a21a2eb7c0df9334fb56cfa9f6d1fcc9, type: 3}
+  - prefabDestra: {fileID: 4430852701626833204, guid: dc9ae054e943c3b419c9d9854ca39b85, type: 3}
+  - prefabIndietro: {fileID: 4430852701626833204, guid: 0bfb68a73939ca441838bbb83ed94eb4, type: 3}
+  - prefabSpara: {fileID: 4430852701626833204, guid: e77d6c940632f174183bbf4da2f6bd90, type: 3}
+  - prefabWhile: {fileID: 2412933917884733723, guid: 8badc7485e90e4a499996cac0bb1620d, type: 3}
+  - prefabIf: {fileID: 2412933917884733723, guid: bb1d21b2899beb148af02b40f7ecfd4f, type: 3}
+  - prefabLibero: {fileID: 4430852701626833204, guid: c21826590c1c7d74896dd1b36b64dbd7, type: 3}
+  - prefabMuro: {fileID: 4430852701626833204, guid: 86d453e15c2b90a4dbe395ee8628ff71, type: 3}
+  - prefabNemico: {fileID: 4430852701626833204, guid: 8cfe5287c46e1e949bffd11be01798cd, type: 3}
+  - areaPrincipaleCodice: {instanceID: 0}
+  - slotAttivoComandi: {instanceID: 0}
+  - slotAttivoCondizione: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
