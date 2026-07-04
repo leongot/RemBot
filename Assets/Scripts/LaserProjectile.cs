@@ -72,15 +72,20 @@ public class LaserProjectile : MonoBehaviour
         if (other.isTrigger)
             return;
 
-        if (other.CompareTag("Enemy") || other.transform.root.CompareTag("Enemy"))
-            return;
-
-        if (other.CompareTag("Player") || other.transform.root.CompareTag("Player"))
+        // Ignora i nemici, così il laser del nemico non colpisce il nemico stesso
+        if (other.CompareTag("Nemico") || other.transform.root.CompareTag("Nemico") ||
+            other.CompareTag("Enemy") || other.transform.root.CompareTag("Enemy"))
         {
-            Debug.Log("Player colpito dal laser! Danno: " + damage);
+            return;
+        }
 
-            // In futuro:
-            // other.GetComponent<PlayerHealth>()?.TakeDamage(damage);
+        RobotController robot = other.GetComponentInParent<RobotController>();
+
+        if (robot != null)
+        {
+            robot.ColpitoDaLaser(damage);
+            Destroy(gameObject);
+            return;
         }
 
         Destroy(gameObject);

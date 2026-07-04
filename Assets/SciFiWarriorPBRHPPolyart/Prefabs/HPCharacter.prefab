@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6727233162882543148}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: EyePoint
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -40,9 +40,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8944398755684275149}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BulletSpawnerPoint
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71,9 +71,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544576}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hand_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -105,9 +105,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544578}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Foot_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -137,9 +137,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544580}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Head
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -171,9 +171,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544582}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hand_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -207,9 +207,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7673487251499544584}
   - component: {fileID: 7673487251510747452}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Body1
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -356,9 +356,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7673487251499544586}
   - component: {fileID: 7673487251510747454}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Backpack1
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -504,9 +504,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544588}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Foot_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -536,9 +536,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544590}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Chest
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -571,9 +571,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544592}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ArmPosition_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -604,9 +604,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544594}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ArmPosition_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -635,9 +635,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544596}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BackPack
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -670,9 +670,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7673487251499544598}
   - component: {fileID: 7673487251510747448}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: AssaultRifle
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -819,9 +819,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544600}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ArmPlacement_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -851,9 +851,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7673487251499544602}
   - component: {fileID: 7673487251510747450}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Arm1
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -999,9 +999,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544604}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ArmPlacement_Upper
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1030,9 +1030,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544606}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ArmPlacement_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1061,9 +1061,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544608}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LowerLeg_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1093,9 +1093,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544610}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LowerArm_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1125,9 +1125,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544612}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: magazine_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1156,9 +1156,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544614}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LowerLeg_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1188,9 +1188,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544616}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Index_Proximal_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1220,9 +1220,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544618}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Index_Proximal_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1252,9 +1252,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544620}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LowerArm_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1285,9 +1285,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7673487251499544622}
   - component: {fileID: 7673487251510747440}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Leg1
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1433,9 +1433,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544624}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Index_Distal_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1464,9 +1464,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544626}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Index_Distal_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1495,9 +1495,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544628}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Index_Intermediate_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1527,9 +1527,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544630}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Index_Intermediate_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1559,9 +1559,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544632}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Headgear_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1591,9 +1591,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7673487251499544634}
   - component: {fileID: 7673487251510747442}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: head1
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1739,9 +1739,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544636}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hips
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1775,9 +1775,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544638}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Headgear_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1806,9 +1806,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544640}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ShoulderPadBody_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1837,9 +1837,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544642}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ShoulderPadBody_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1868,9 +1868,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544644}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ShoulderPadCTRL_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1901,9 +1901,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544646}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ShoulderPadCTRL_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1934,9 +1934,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544648}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shoulder_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1967,9 +1967,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544650}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shoulder_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2000,9 +2000,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544652}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ShoulderPadBlade_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2031,9 +2031,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544654}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ShoulderPadBlade_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2062,9 +2062,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544656}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RestOfFingers_Intermediate_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2094,9 +2094,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544658}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RestOfFingers_Intermediate_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2126,9 +2126,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544660}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RestOfFingers_Proximal_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2158,9 +2158,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544662}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RestOfFingers_Proximal_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2192,9 +2192,11 @@ GameObject:
   - component: {fileID: 7673487251499544664}
   - component: {fileID: 7673487250857332701}
   - component: {fileID: -8596456965594358034}
-  m_Layer: 0
+  - component: {fileID: 8911134010171365016}
+  - component: {fileID: 4127136760647300709}
+  m_Layer: 7
   m_Name: HPCharacter
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2269,6 +2271,56 @@ MonoBehaviour:
   visionAngle: 80
   fireRate: 0.7
   aimHeight: 5
+--- !u!136 &8911134010171365016
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7673487251499248760}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.490307
+  m_Height: 3.1460786
+  m_Direction: 1
+  m_Center: {x: -0.021222591, y: 1.073037, z: 0}
+--- !u!54 &4127136760647300709
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7673487251499248760}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &7673487251499248762
 GameObject:
   m_ObjectHideFlags: 0
@@ -2278,9 +2330,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544666}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Neck
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2310,9 +2362,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544668}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RestOfFingers_Distal_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2341,9 +2393,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544670}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RestOfFingers_Distal_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2372,9 +2424,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544672}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: UpperArm_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2404,9 +2456,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544674}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: UpperArm_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2436,9 +2488,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544676}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: UpperLeg_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2468,9 +2520,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544678}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: UpperLeg_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2500,9 +2552,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544680}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Toetip_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2531,9 +2583,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544682}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Toe_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2563,9 +2615,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544684}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Trigger_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2594,9 +2646,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544686}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Toetip_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2625,9 +2677,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544688}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Thumb_Proximal_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2657,9 +2709,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544690}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Thumb_Intermediate_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2689,9 +2741,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544692}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Toe_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2721,9 +2773,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544694}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Thumb_Proximal_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2753,9 +2805,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544696}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Thumb_Distal_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2784,9 +2836,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544698}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Spine
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2816,9 +2868,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544700}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Thumb_Intermediate_Left
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2848,9 +2900,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7673487251499544702}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Thumb_Distal_Right
-  m_TagString: Untagged
+  m_TagString: Nemico
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
