@@ -72,12 +72,13 @@ public class EsecutoreProgramma : MonoBehaviour
                     Transform slotComandiWhile = blocco.GetComponentInChildren<SlotComandi>().transform;
 
                     int limiteSicurezza = 0; // Evita crash da loop infiniti
-                    while (ValutaCondizioneDelloSlot(slotCondWhile) && limiteSicurezza < 100)
+                    while (ValutaCondizioneDelloSlot(slotCondWhile) && limiteSicurezza < 100000
+                    )
                     {
                         yield return EseguiInsiemeBlocchi(slotComandiWhile);
                         limiteSicurezza++;
                     }
-                    if (limiteSicurezza >= 1000) Debug.LogError("[Esecutore] Loop infinito rilevato nel WHILE!");
+                    if (limiteSicurezza >= 100000) Debug.LogError("[Esecutore] Loop infinito rilevato nel WHILE!");
                     break;
             }
         }

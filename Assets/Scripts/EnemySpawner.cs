@@ -1,33 +1,42 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
-public class EnemyTriggerSpawner : MonoBehaviour
+[System.Serializable]
+public class PatrolZone
 {
+    public string zoneName;
+    public Transform spawnPoint;
+    public Transform[] patrolPoints;
+}
+
+public class EnemySpawner : MonoBehaviour
+{
+    [Header("Spawn")]
     [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private Transform spawnPoint;
     [SerializeField] private bool spawnOnlyOnce = true;
-    [SerializeField] private int enemyNumber = 2;
-    [SerializeField] private float spacing = 3f;
     [SerializeField] private float spawnDelay = 1f;
 
+    [Header("Enemy Setup")]
+    [SerializeField] private Transform player;
+    [SerializeField] private PatrolZone[] patrolZones;
 
     private bool hasSpawned = false;
 
-
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player"))
+        bool isPlayer = other.CompareTag("Player") || other.transform.root.CompareTag("Player");
+
+        if (!isPlayer)
             return;
 
         if (spawnOnlyOnce && hasSpawned)
             return;
 
         hasSpawned = true;
-
         StartCoroutine(SpawnEnemiesWithDelay());
     }
 
-   private IEnumerator SpawnEnemiesWithDelay()
+    private IEnumerator SpawnEnemiesWithDelay()
     {
         if (enemyPrefab == null)
         {
@@ -35,16 +44,40 @@ public class EnemyTriggerSpawner : MonoBehaviour
             yield break;
         }
 
-        Vector3 position = spawnPoint != null ? spawnPoint.position : transform.position;
-        Quaternion rotation = spawnPoint != null ? spawnPoint.rotation : transform.rotation;
-
-        for (int i = 0; i < enemyNumber; i++)
+        if (patrolZones == null || patrolZones.Length == 0)
         {
-            Vector3 offset = new Vector3(i * spacing, 0f, 0f);
+            Debug.LogError("Nessuna Patrol Zone assegnata.");
+            yield break;
+        }
 
-            Instantiate(enemyPrefab, position + offset, rotation);
+        for (int i = 0; i < patrolZones.Length; i++)
+        {
+            PatrolZone selectedZone = patrolZones[i];
 
-            Debug.Log("Enemy spawned at: " + (position + offset));
+            if (selectedZone.spawnPoint == null)
+            {
+                Debug.LogError("SpawnPoint mancante nella zona: " + selectedZone.zoneName);
+                continue;
+            }
+
+            GameObject enemy = Instantiate(
+                enemyPrefab,
+                selectedZone.spawnPoint.position,
+                selectedZone.spawnPoint.rotation
+            );
+
+            EnemyRobotAI enemyAI = enemy.GetComponent<EnemyRobotAI>();
+
+            if (enemyAI != null)
+            {
+                enemyAI.Initialize(player, selectedZone.patrolPoints);
+            }
+            else
+            {
+                Debug.LogWarning("Il prefab nemico non ha EnemyRobotAI.cs.");
+            }
+
+            Debug.Log("Robot spawnato nella zona: " + selectedZone.zoneName);
 
             yield return new WaitForSeconds(spawnDelay);
         }
