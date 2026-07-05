@@ -31,6 +31,14 @@ public class EnemyRobotAI : MonoBehaviour
     [SerializeField] private float deathAnimationDuration = 2f;
     [SerializeField] private float delayAfterDeathAnimation = 0.5f;
 
+    [Header("Audio Sparo")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip shootSound;
+    [SerializeField] private AudioClip reloadSound;
+
+    [SerializeField] private float reloadSoundDelay = 0.4f;
+
+    private RobotController playerRobotController;
     private int currentHealth;
     private int currentPatrolIndex = 0;
     private float nextFireTime = 0f;
@@ -46,10 +54,14 @@ public class EnemyRobotAI : MonoBehaviour
 
         if (animator == null)
             animator = GetComponentInChildren<Animator>();
+
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
     {
+        
         if (player == null)
         {
             GameObject foundPlayer = GameObject.FindGameObjectWithTag("Player");
@@ -57,12 +69,24 @@ public class EnemyRobotAI : MonoBehaviour
             if (foundPlayer != null)
                 player = foundPlayer.transform;
         }
-    }
 
+        if (player != null)
+        {
+            playerRobotController = player.GetComponentInParent<RobotController>();
+        }
+    }
+    
     private void Update()
     {
         if (isDead)
             return;
+
+        if (playerRobotController != null && playerRobotController.IsColpito)
+        {
+            SetRunning(false);
+            SetShooting(false);
+            return;
+        }
 
         if (player == null)
         {
@@ -85,6 +109,32 @@ public class EnemyRobotAI : MonoBehaviour
         player = newPlayer;
         patrolPoints = newPatrolPoints;
         currentPatrolIndex = 0;
+
+        if (player != null)
+        {
+            playerRobotController = player.GetComponentInParent<RobotController>();
+        }
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        if (audioSource == null)
+            return;
+
+        if (clip == null)
+            return;
+
+        audioSource.PlayOneShot(clip);
+    }
+
+    private IEnumerator PlayReloadSoundAfterDelay()
+    {
+        yield return new WaitForSeconds(reloadSoundDelay);
+
+        if (isDead)
+            yield break;
+
+        PlaySound(reloadSound);
     }
 
 
@@ -205,38 +255,44 @@ public class EnemyRobotAI : MonoBehaviour
     }
 
     private void ShootAtPlayer()
+{
+    if (Time.time < nextFireTime)
+        return;
+
+    if (laserPrefab == null)
     {
-        if (Time.time < nextFireTime)
-            return;
-
-        if (laserPrefab == null)
-        {
-            Debug.LogError("Laser prefab non assegnato su " + gameObject.name);
-            return;
-        }
-
-        if (bulletSpawnPoint == null)
-        {
-            Debug.LogError("Bullet Spawn Point non assegnato su " + gameObject.name);
-            return;
-        }
-
-        Vector3 target = player.position + Vector3.up * aimHeight;
-        Vector3 shootDirection = target - bulletSpawnPoint.position;
-
-        if (shootDirection.sqrMagnitude < 0.001f)
-            return;
-
-        Quaternion shootRotation = Quaternion.LookRotation(shootDirection.normalized);
-
-        Instantiate(
-            laserPrefab,
-            bulletSpawnPoint.position,
-            shootRotation
-        );
-
-        nextFireTime = Time.time + fireRate;
+        Debug.LogError("Laser prefab non assegnato su " + gameObject.name);
+        return;
     }
+
+    if (bulletSpawnPoint == null)
+    {
+        Debug.LogError("Bullet Spawn Point non assegnato su " + gameObject.name);
+        return;
+    }
+
+    Vector3 target = player.position + Vector3.up * aimHeight;
+    Vector3 shootDirection = target - bulletSpawnPoint.position;
+
+    if (shootDirection.sqrMagnitude < 0.001f)
+        return;
+
+    Quaternion shootRotation = Quaternion.LookRotation(shootDirection.normalized);
+
+    Instantiate(
+        laserPrefab,
+        bulletSpawnPoint.position,
+        shootRotation
+    );
+
+    // Suono dello sparo
+    PlaySound(shootSound);
+
+    // Suono della ricarica dopo un piccolo delay
+    StartCoroutine(PlayReloadSoundAfterDelay());
+
+    nextFireTime = Time.time + fireRate;
+}
 
     public void PrendiDanno(int damage)
     {

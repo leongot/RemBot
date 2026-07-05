@@ -32,10 +32,36 @@ public class RobotController : MonoBehaviour
     public float altezzaOcchi = 1.2f;
     public float offsetAvantiOcchi = 0.4f;
 
+    [Header("Audio Sparo")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip prepareToShootSound;
+    [SerializeField] private AudioClip shootSound;
+    [SerializeField] private AudioClip reloadSound;
+
+    [SerializeField] private float prepareDelay = 0.4f;
+    [SerializeField] private float reloadDelay = 0.8f;
+
+    [Header("Vita")]
+    [SerializeField] private int maxHealth = 30;
+    [SerializeField] private int currentHealth;
+
     private const string PARAM_CAMMINA = "Walk_Anim";
     private const string TRIGGER_COLPITO = "Colpito";
 
     private bool robotColpito = false;
+    public bool IsColpito
+    {
+        get { return robotColpito; }
+    }
+
+    public int CurrentHealth
+    {
+        get { return currentHealth; }
+    }
+    public int MaxHealth
+    {
+        get { return maxHealth; }
+    }
     private bool staEseguendo = false;
 
     private Vector3 posizioneIniziale;
@@ -46,8 +72,13 @@ public class RobotController : MonoBehaviour
         posizioneIniziale = transform.position;
         rotazioneIniziale = transform.rotation;
 
+        currentHealth = maxHealth;
+
         if (animator == null)
             animator = GetComponentInChildren<Animator>();
+
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -58,11 +89,32 @@ public class RobotController : MonoBehaviour
         }
     }
 
+    private void PlaySound(AudioClip clip)
+    {
+        if (robotColpito)
+        return;
+
+        if (audioSource == null)
+            return;
+
+        if (clip == null)
+            return;
+
+        audioSource.PlayOneShot(clip);
+    }
+
     public void RipristinaPosizione()
     {
+
         StopAllCoroutines();
 
         robotColpito = false;
+        currentHealth = maxHealth;
+
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+        }
 
         transform.position = posizioneIniziale;
         transform.rotation = rotazioneIniziale;
@@ -127,6 +179,15 @@ public class RobotController : MonoBehaviour
             yield break;
         }
 
+        if (robotColpito)
+            yield break;
+
+        PlaySound(prepareToShootSound);
+        yield return new WaitForSeconds(prepareDelay);
+
+        if (robotColpito)
+            yield break;
+
         Vector3 origineSparo = GetOrigineOcchi();
         Vector3 puntoMira = hit.collider.bounds.center;
 
@@ -145,7 +206,14 @@ public class RobotController : MonoBehaviour
 
         Debug.Log("[Robot] Sparo verso nemico: " + hit.collider.name);
 
+        PlaySound(shootSound);
         yield return new WaitForSeconds(tempoSparo);
+
+        if (robotColpito)
+            yield break;
+
+        PlaySound(reloadSound);
+        yield return new WaitForSeconds(reloadDelay);
     }
 
     // --- SENSORI ---
@@ -352,27 +420,42 @@ public class RobotController : MonoBehaviour
     // --- DANNO ---
 
     public void ColpitoDaLaser(int danno)
+{
+    if (robotColpito)
+        return;
+
+    currentHealth -= danno;
+
+    Debug.LogWarning("[Robot] Colpito dal laser! Danno: " + danno + " | Vita rimasta: " + currentHealth);
+
+    if (currentHealth > 0)
     {
-        if (robotColpito)
-            return;
-
-        Debug.LogWarning("[Robot] Colpito dal laser! Danno: " + danno);
-
-        robotColpito = true;
-        StopAllCoroutines();
-
-        if (animator != null)
-        {
-            animator.SetBool(PARAM_CAMMINA, false);
-
-            // Prima spegni l'apertura
-            animator.SetBool("Open_Anim", false);
-
-            // Poi lanci la chiusura/colpito una sola volta
-            animator.ResetTrigger(TRIGGER_COLPITO);
-            animator.SetTrigger(TRIGGER_COLPITO);
-        }
+        // Il robot ha preso danno, ma è ancora vivo.
+        return;
     }
+
+    // Se arriva qui, la vita è finita.
+    currentHealth = 0;
+    robotColpito = true;
+
+    StopAllCoroutines();
+
+    if (audioSource != null)
+    {
+        audioSource.Stop();
+    }
+
+    if (animator != null)
+    {
+        animator.SetBool(PARAM_CAMMINA, false);
+        animator.SetBool("Open_Anim", false);
+
+        animator.ResetTrigger(TRIGGER_COLPITO);
+        animator.SetTrigger(TRIGGER_COLPITO);
+    }
+
+    Debug.LogWarning("[Robot] Vita esaurita. Robot disattivato.");
+}
 
     // --- DEBUG VISIVO ---
 
