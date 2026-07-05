@@ -213,4 +213,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerProjectile
   speed: 15
   lifeTime: 3
-  distruggiNemico: 1
+  damage: 100

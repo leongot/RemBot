@@ -15053,7 +15053,7 @@ GameObject:
   m_Component:
   - component: {fileID: 939666456}
   m_Layer: 0
-  m_Name: Point3
+  m_Name: Point6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17275,7 +17275,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1058223200}
   m_Layer: 0
-  m_Name: Point1
+  m_Name: Point4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19895,7 +19895,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1221276603}
   m_Layer: 0
-  m_Name: Point2
+  m_Name: Point5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22108,8 +22108,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.15337954, y: 0.13759346, z: 0.14304526}
-  m_Center: {x: 0.0045531723, y: 0.058487248, z: -0.002985394}
+  m_Size: {x: 0.11272802, y: 0.13207626, z: 0.12813525}
+  m_Center: {x: -0.0062910556, y: 0.055728506, z: -0.010440421}
 --- !u!54 &1363625462
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -26092,7 +26092,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1588973981}
   m_Layer: 0
-  m_Name: Point1
+  m_Name: Point7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27243,7 +27243,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1680128814}
   m_Layer: 0
-  m_Name: Point2
+  m_Name: Point8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27669,7 +27669,7 @@ Transform:
   m_GameObject: {fileID: 1709167731}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 6.11, z: 4.51}
+  m_LocalPosition: {x: 0, y: 6.11, z: 6.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -32549,7 +32549,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1983831100}
   m_Layer: 0
-  m_Name: Point3
+  m_Name: Point9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34914,6 +34914,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 121964138161595745, guid: 04e62a9a829adf742a93feccf7b5652b, type: 3}
+      propertyPath: m_Size.x
+      value: 0.11272802
+      objectReference: {fileID: 0}
+    - target: {fileID: 121964138161595745, guid: 04e62a9a829adf742a93feccf7b5652b, type: 3}
+      propertyPath: m_Size.y
+      value: 0.13207626
+      objectReference: {fileID: 0}
+    - target: {fileID: 121964138161595745, guid: 04e62a9a829adf742a93feccf7b5652b, type: 3}
+      propertyPath: m_Size.z
+      value: 0.12813525
+      objectReference: {fileID: 0}
+    - target: {fileID: 121964138161595745, guid: 04e62a9a829adf742a93feccf7b5652b, type: 3}
+      propertyPath: m_Center.x
+      value: -0.0062910556
+      objectReference: {fileID: 0}
+    - target: {fileID: 121964138161595745, guid: 04e62a9a829adf742a93feccf7b5652b, type: 3}
+      propertyPath: m_Center.y
+      value: 0.055728506
+      objectReference: {fileID: 0}
+    - target: {fileID: 121964138161595745, guid: 04e62a9a829adf742a93feccf7b5652b, type: 3}
+      propertyPath: m_Center.z
+      value: -0.010440421
+      objectReference: {fileID: 0}
     - target: {fileID: 6232250007446067824, guid: 04e62a9a829adf742a93feccf7b5652b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 83.4
@@ -34953,6 +34977,18 @@ PrefabInstance:
     - target: {fileID: 6232250007446067824, guid: 04e62a9a829adf742a93feccf7b5652b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6337330601055625796, guid: 04e62a9a829adf742a93feccf7b5652b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 6.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 8268979018024072908, guid: 04e62a9a829adf742a93feccf7b5652b, type: 3}
+      propertyPath: distanzaSparo
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8268979018024072908, guid: 04e62a9a829adf742a93feccf7b5652b, type: 3}
+      propertyPath: distanzaRilevamentoNemico
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8526492475012446223, guid: 04e62a9a829adf742a93feccf7b5652b, type: 3}
       propertyPath: m_Name

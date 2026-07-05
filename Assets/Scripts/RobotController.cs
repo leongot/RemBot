@@ -33,6 +33,7 @@ public class RobotController : MonoBehaviour
     public float offsetAvantiOcchi = 0.4f;
 
     private const string PARAM_CAMMINA = "Walk_Anim";
+    private const string TRIGGER_COLPITO = "Colpito";
 
     private bool robotColpito = false;
     private bool staEseguendo = false;
@@ -69,6 +70,7 @@ public class RobotController : MonoBehaviour
         if (animator != null)
         {
             animator.SetBool(PARAM_CAMMINA, false);
+            animator.ResetTrigger(TRIGGER_COLPITO);
             animator.SetBool("Open_Anim", true);
         }
 
@@ -351,6 +353,9 @@ public class RobotController : MonoBehaviour
 
     public void ColpitoDaLaser(int danno)
     {
+        if (robotColpito)
+            return;
+
         Debug.LogWarning("[Robot] Colpito dal laser! Danno: " + danno);
 
         robotColpito = true;
@@ -359,6 +364,13 @@ public class RobotController : MonoBehaviour
         if (animator != null)
         {
             animator.SetBool(PARAM_CAMMINA, false);
+
+            // Prima spegni l'apertura
+            animator.SetBool("Open_Anim", false);
+
+            // Poi lanci la chiusura/colpito una sola volta
+            animator.ResetTrigger(TRIGGER_COLPITO);
+            animator.SetTrigger(TRIGGER_COLPITO);
         }
     }
 
