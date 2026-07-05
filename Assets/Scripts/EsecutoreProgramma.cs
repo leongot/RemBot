@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,15 +9,32 @@ public class EsecutoreProgramma : MonoBehaviour
     public RobotController robot;
     private bool programmaInEsecuzione = false;
 
+    [SerializeField]
+    GameObject topDownCamera;
+
+    [SerializeField]
+    GameObject followCamera;
+
+    [SerializeField]
+    Transform spawnPoints;
+
     private void Awake()
-    {
+    {  
         Instance = this;
+        StartNewGame();
     }
 
+    private void StartNewGame()
+    {
+        topDownCamera.SetActive(true);
+        robot.StartNewGame(spawnPoints.position);
+    }
     public void AvviaProgramma()
     {
         if (programmaInEsecuzione) return;
         
+        followCamera.SetActive(true);
+
         Debug.Log("[Esecutore] Compilazione ed esecuzione avviata...");
         StartCoroutine(EseguiInsiemeBlocchi(GestoreBlocchi.Instance.areaPrincipaleCodice));
     }
@@ -101,3 +119,4 @@ public class EsecutoreProgramma : MonoBehaviour
         return robot.VerificaCondizione(infoCondizione.tipo);
     }
 }
+

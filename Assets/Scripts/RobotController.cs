@@ -40,14 +40,22 @@ public class RobotController : MonoBehaviour
     private Vector3 posizioneIniziale;
     private Quaternion rotazioneIniziale;
 
-    private void Awake()
+    public void StartNewGame(Vector3 position)
     {
+        transform.position = position;
+
         posizioneIniziale = transform.position;
         rotazioneIniziale = transform.rotation;
 
         if (animator == null)
             animator = GetComponentInChildren<Animator>();
     }
+
+    private void Awake()
+    {
+
+    }
+   
 
     private void Start()
     {

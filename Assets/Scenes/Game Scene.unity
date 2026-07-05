@@ -139,7 +139,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1528915638184230, guid: 8e0f285c21cdcf14e8d5c06c57ba936b, type: 3}
       propertyPath: m_Name
-      value: robotSphere
+      value: Body
       objectReference: {fileID: 0}
     - target: {fileID: 1528915638184230, guid: 8e0f285c21cdcf14e8d5c06c57ba936b, type: 3}
       propertyPath: m_TagString
@@ -220,6 +220,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1528915638184230, guid: 8e0f285c21cdcf14e8d5c06c57ba936b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1363625462}
+    - targetCorrespondingSourceObject: {fileID: 1528915638184230, guid: 8e0f285c21cdcf14e8d5c06c57ba936b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1363625463}
   m_SourcePrefab: {fileID: 100100000, guid: 8e0f285c21cdcf14e8d5c06c57ba936b, type: 3}
 --- !u!4 &11024166 stripped
 Transform:
@@ -3937,6 +3940,39 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2452a5c2cd649a4db9eebcd16f7b155, type: 3}
+--- !u!1 &245456562
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 245456563}
+  m_Layer: 0
+  m_Name: Map
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &245456563
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245456562}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -57.59242, y: 7.50917, z: -33.61702}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 863462641}
+  - {fileID: 2022717253}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &248295194
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4116,7 +4152,7 @@ GameObject:
   - component: {fileID: 259380487}
   - component: {fileID: 259380486}
   m_Layer: 0
-  m_Name: Cam Robot
+  m_Name: Follow Camera
   m_TagString: Cam Robot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4918,7 +4954,7 @@ GameObject:
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: Top Down Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14041,7 +14077,7 @@ Transform:
   m_GameObject: {fileID: 863462640}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 57.59242, y: -7.50917, z: 33.61702}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -14301,7 +14337,7 @@ Transform:
   - {fileID: 1564401686}
   - {fileID: 2050953246}
   - {fileID: 674768315}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 245456563}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &870551110 stripped
 Transform:
@@ -14739,6 +14775,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EsecutoreProgramma
   robot: {fileID: 1807964402}
+  topDownCamera: {fileID: 330585543}
+  followCamera: {fileID: 259380485}
 --- !u!114 &922087321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14746,7 +14784,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 922087317}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d099b67000b9ff48b088c12beba0983, type: 3}
   m_Name: 
@@ -21121,7 +21159,32 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.15337954, y: 0.13759346, z: 0.14304526}
   m_Center: {x: 0.0045531723, y: 0.058487248, z: -0.002985394}
---- !u!54 &1363625462
+--- !u!143 &1363625462
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1363625457}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &1363625463
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -21143,11 +21206,11 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 1
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &1364186153
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28316,8 +28379,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1807964403}
   - component: {fileID: 1807964402}
+  - component: {fileID: 1807964404}
   m_Layer: 0
-  m_Name: Robot_Player
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28340,7 +28404,19 @@ MonoBehaviour:
   velocitaRotazione: 360
   layerOstacoli:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 192
+  raggioControllo: 0.35
+  eyePoint: {fileID: 0}
+  layerNemici:
+    serializedVersion: 2
+    m_Bits: 0
+  distanzaRilevamentoNemico: 8
+  raggioSensoreNemico: 0.4
+  mostraDebugSensoreNemico: 1
+  proiettilePrefab: {fileID: 0}
+  distanzaSparo: 10
+  raggioSensoreSparo: 0.4
+  tempoSparo: 0.5
   animator: {fileID: 1363625458}
   altezzaOcchi: 5
   offsetAvantiOcchi: 6.5
@@ -28361,6 +28437,28 @@ Transform:
   - {fileID: 259380489}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1807964404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1807964401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f49d5f18bbde7d04b84fb86fe39c5eba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
+  controller: {fileID: 0}
+  movementSpeed: 4
+  rotationSpeed: 360
+  stepLength: 2
+  sensor: {fileID: 0}
+  sphereCastRadius: 0.2
+  sphereCastDistance: 1
+  mask:
+    serializedVersion: 2
+    m_Bits: 192
 --- !u!4 &1810457544 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1195415760139927943, guid: aae952dc76387e84287a598d901b120d, type: 3}
@@ -31226,8 +31324,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2022717252}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 27.63738, y: 0.00001, z: 31.74928}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 85.2298, y: -7.50916, z: 65.3663}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -31301,7 +31399,7 @@ Transform:
   - {fileID: 47124369}
   - {fileID: 1362767999}
   - {fileID: 1357834519}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 245456563}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &2022717254
 BoxCollider:
@@ -33095,8 +33193,6 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 1971476389}
-  - {fileID: 863462641}
-  - {fileID: 2022717253}
   - {fileID: 586949461}
   - {fileID: 1415210087}
   - {fileID: 922087319}
@@ -33105,3 +33201,4 @@ SceneRoots:
   - {fileID: 7498507118559718336}
   - {fileID: 5022370842047890188}
   - {fileID: 985668969}
+  - {fileID: 245456563}
