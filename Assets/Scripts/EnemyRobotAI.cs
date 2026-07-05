@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemyRobotAI : MonoBehaviour
@@ -8,6 +9,9 @@ public class EnemyRobotAI : MonoBehaviour
     [SerializeField] private Transform eyePoint;
     [SerializeField] private Transform bulletSpawnPoint;
     [SerializeField] private GameObject laserPrefab;
+
+    [Header("Animator")]
+    [SerializeField] private Animator animator;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 4f;
@@ -22,11 +26,42 @@ public class EnemyRobotAI : MonoBehaviour
     [SerializeField] private float fireRate = 0.7f;
     [SerializeField] private float aimHeight = 1.2f;
 
+    [Header("Health")]
+    [SerializeField] private int maxHealth = 10;
+    [SerializeField] private float deathAnimationDuration = 2f;
+    [SerializeField] private float delayAfterDeathAnimation = 0.5f;
+
+    [Header("Audio Sparo")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip shootSound;
+    [SerializeField] private AudioClip reloadSound;
+
+    [SerializeField] private float reloadSoundDelay = 0.4f;
+
+    private RobotController playerRobotController;
+    private int currentHealth;
     private int currentPatrolIndex = 0;
     private float nextFireTime = 0f;
+    private bool isDead = false;
+
+    private const string PARAM_IS_RUNNING = "IsRunning";
+    private const string PARAM_IS_SHOOTING = "IsShooting";
+    private const string TRIGGER_DIE = "Die";
+
+    private void Awake()
+    {
+        currentHealth = maxHealth;
+
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
+
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
+    }
 
     private void Start()
     {
+        
         if (player == null)
         {
             GameObject foundPlayer = GameObject.FindGameObjectWithTag("Player");
@@ -34,10 +69,25 @@ public class EnemyRobotAI : MonoBehaviour
             if (foundPlayer != null)
                 player = foundPlayer.transform;
         }
-    }
 
+        if (player != null)
+        {
+            playerRobotController = player.GetComponentInParent<RobotController>();
+        }
+    }
+    
     private void Update()
     {
+        if (isDead)
+            return;
+
+        if (playerRobotController != null && playerRobotController.IsColpito)
+        {
+            SetRunning(false);
+            SetShooting(false);
+            return;
+        }
+
         if (player == null)
         {
             Patrol();
@@ -59,17 +109,54 @@ public class EnemyRobotAI : MonoBehaviour
         player = newPlayer;
         patrolPoints = newPatrolPoints;
         currentPatrolIndex = 0;
+
+        if (player != null)
+        {
+            playerRobotController = player.GetComponentInParent<RobotController>();
+        }
     }
+
+    private void PlaySound(AudioClip clip)
+    {
+        if (audioSource == null)
+            return;
+
+        if (clip == null)
+            return;
+
+        audioSource.PlayOneShot(clip);
+    }
+
+    private IEnumerator PlayReloadSoundAfterDelay()
+    {
+        yield return new WaitForSeconds(reloadSoundDelay);
+
+        if (isDead)
+            yield break;
+
+        PlaySound(reloadSound);
+    }
+
 
     private void Patrol()
     {
+        SetShooting(false);
+
         if (patrolPoints == null || patrolPoints.Length == 0)
+        {
+            SetRunning(false);
             return;
+        }
 
         Transform targetPoint = patrolPoints[currentPatrolIndex];
 
         if (targetPoint == null)
+        {
+            SetRunning(false);
             return;
+        }
+
+        SetRunning(true);
 
         Vector3 targetPosition = targetPoint.position;
         targetPosition.y = transform.position.y;
@@ -89,14 +176,15 @@ public class EnemyRobotAI : MonoBehaviour
             currentPatrolIndex++;
 
             if (currentPatrolIndex >= patrolPoints.Length)
-            {
                 currentPatrolIndex = 0;
-            }
         }
     }
 
     private void AttackPlayer()
     {
+        SetRunning(false);
+        SetShooting(true);
+
         LookAtPlayer();
         ShootAtPlayer();
     }
@@ -167,37 +255,99 @@ public class EnemyRobotAI : MonoBehaviour
     }
 
     private void ShootAtPlayer()
+{
+    if (Time.time < nextFireTime)
+        return;
+
+    if (laserPrefab == null)
     {
-        if (Time.time < nextFireTime)
+        Debug.LogError("Laser prefab non assegnato su " + gameObject.name);
+        return;
+    }
+
+    if (bulletSpawnPoint == null)
+    {
+        Debug.LogError("Bullet Spawn Point non assegnato su " + gameObject.name);
+        return;
+    }
+
+    Vector3 target = player.position + Vector3.up * aimHeight;
+    Vector3 shootDirection = target - bulletSpawnPoint.position;
+
+    if (shootDirection.sqrMagnitude < 0.001f)
+        return;
+
+    Quaternion shootRotation = Quaternion.LookRotation(shootDirection.normalized);
+
+    Instantiate(
+        laserPrefab,
+        bulletSpawnPoint.position,
+        shootRotation
+    );
+
+    // Suono dello sparo
+    PlaySound(shootSound);
+
+    // Suono della ricarica dopo un piccolo delay
+    StartCoroutine(PlayReloadSoundAfterDelay());
+
+    nextFireTime = Time.time + fireRate;
+}
+
+    public void PrendiDanno(int damage)
+    {
+        if (isDead)
             return;
 
-        if (laserPrefab == null)
+        currentHealth -= damage;
+
+        Debug.Log("[EnemyRobotAI] Danno ricevuto: " + damage + " | HP rimasti: " + currentHealth);
+
+        if (currentHealth <= 0)
         {
-            Debug.LogError("Laser prefab non assegnato su " + gameObject.name);
-            return;
+            StartCoroutine(DieRoutine());
         }
+    }
 
-        if (bulletSpawnPoint == null)
-        {
-            Debug.LogError("Bullet Spawn Point non assegnato su " + gameObject.name);
-            return;
-        }
+    private IEnumerator DieRoutine()
+{
+    isDead = true;
+    
+    SetShooting(false);
+    SetRunning(false);
 
-        Vector3 target = player.position + Vector3.up * aimHeight;
-        Vector3 shootDirection = target - bulletSpawnPoint.position;
+    if (animator != null)
+    {
+        animator.SetBool(PARAM_IS_SHOOTING, false);
+        animator.SetTrigger(TRIGGER_DIE);
+    }
 
-        if (shootDirection.sqrMagnitude < 0.001f)
-            return;
+    Collider[] colliders = GetComponentsInChildren<Collider>();
 
-        Quaternion shootRotation = Quaternion.LookRotation(shootDirection.normalized);
+    foreach (Collider col in colliders)
+    {
+        col.enabled = false;
+    }
 
-        Instantiate(
-            laserPrefab,
-            bulletSpawnPoint.position,
-            shootRotation
-        );
+    // Aspetta la durata dell'animazione Die
+    yield return new WaitForSeconds(deathAnimationDuration);
 
-        nextFireTime = Time.time + fireRate;
+    // Aspetta ancora un delay extra dopo l'animazione
+    yield return new WaitForSeconds(delayAfterDeathAnimation);
+
+    Destroy(gameObject);
+}
+
+    private void SetRunning(bool running)
+    {
+        if (animator != null)
+            animator.SetBool(PARAM_IS_RUNNING, running);
+    }
+
+    private void SetShooting(bool shooting)
+    {
+        if (animator != null)
+            animator.SetBool(PARAM_IS_SHOOTING, shooting);
     }
 
     private void OnDrawGizmosSelected()
@@ -237,7 +387,10 @@ public class EnemyRobotAI : MonoBehaviour
 
                 if (patrolPoints[nextIndex] != null)
                 {
-                    Gizmos.DrawLine(patrolPoints[i].position, patrolPoints[nextIndex].position);
+                    Gizmos.DrawLine(
+                        patrolPoints[i].position,
+                        patrolPoints[nextIndex].position
+                    );
                 }
             }
         }

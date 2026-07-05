@@ -5,9 +5,7 @@ public class PlayerProjectile : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float speed = 25f;
     [SerializeField] private float lifeTime = 3f;
-
-    [Header("Damage")]
-    [SerializeField] private bool distruggiNemico = true;
+    [SerializeField] private int damage = 10;
 
     private void Start()
     {
@@ -19,35 +17,33 @@ public class PlayerProjectile : MonoBehaviour
         transform.position += transform.forward * speed * Time.deltaTime;
     }
 
-    private void OnTriggerEnter(Collider other)
+private void OnTriggerEnter(Collider other)
+{
+    if (other.isTrigger)
+        return;
+
+    if (other.CompareTag("Player") || other.transform.root.CompareTag("Player"))
+        return;
+
+    bool isNemico =
+        other.CompareTag("Nemico") ||
+        other.transform.root.CompareTag("Nemico");
+
+    if (isNemico)
     {
-        if (other.isTrigger)
-            return;
+        EnemyRobotAI enemy = other.GetComponentInParent<EnemyRobotAI>();
 
-        // Ignora il robottino buono / player
-        if (other.CompareTag("Player") || other.transform.root.CompareTag("Player"))
-            return;
-
-        bool isNemico =
-            other.CompareTag("Nemico") ||
-            other.transform.root.CompareTag("Nemico");
-
-        if (isNemico)
+        if (enemy != null)
         {
-            Debug.Log("[PlayerProjectile] Nemico colpito: " + other.name);
-
-            if (distruggiNemico)
-            {
-                Destroy(other.transform.root.gameObject);
-            }
-
-            Destroy(gameObject);
-            return;
+            enemy.PrendiDanno(damage);
         }
 
-        // Se colpisce muro/ostacolo, il proiettile sparisce
         Destroy(gameObject);
+        return;
     }
+
+    Destroy(gameObject);
+}
 
     private void Awake()
 {
