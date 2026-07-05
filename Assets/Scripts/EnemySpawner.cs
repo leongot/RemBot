@@ -20,7 +20,18 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private PatrolZone[] patrolZones;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip spawnSound;
+    [SerializeField] private float volumeSpawnSound = 1f;
+
     private bool hasSpawned = false;
+
+    private void Awake()
+    {
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -33,6 +44,7 @@ public class EnemySpawner : MonoBehaviour
             return;
 
         hasSpawned = true;
+        PlaySpawnSound();
         StartCoroutine(SpawnEnemiesWithDelay());
     }
 
@@ -60,6 +72,8 @@ public class EnemySpawner : MonoBehaviour
                 continue;
             }
 
+            yield return new WaitForSeconds(spawnDelay);
+            
             GameObject enemy = Instantiate(
                 enemyPrefab,
                 selectedZone.spawnPoint.position,
@@ -82,4 +96,22 @@ public class EnemySpawner : MonoBehaviour
             yield return new WaitForSeconds(spawnDelay);
         }
     }
+
+    private void PlaySpawnSound()
+{
+    if (spawnSound == null)
+    {
+        Debug.LogWarning("[EnemySpawner] Spawn sound non assegnato.");
+        return;
+    }
+
+    if (audioSource != null)
+    {
+        audioSource.PlayOneShot(spawnSound, volumeSpawnSound);
+    }
+    else
+    {
+        AudioSource.PlayClipAtPoint(spawnSound, transform.position, volumeSpawnSound);
+    }
+}
 }
