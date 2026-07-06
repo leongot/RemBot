@@ -113,5 +113,11 @@ public class EnemySpawner : MonoBehaviour
     {
         AudioSource.PlayClipAtPoint(spawnSound, transform.position, volumeSpawnSound);
     }
+
+    // Effetto luce rossa globale quando parte la sirena
+    if (GlobalAlarmLightEffect.Instance != null)
+    {
+        GlobalAlarmLightEffect.Instance.PlayAlarm();
+    }
 }
 }
