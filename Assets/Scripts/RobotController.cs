@@ -3,36 +3,49 @@ using UnityEngine;
 
 public class RobotController : MonoBehaviour
 {
-    [Header("Impostazioni Griglia")]
-    public float dimensioneCella = 2f;
-    public float velocitaMovimento = 4f;
-    public float velocitaRotazione = 360f;
-    public LayerMask layerOstacoli;
+    [Header("Movement")]
+    [SerializeField]
+    float stepLength = 2f,
+          movementSpeed = 4f,
+          rotationSpeed = 360f;
+
+    [SerializeField]
+    LayerMask mask;
 
     [Header("Collisione Movimento")]
     public float raggioControllo = 0.35f;
 
-    [Header("Sensore Nemico")]
-    public Transform eyePoint;
-    public LayerMask layerNemici;
-    public float distanzaRilevamentoNemico = 8f;
-    public float raggioSensoreNemico = 0.4f;
-    public bool mostraDebugSensoreNemico = true;
+    [Header("Sensor")]
+    [SerializeField]
+    Transform sensor;
 
-    [Header("Sparo")]
-    public GameObject proiettilePrefab;
+    [SerializeField, Range(0f, 1f)]
+    float raySphereRadius = 0.4f;
+    
+    [SerializeField, Range(1f, 0f)]
+    float raySphereDistance = 8f;
+
+#if DEBUG
+    [SerializeField]
+    public bool showRaySphere = true;
+#endif
+
+    [Header("Shooting")]
+    [SerializeField]
+    GameObject proiettilePrefab;
+
     public float distanzaSparo = 10f;
     public float raggioSensoreSparo = 0.4f;
     public float tempoSparo = 0.5f;
 
-    [Header("Animazioni")]
+    [Header("Animation")]
     public Animator animator;
 
     [Header("Regolazione Occhi Fallback")]
     public float altezzaOcchi = 1.2f;
     public float offsetAvantiOcchi = 0.4f;
 
-    [Header("Audio Sparo")]
+    [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip prepareToShootSound;
     [SerializeField] private AudioClip shootSound;
@@ -62,39 +75,31 @@ public class RobotController : MonoBehaviour
     {
         get { return maxHealth; }
     }
-    private bool staEseguendo = false;
 
-    private Vector3 posizioneIniziale;
-    private Quaternion rotazioneIniziale;
+    Vector3 posizioneIniziale;
+    Quaternion rotazioneIniziale;
 
-    public void StartNewGame(Vector3 position)
+
+    bool ValidateAction(out RaycastHit info, float radius, float distance) => Physics.SphereCast(
+            sensor.position,
+            radius,
+            sensor.forward,
+            out info,
+            distance,
+            mask
+    );
+
+    void Awake()
     {
-        transform.position = position;
-
         posizioneIniziale = transform.position;
         rotazioneIniziale = transform.rotation;
 
         currentHealth = maxHealth;
-
-        if (animator == null)
-            animator = GetComponentInChildren<Animator>();
-
-        if (audioSource == null)
-            audioSource = GetComponent<AudioSource>();
     }
-
-    private void Awake()
-    {
-
-    }
-   
 
     private void Start()
     {
-        if (animator != null)
-        {
-            animator.SetBool("Open_Anim", true);
-        }
+        animator.SetBool("Open_Anim", true);   
     }
 
     private void PlaySound(AudioClip clip)
@@ -111,37 +116,28 @@ public class RobotController : MonoBehaviour
         audioSource.PlayOneShot(clip);
     }
 
-    public void RipristinaPosizione()
+    public void FullReset()
     {
-
         StopAllCoroutines();
 
         robotColpito = false;
         currentHealth = maxHealth;
 
-        if (audioSource != null)
-        {
-            audioSource.Stop();
-        }
+        audioSource.Stop();
+        
+        transform.SetPositionAndRotation(posizioneIniziale, rotazioneIniziale);
 
-        transform.position = posizioneIniziale;
-        transform.rotation = rotazioneIniziale;
-
-        if (animator != null)
-        {
-            animator.SetBool(PARAM_CAMMINA, false);
-            animator.ResetTrigger(TRIGGER_COLPITO);
-            animator.SetBool("Open_Anim", true);
-        }
-
-        staEseguendo = false;
+        animator.SetBool(PARAM_CAMMINA, false);
+        animator.ResetTrigger(TRIGGER_COLPITO);
+        animator.SetBool("Open_Anim", true);
+        
     }
 
     // --- AZIONI ---
 
     public IEnumerator MuoviAvanti()
     {
-        yield return Muovi(transform.forward);
+        yield return Muovi(transform .forward);
     }
 
     public IEnumerator MuoviIndietro()
@@ -172,18 +168,21 @@ public class RobotController : MonoBehaviour
         if (robotColpito)
             yield break;
 
-        if (proiettilePrefab == null)
-        {
-            Debug.LogError("[Robot] Proiettile prefab non assegnato.");
-            yield break;
-        }
-
+        /*
         RaycastHit hit;
 
         if (!RilevaNemicoPerSparo(out hit))
         {
             Debug.Log("[Robot] Nessun nemico davanti. Non sparo.");
             yield return new WaitForSeconds(tempoSparo);
+            yield break;
+        }
+        */
+
+        if (!ValidateAction(out RaycastHit info), )
+        {
+            Debug.Log("[Robot] Nessun nemico davanti. Non sparo.");
+            //yield return new WaitForSeconds(tempoSparo);
             yield break;
         }
 
@@ -197,7 +196,7 @@ public class RobotController : MonoBehaviour
             yield break;
 
         Vector3 origineSparo = GetOrigineOcchi();
-        Vector3 puntoMira = hit.collider.bounds.center;
+        Vector3 puntoMira = info.collider.bounds.center;
 
         Vector3 direzioneSparo = puntoMira - origineSparo;
 
@@ -212,7 +211,7 @@ public class RobotController : MonoBehaviour
             rotazioneSparo
         );
 
-        Debug.Log("[Robot] Sparo verso nemico: " + hit.collider.name);
+        Debug.Log("[Robot] Sparo verso nemico: " + info.collider.name);
 
         PlaySound(shootSound);
         yield return new WaitForSeconds(tempoSparo);
@@ -228,8 +227,8 @@ public class RobotController : MonoBehaviour
 
     private Vector3 GetOrigineOcchi()
     {
-        if (eyePoint != null)
-            return eyePoint.position;
+        if (sensor != null)
+            return sensor.position;
 
         return transform.position
             + Vector3.up * altezzaOcchi
@@ -243,8 +242,9 @@ public class RobotController : MonoBehaviour
             + direzione.normalized * offsetAvantiOcchi;
     }
 
-    private bool RilevaNemicoPerCondizione(out RaycastHit hit)
+    private bool RilevaNemicoPerCondizione()
     {
+        /*
         Vector3 origine = GetOrigineOcchi();
 
         bool haColpito = Physics.SphereCast(
@@ -253,26 +253,30 @@ public class RobotController : MonoBehaviour
             transform.forward,
             out hit,
             distanzaRilevamentoNemico,
-            layerNemici,
+            mask,
             QueryTriggerInteraction.Ignore
         );
+        */
 
-        if (!haColpito)
+        bool hit = ValidateAction(out RaycastHit info);
+
+
+        if (!hit)
         {
             Debug.Log("[Sensore Nemico] Non colpisco nessun collider nemico.");
             return false;
         }
 
         Debug.Log(
-            "[Sensore Nemico] Colpito: " + hit.collider.name +
-            " | Tag: " + hit.collider.tag +
-            " | Root Tag: " + hit.collider.transform.root.tag +
-            " | Layer: " + LayerMask.LayerToName(hit.collider.gameObject.layer) +
-            " | IsTrigger: " + hit.collider.isTrigger
+            "[Sensore Nemico] Colpito: " + info.collider.name +
+            " | Tag: " + info.collider.tag +
+            " | Root Tag: " + info.collider.transform.root.tag +
+            " | Layer: " + LayerMask.LayerToName(info.collider.gameObject.layer) +
+            " | IsTrigger: " + info.collider.isTrigger
         );
 
-        return hit.collider.CompareTag("Nemico") ||
-               hit.collider.transform.root.CompareTag("Nemico");
+        return info.collider.CompareTag("Nemico") ||
+               info.collider.transform.root.CompareTag("Nemico");
     }
 
     private bool RilevaNemicoPerSparo(out RaycastHit hit)
@@ -285,7 +289,7 @@ public class RobotController : MonoBehaviour
             transform.forward,
             out hit,
             distanzaSparo,
-            layerNemici,
+            mask,
             QueryTriggerInteraction.Ignore
         );
 
@@ -296,14 +300,13 @@ public class RobotController : MonoBehaviour
                hit.collider.transform.root.CompareTag("Nemico");
     }
 
-    // --- MOVIMENTO ---
 
     private IEnumerator Muovi(Vector3 direzione)
     {
         if (robotColpito)
             yield break;
 
-        Vector3 targetPos = transform.position + direzione * dimensioneCella;
+        Vector3 targetPos = transform.position + direzione * stepLength;
 
         Vector3 origineRaggio = GetOrigineSensoreMovimento(direzione);
 
@@ -314,8 +317,8 @@ public class RobotController : MonoBehaviour
             raggioControllo,
             direzione,
             out hit,
-            dimensioneCella,
-            layerOstacoli,
+            stepLength,
+            mask,
             QueryTriggerInteraction.Ignore))
         {
             Debug.LogWarning("[Robot] Movimento bloccato da: " + hit.collider.name);
@@ -335,7 +338,7 @@ public class RobotController : MonoBehaviour
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 targetPos,
-                velocitaMovimento * Time.deltaTime
+                movementSpeed * Time.deltaTime
             );
 
             yield return null;
@@ -364,7 +367,7 @@ public class RobotController : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(
                 transform.rotation,
                 targetRot,
-                velocitaRotazione * Time.deltaTime
+                rotationSpeed * Time.deltaTime
             );
 
             yield return null;
@@ -382,7 +385,7 @@ public class RobotController : MonoBehaviour
         switch (condizione)
         {
             case TipoBlocco.Nemico:
-                return RilevaNemicoPerCondizione(out hit);
+                return RilevaNemicoPerCondizione();
 
             case TipoBlocco.Muro:
             {
@@ -393,8 +396,8 @@ public class RobotController : MonoBehaviour
                     raggioControllo,
                     transform.forward,
                     out hit,
-                    dimensioneCella,
-                    layerOstacoli,
+                    stepLength,
+                    mask,
                     QueryTriggerInteraction.Ignore
                 );
 
@@ -412,8 +415,8 @@ public class RobotController : MonoBehaviour
                     raggioControllo,
                     transform.forward,
                     out hit,
-                    dimensioneCella,
-                    layerOstacoli,
+                    stepLength,
+                    mask,
                     QueryTriggerInteraction.Ignore
                 );
 
@@ -428,73 +431,58 @@ public class RobotController : MonoBehaviour
     // --- DANNO ---
 
     public void ColpitoDaLaser(int danno)
-{
-    if (robotColpito)
-        return;
-
-    currentHealth -= danno;
-
-    Debug.LogWarning("[Robot] Colpito dal laser! Danno: " + danno + " | Vita rimasta: " + currentHealth);
-
-    if (currentHealth > 0)
     {
-        // Il robot ha preso danno, ma è ancora vivo.
-        return;
-    }
+        if (robotColpito) return;
 
-    // Se arriva qui, la vita è finita.
-    currentHealth = 0;
-    robotColpito = true;
+        currentHealth -= danno;
 
-    StopAllCoroutines();
+        Debug.LogWarning("[Robot] Colpito dal laser! Danno: " + danno + " | Vita rimasta: " + currentHealth);
 
-    if (audioSource != null)
-    {
-        audioSource.Stop();
-    }
-
-    if (animator != null)
-    {
-        animator.SetBool(PARAM_CAMMINA, false);
-        animator.SetBool("Open_Anim", false);
-
-        animator.ResetTrigger(TRIGGER_COLPITO);
-        animator.SetTrigger(TRIGGER_COLPITO);
-    }
-
-    Debug.LogWarning("[Robot] Vita esaurita. Robot disattivato.");
-}
-
-    // --- DEBUG VISIVO ---
-
-    private void OnDrawGizmosSelected()
-    {
-        if (!mostraDebugSensoreNemico)
+        if (currentHealth > 0)
+        {
+            // Il robot ha preso danno, ma è ancora vivo.
             return;
-
-        Vector3 origine;
-
-        if (eyePoint != null)
-        {
-            origine = eyePoint.position;
-        }
-        else
-        {
-            origine = transform.position
-                + Vector3.up * altezzaOcchi
-                + transform.forward * offsetAvantiOcchi;
         }
 
-        Vector3 fineRilevamento = origine + transform.forward * distanzaRilevamentoNemico;
-        Vector3 fineSparo = origine + transform.forward * distanzaSparo;
+        // Se arriva qui, la vita è finita.
+        currentHealth = 0;
+        robotColpito = true;
+
+        StopAllCoroutines();
+
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+        }
+
+        if (animator != null)
+        {
+            animator.SetBool(PARAM_CAMMINA, false);
+            animator.SetBool("Open_Anim", false);
+
+            animator.ResetTrigger(TRIGGER_COLPITO);
+            animator.SetTrigger(TRIGGER_COLPITO);
+        }
+
+        Debug.LogWarning("[Robot] Vita esaurita. Robot disattivato.");
+    }
+
+#if DEBUG
+    void OnDrawGizmosSelected()
+    {
+        if (!showRaySphere) return;
+
+        Vector3 spottigEnd = sensor.position + transform.forward * raySphereDistance;
+        Vector3 shotingEnd = sensor.position + transform.forward * distanzaSparo;
 
         Gizmos.color = Color.magenta;
-        Gizmos.DrawWireSphere(origine, raggioSensoreNemico);
-        Gizmos.DrawWireSphere(fineRilevamento, raggioSensoreNemico);
-        Gizmos.DrawLine(origine, fineRilevamento);
+        //Gizmos.DrawWireSphere(sensor.position, raySphereDistance);
+        Gizmos.DrawWireSphere(spottigEnd, raySphereDistance);
+        Gizmos.DrawLine(sensor.position, spottigEnd);
 
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(fineSparo, raggioSensoreSparo);
-        Gizmos.DrawLine(origine, fineSparo);
+        Gizmos.DrawWireSphere(shotingEnd, raggioSensoreSparo);
+        Gizmos.DrawLine(sensor.position, shotingEnd);
     }
+#endif
 }

@@ -14,10 +14,7 @@ public class EsecutoreProgramma : MonoBehaviour
 
     [SerializeField]
     GameObject followCamera;
-
-    [SerializeField]
-    Transform spawnPoints;
-
+    
     private void Awake()
     {  
         Instance = this;
@@ -27,7 +24,7 @@ public class EsecutoreProgramma : MonoBehaviour
     private void StartNewGame()
     {
         topDownCamera.SetActive(true);
-        robot.StartNewGame(spawnPoints.position);
+        //robot.StartNewGame(spawnPoints.position);
     }
     public void AvviaProgramma()
     {
@@ -43,9 +40,22 @@ public class EsecutoreProgramma : MonoBehaviour
     {
         StopAllCoroutines();
         programmaInEsecuzione = false;
-        if (robot != null) robot.RipristinaPosizione();
+        if (robot != null) robot.FullReset();
     }
 
+    private bool ValutaCondizioneDelloSlot(Transform slotCondizione)
+    {
+        // Se lo slot non ha figli, l'utente non ha messo nessuna condizione gialla
+        if (slotCondizione.childCount == 0) return false;
+
+        InfoBlocco infoCondizione = slotCondizione.GetChild(0).GetComponent<InfoBlocco>();
+        if (infoCondizione == null) return false;
+
+        return robot.VerificaCondizione(infoCondizione.tipo);
+    }
+
+    // Perche' una corotine? Tanto gestisce l'esecuzione dell'interno programma dell'utente.
+    // Non e' meglio eseguirlo all'interno di Update
     private IEnumerator EseguiInsiemeBlocchi(Transform contenitore)
     {
         programmaInEsecuzione = true;
@@ -106,17 +116,6 @@ public class EsecutoreProgramma : MonoBehaviour
             programmaInEsecuzione = false;
             Debug.Log("[Esecutore] Programma terminato.");
         }
-    }
-
-    private bool ValutaCondizioneDelloSlot(Transform slotCondizione)
-    {
-        // Se lo slot non ha figli, l'utente non ha messo nessuna condizione gialla
-        if (slotCondizione.childCount == 0) return false;
-
-        InfoBlocco infoCondizione = slotCondizione.GetChild(0).GetComponent<InfoBlocco>();
-        if (infoCondizione == null) return false;
-
-        return robot.VerificaCondizione(infoCondizione.tipo);
     }
 }
 
