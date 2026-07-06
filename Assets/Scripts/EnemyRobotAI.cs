@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class EnemyRobotAI : MonoBehaviour
@@ -35,14 +36,22 @@ public class EnemyRobotAI : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip shootSound;
     [SerializeField] private AudioClip reloadSound;
-
     [SerializeField] private float reloadSoundDelay = 0.4f;
+    [SerializeField] private AudioClip enemyDetectedSound;
+    [SerializeField] private float delayPrimaDiAttaccare = 1f;
+    [SerializeField] private AudioClip deathSound;
 
+    [Header("Audio Movimento")]
+    [SerializeField] private AudioSource walkAudioSource;
+    [SerializeField] private AudioClip enemyWalkSound;
+    
     private RobotController playerRobotController;
     private int currentHealth;
     private int currentPatrolIndex = 0;
     private float nextFireTime = 0f;
     private bool isDead = false;
+    private bool playerRilevato = false;
+    private float tempoRilevamentoPlayer = 0f;
 
     private const string PARAM_IS_RUNNING = "IsRunning";
     private const string PARAM_IS_SHOOTING = "IsShooting";
@@ -57,6 +66,9 @@ public class EnemyRobotAI : MonoBehaviour
 
         if (audioSource == null)
             audioSource = GetComponent<AudioSource>();
+
+        if (walkAudioSource == null)
+        walkAudioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -85,21 +97,48 @@ public class EnemyRobotAI : MonoBehaviour
         {
             SetRunning(false);
             SetShooting(false);
+            StopWalkSound();
+            playerRilevato = false;
             return;
         }
 
         if (player == null)
         {
+            playerRilevato = false;
             Patrol();
             return;
         }
 
         if (CanSeePlayer())
         {
+            if (playerRilevato == false)
+            {
+                playerRilevato = true;
+                tempoRilevamentoPlayer = Time.time;
+                SetRunning(false);
+                SetShooting(false);
+
+                if (walkAudioSource != null) 
+                walkAudioSource.Stop();
+                
+                StartCoroutine(PlayEnemyDetectedSound());
+                Debug.Log("[EnemyRobotAI] Player rilevato. Attacco tra 1 secondo.");
+            }
+
+        if (Time.time - tempoRilevamentoPlayer < delayPrimaDiAttaccare)
+        {
+            SetRunning(false);
+            SetShooting(false);
+            StopWalkSound();
+            LookAtPlayer();
+            return;
+        }
+
             AttackPlayer();
         }
         else
         {
+            playerRilevato = false;
             Patrol();
         }
     }
@@ -125,6 +164,42 @@ public class EnemyRobotAI : MonoBehaviour
             return;
 
         audioSource.PlayOneShot(clip);
+    }
+
+    private void StartWalkSound()
+    {
+        if (isDead)
+            return;
+
+        if (walkAudioSource == null)
+            return;
+
+        if (enemyWalkSound == null)
+            return;
+
+        if (walkAudioSource.isPlaying)
+            return;
+
+        walkAudioSource.clip = enemyWalkSound;
+        walkAudioSource.loop = true;
+        walkAudioSource.Play();
+    }
+
+    private void StopWalkSound()
+    {
+        if (walkAudioSource == null)
+            return;
+
+        walkAudioSource.Stop();
+        walkAudioSource.loop = false;
+    }
+    
+    private IEnumerator PlayEnemyDetectedSound()
+    {
+        if (isDead)
+            yield break;
+
+        PlaySound(enemyDetectedSound);
     }
 
     private IEnumerator PlayReloadSoundAfterDelay()
@@ -157,6 +232,7 @@ public class EnemyRobotAI : MonoBehaviour
         }
 
         SetRunning(true);
+        StartWalkSound();
 
         Vector3 targetPosition = targetPoint.position;
         targetPosition.y = transform.position.y;
@@ -184,6 +260,8 @@ public class EnemyRobotAI : MonoBehaviour
     {
         SetRunning(false);
         SetShooting(true);
+
+        StopWalkSound();
 
         LookAtPlayer();
         ShootAtPlayer();
@@ -315,6 +393,9 @@ public class EnemyRobotAI : MonoBehaviour
     
     SetShooting(false);
     SetRunning(false);
+
+    StopWalkSound();
+    PlaySound(deathSound);
 
     if (animator != null)
     {

@@ -9,6 +9,9 @@ public class RobotController : MonoBehaviour
     public float velocitaRotazione = 360f;
     public LayerMask layerOstacoli;
 
+    [Header("Sensore Rilevamento Muro")]
+    public float distanzaRilevamentoMuro = 6f;
+
     [Header("Collisione Movimento")]
     public float raggioControllo = 0.35f;
 
@@ -25,6 +28,9 @@ public class RobotController : MonoBehaviour
     public float raggioSensoreSparo = 0.4f;
     public float tempoSparo = 0.5f;
 
+    [Header("Audio Morte")]
+    [SerializeField] private AudioClip deathSound; 
+
     [Header("Animazioni")]
     public Animator animator;
 
@@ -37,7 +43,6 @@ public class RobotController : MonoBehaviour
     [SerializeField] private AudioClip prepareToShootSound;
     [SerializeField] private AudioClip shootSound;
     [SerializeField] private AudioClip reloadSound;
-
     [SerializeField] private float prepareDelay = 0.4f;
     [SerializeField] private float reloadDelay = 0.8f;
 
@@ -45,10 +50,22 @@ public class RobotController : MonoBehaviour
     [SerializeField] private int maxHealth = 30;
     [SerializeField] private int currentHealth;
 
+    [Header("Audio Movimento")]
+    [SerializeField] private AudioClip walkSound;
+    [SerializeField] private float intervalloSuonoPasso = 0.25f;
+
+    [Header("Audio Warning")]
+    [SerializeField] private AudioSource warningAudioSource;
+    [SerializeField] private AudioClip warningSound;
+    [SerializeField] private float warningCooldown = 1f;
+
+    private float prossimoWarningTime = 0f;
+
     private const string PARAM_CAMMINA = "Walk_Anim";
     private const string TRIGGER_COLPITO = "Colpito";
 
     private bool robotColpito = false;
+
     public bool IsColpito
     {
         get { return robotColpito; }
@@ -58,10 +75,12 @@ public class RobotController : MonoBehaviour
     {
         get { return currentHealth; }
     }
+
     public int MaxHealth
     {
         get { return maxHealth; }
     }
+
     private bool staEseguendo = false;
 
     private Vector3 posizioneIniziale;
@@ -79,20 +98,26 @@ public class RobotController : MonoBehaviour
 
         if (audioSource == null)
             audioSource = GetComponent<AudioSource>();
+
+        if (warningAudioSource == null)
+            warningAudioSource = audioSource;
     }
 
     private void Start()
     {
         if (animator != null)
-        {
             animator.SetBool("Open_Anim", true);
-        }
+    }
+
+    private void Update()
+    {
+        ControllaWarningContinuo();
     }
 
     private void PlaySound(AudioClip clip)
     {
         if (robotColpito)
-        return;
+            return;
 
         if (audioSource == null)
             return;
@@ -103,18 +128,51 @@ public class RobotController : MonoBehaviour
         audioSource.PlayOneShot(clip);
     }
 
+    private void PlayWalkSound()
+    {
+        if (robotColpito)
+            return;
+
+        if (audioSource == null)
+            return;
+
+        if (walkSound == null)
+            return;
+
+        audioSource.PlayOneShot(walkSound);
+    }
+
+    private void PlayWarningSound()
+    {
+        if (robotColpito)
+            return;
+
+        if (warningAudioSource == null)
+            return;
+
+        if (warningSound == null)
+            return;
+
+        if (Time.time < prossimoWarningTime)
+            return;
+
+        warningAudioSource.PlayOneShot(warningSound);
+        prossimoWarningTime = Time.time + warningCooldown;
+    }
+
     public void RipristinaPosizione()
     {
-
         StopAllCoroutines();
 
         robotColpito = false;
         currentHealth = maxHealth;
+        prossimoWarningTime = 0f;
 
         if (audioSource != null)
-        {
             audioSource.Stop();
-        }
+
+        if (warningAudioSource != null && warningAudioSource != audioSource)
+            warningAudioSource.Stop();
 
         transform.position = posizioneIniziale;
         transform.rotation = rotazioneIniziale;
@@ -190,7 +248,6 @@ public class RobotController : MonoBehaviour
 
         Vector3 origineSparo = GetOrigineOcchi();
         Vector3 puntoMira = hit.collider.bounds.center;
-
         Vector3 direzioneSparo = puntoMira - origineSparo;
 
         if (direzioneSparo.sqrMagnitude < 0.001f)
@@ -260,7 +317,8 @@ public class RobotController : MonoBehaviour
             " | Tag: " + hit.collider.tag +
             " | Root Tag: " + hit.collider.transform.root.tag +
             " | Layer: " + LayerMask.LayerToName(hit.collider.gameObject.layer) +
-            " | IsTrigger: " + hit.collider.isTrigger
+            " | IsTrigger: " + hit.collider.isTrigger +
+            " | Distanza: " + hit.distance
         );
 
         return hit.collider.CompareTag("Nemico") ||
@@ -288,6 +346,80 @@ public class RobotController : MonoBehaviour
                hit.collider.transform.root.CompareTag("Nemico");
     }
 
+    private bool RilevaNemicoPerWarning(out RaycastHit hit)
+    {
+        Vector3 origine = GetOrigineOcchi();
+
+        bool haColpito = Physics.SphereCast(
+            origine,
+            raggioSensoreNemico,
+            transform.forward,
+            out hit,
+            distanzaRilevamentoNemico,
+            layerNemici,
+            QueryTriggerInteraction.Ignore
+        );
+
+        if (!haColpito)
+            return false;
+
+        return hit.collider.CompareTag("Nemico") ||
+               hit.collider.transform.root.CompareTag("Nemico");
+    }
+
+    private bool RilevaMuroVicinoPerWarning(out RaycastHit hit)
+    {
+        Vector3 origineRaggio = GetOrigineSensoreMovimento(transform.forward);
+
+        bool haColpito = Physics.SphereCast(
+            origineRaggio,
+            raggioControllo,
+            transform.forward,
+            out hit,
+            distanzaRilevamentoMuro,
+            layerOstacoli,
+            QueryTriggerInteraction.Ignore
+        );
+
+        if (!haColpito)
+            return false;
+
+        return hit.collider.CompareTag("Muro") ||
+               hit.collider.transform.root.CompareTag("Muro");
+    }
+
+    private void ControllaWarningContinuo()
+    {
+        if (robotColpito)
+            return;
+
+        RaycastHit hitNemico;
+        RaycastHit hitMuro;
+
+        bool vedeNemico = RilevaNemicoPerWarning(out hitNemico);
+        bool vedeMuroVicino = RilevaMuroVicinoPerWarning(out hitMuro);
+
+        if (vedeNemico || vedeMuroVicino)
+        {
+            PlayWarningSound();
+
+            if (vedeNemico)
+            {
+                Debug.Log(
+                    "[Warning Continuo] Nemico davanti: " + hitNemico.collider.name +
+                    " | Distanza: " + hitNemico.distance
+                );
+            }
+            else if (vedeMuroVicino)
+            {
+                Debug.Log(
+                    "[Warning Continuo] Muro vicino davanti: " + hitMuro.collider.name +
+                    " | Distanza: " + hitMuro.distance
+                );
+            }
+        }
+    }
+
     // --- MOVIMENTO ---
 
     private IEnumerator Muovi(Vector3 direzione)
@@ -296,7 +428,6 @@ public class RobotController : MonoBehaviour
             yield break;
 
         Vector3 targetPos = transform.position + direzione * dimensioneCella;
-
         Vector3 origineRaggio = GetOrigineSensoreMovimento(direzione);
 
         RaycastHit hit;
@@ -315,14 +446,20 @@ public class RobotController : MonoBehaviour
         }
 
         if (animator != null)
-        {
             animator.SetBool(PARAM_CAMMINA, true);
-        }
+
+        float prossimoSuonoPasso = 0f;
 
         while (Vector3.Distance(transform.position, targetPos) > 0.01f)
         {
             if (robotColpito)
                 yield break;
+
+            if (Time.time >= prossimoSuonoPasso)
+            {
+                PlayWalkSound();
+                prossimoSuonoPasso = Time.time + intervalloSuonoPasso;
+            }
 
             transform.position = Vector3.MoveTowards(
                 transform.position,
@@ -336,9 +473,7 @@ public class RobotController : MonoBehaviour
         transform.position = targetPos;
 
         if (animator != null)
-        {
             animator.SetBool(PARAM_CAMMINA, false);
-        }
     }
 
     private IEnumerator Ruota(float angolo)
@@ -374,7 +509,9 @@ public class RobotController : MonoBehaviour
         switch (condizione)
         {
             case TipoBlocco.Nemico:
+            {
                 return RilevaNemicoPerCondizione(out hit);
+            }
 
             case TipoBlocco.Muro:
             {
@@ -385,14 +522,17 @@ public class RobotController : MonoBehaviour
                     raggioControllo,
                     transform.forward,
                     out hit,
-                    dimensioneCella,
+                    distanzaRilevamentoMuro,
                     layerOstacoli,
                     QueryTriggerInteraction.Ignore
                 );
 
-                return vedeMuro &&
-                       (hit.collider.CompareTag("Muro") ||
-                        hit.collider.transform.root.CompareTag("Muro"));
+                bool muroDavanti =
+                    vedeMuro &&
+                    (hit.collider.CompareTag("Muro") ||
+                     hit.collider.transform.root.CompareTag("Muro"));
+
+                return muroDavanti;
             }
 
             case TipoBlocco.Libero:
@@ -409,6 +549,20 @@ public class RobotController : MonoBehaviour
                     QueryTriggerInteraction.Ignore
                 );
 
+                if (trovaOstacolo)
+                {
+                    Debug.Log(
+                        "[Sensore Libero] Strada bloccata da: " + hit.collider.name +
+                        " | Tag: " + hit.collider.tag +
+                        " | Root Tag: " + hit.collider.transform.root.tag +
+                        " | Layer: " + LayerMask.LayerToName(hit.collider.gameObject.layer)
+                    );
+                }
+                else
+                {
+                    Debug.Log("[Sensore Libero] Strada libera.");
+                }
+
                 return !trovaOstacolo;
             }
 
@@ -420,42 +574,47 @@ public class RobotController : MonoBehaviour
     // --- DANNO ---
 
     public void ColpitoDaLaser(int danno)
-{
-    if (robotColpito)
-        return;
-
-    currentHealth -= danno;
-
-    Debug.LogWarning("[Robot] Colpito dal laser! Danno: " + danno + " | Vita rimasta: " + currentHealth);
-
-    if (currentHealth > 0)
     {
-        // Il robot ha preso danno, ma è ancora vivo.
-        return;
+        if (robotColpito)
+            return;
+
+        currentHealth -= danno;
+
+        Debug.LogWarning("[Robot] Colpito dal laser! Danno: " + danno + " | Vita rimasta: " + currentHealth);
+
+        if (currentHealth > 0)
+        {
+            // Il robot ha preso danno, ma è ancora vivo.
+            return;
+        }
+
+        currentHealth = 0;
+        robotColpito = true;
+
+        StopAllCoroutines();
+
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+
+            if (deathSound != null)
+                audioSource.PlayOneShot(deathSound);
+        }
+
+        if (warningAudioSource != null && warningAudioSource != audioSource)
+            warningAudioSource.Stop();
+
+        if (animator != null)
+        {
+            animator.SetBool(PARAM_CAMMINA, false);
+            animator.SetBool("Open_Anim", false);
+
+            animator.ResetTrigger(TRIGGER_COLPITO);
+            animator.SetTrigger(TRIGGER_COLPITO);
+        }
+
+        Debug.LogWarning("[Robot] Vita esaurita. Robot disattivato.");
     }
-
-    // Se arriva qui, la vita è finita.
-    currentHealth = 0;
-    robotColpito = true;
-
-    StopAllCoroutines();
-
-    if (audioSource != null)
-    {
-        audioSource.Stop();
-    }
-
-    if (animator != null)
-    {
-        animator.SetBool(PARAM_CAMMINA, false);
-        animator.SetBool("Open_Anim", false);
-
-        animator.ResetTrigger(TRIGGER_COLPITO);
-        animator.SetTrigger(TRIGGER_COLPITO);
-    }
-
-    Debug.LogWarning("[Robot] Vita esaurita. Robot disattivato.");
-}
 
     // --- DEBUG VISIVO ---
 
@@ -488,5 +647,16 @@ public class RobotController : MonoBehaviour
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(fineSparo, raggioSensoreSparo);
         Gizmos.DrawLine(origine, fineSparo);
+
+        Vector3 origineMovimento = transform.position
+            + Vector3.up * altezzaOcchi
+            + transform.forward * offsetAvantiOcchi;
+
+        Vector3 fineMuro = origineMovimento + transform.forward * dimensioneCella;
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(origineMovimento, raggioControllo);
+        Gizmos.DrawWireSphere(fineMuro, raggioControllo);
+        Gizmos.DrawLine(origineMovimento, fineMuro);
     }
 }
