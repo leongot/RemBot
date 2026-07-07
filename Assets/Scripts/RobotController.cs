@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-
 public class RobotController : MonoBehaviour
 {
     [Header("Impostazioni Griglia")]
@@ -54,15 +53,18 @@ public class RobotController : MonoBehaviour
     [Header("Game Over Caduta")]
     [SerializeField] private bool gameOverSeCade = true;
     [SerializeField] private float quotaYGameOver = -5f;
-    [SerializeField] private float velocitaCadutaInAvanti = 2.5f;
-    [SerializeField] private float velocitaCadutaVersoIlBasso = 2f;
 
     [Header("Controllo Terreno")]
     [SerializeField] private LayerMask layerTerreno;
     [SerializeField] private float raggioControlloTerreno = 0.35f;
     [SerializeField] private float altezzaControlloTerreno = 0.5f;
     [SerializeField] private float distanzaControlloTerreno = 1.2f;
-    [SerializeField] private float spintaCadutaInAvanti = 0.8f;
+
+    [Header("Traslazione Caduta")]
+    [SerializeField] private float durataTraslazioneCaduta = 0.7f;
+    [SerializeField] private float velocitaTraslazioneAvanti = 3f;
+    [SerializeField] private float velocitaTraslazioneBasso = 2f;
+    [SerializeField] private float velocitaFisicaInizialeCaduta = 2f;
 
     [Header("Audio Movimento")]
     [SerializeField] private AudioClip walkSound;
@@ -81,8 +83,11 @@ public class RobotController : MonoBehaviour
     private bool robotColpito = false;
     private bool staCadendo = false;
     private bool gameOverCadutaMostrato = false;
-   
+
     private Rigidbody rb;
+    private RigidbodyConstraints vincoliInizialiRb;
+    private bool rbKinematicIniziale;
+    private bool rbUseGravityIniziale;
 
     public bool IsColpito
     {
@@ -118,6 +123,13 @@ public class RobotController : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
 
+        if (rb != null)
+        {
+            vincoliInizialiRb = rb.constraints;
+            rbKinematicIniziale = rb.isKinematic;
+            rbUseGravityIniziale = rb.useGravity;
+        }
+
         if (animator == null)
             animator = GetComponentInChildren<Animator>();
 
@@ -152,7 +164,7 @@ public class RobotController : MonoBehaviour
         if (!gameOverSeCade)
             return;
 
-        if (robotColpito)
+        if (robotColpito || staCadendo)
             return;
 
         if (!HaTerrenoSotto(transform.position))
@@ -209,14 +221,48 @@ public class RobotController : MonoBehaviour
 
         if (rb != null)
         {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+
+            // Durante la traslazione manuale il Rigidbody non deve combattere contro i collider del bordo.
+            rb.isKinematic = true;
+            rb.useGravity = false;
+        }
+
+        StartCoroutine(TraslazioneCadutaPoiFisica());
+
+        Debug.LogWarning("[Robot] Ha perso il terreno sotto: avvio traslazione diagonale di caduta.");
+    }
+
+    private IEnumerator TraslazioneCadutaPoiFisica()
+    {
+        float tempo = 0f;
+        Vector3 direzioneAvanti = transform.forward.normalized;
+
+        while (tempo < durataTraslazioneCaduta)
+        {
+            Vector3 spostamento =
+                direzioneAvanti * velocitaTraslazioneAvanti +
+                Vector3.down * velocitaTraslazioneBasso;
+
+            transform.position += spostamento * Time.deltaTime;
+
+            tempo += Time.deltaTime;
+            yield return null;
+        }
+
+        if (rb != null)
+        {
             rb.isKinematic = false;
             rb.useGravity = true;
+            rb.constraints = RigidbodyConstraints.None;
 
-            rb.linearVelocity =
-                transform.forward * velocitaCadutaInAvanti +
-                Vector3.down * velocitaCadutaVersoIlBasso;
+            rb.linearVelocity = Vector3.down * velocitaFisicaInizialeCaduta;
+            rb.angularVelocity = Vector3.zero;
+            rb.WakeUp();
         }
-        Debug.LogWarning("[Robot] Ha perso il terreno sotto: avvio morte da caduta.");
+
+        Debug.Log("[Robot] Traslazione caduta finita: ora il Rigidbody cade liberamente.");
     }
 
     private void ControllaGameOverCaduta()
@@ -242,7 +288,7 @@ public class RobotController : MonoBehaviour
 
     private void PlaySound(AudioClip clip)
     {
-        if (robotColpito)
+        if (robotColpito || staCadendo)
             return;
 
         if (audioSource == null)
@@ -304,6 +350,9 @@ public class RobotController : MonoBehaviour
 
         if (rb != null)
         {
+            rb.isKinematic = rbKinematicIniziale;
+            rb.useGravity = rbUseGravityIniziale;
+            rb.constraints = vincoliInizialiRb;
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
         }
@@ -609,12 +658,6 @@ public class RobotController : MonoBehaviour
                 targetPos,
                 velocitaMovimento * Time.deltaTime
             );
-
-            if (!HaTerrenoSotto(transform.position))
-            {
-                IniziaMorteDaCaduta();
-                yield break;
-            }
 
             yield return null;
         }

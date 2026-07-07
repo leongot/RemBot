@@ -7740,7 +7740,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 342709710}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 743a9c29068adcf439d79d070a5800c6, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -7752,10 +7752,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.06906738
-  m_Height: 0.13813476
+  m_Radius: 0.055746198
+  m_Height: 0.111492395
   m_Direction: 1
-  m_Center: {x: -0.0012920619, y: 0.04735124, z: -0.00084266666}
+  m_Center: {x: -0.0007647276, y: 0.05332316, z: 0}
 --- !u!1 &344656722
 GameObject:
   m_ObjectHideFlags: 0
@@ -53738,15 +53738,15 @@ PrefabInstance:
       objectReference: {fileID: 24300002, guid: 6b010f02968627e40abbb42388f20382, type: 2}
     - target: {fileID: 6232250007446067824, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -54.1
+      value: -53.92
       objectReference: {fileID: 0}
     - target: {fileID: 6232250007446067824, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.28
       objectReference: {fileID: 0}
     - target: {fileID: 6232250007446067824, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 120.43
+      value: 36.4
       objectReference: {fileID: 0}
     - target: {fileID: 6232250007446067824, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: m_LocalRotation.w
@@ -53782,11 +53782,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7533129931674925058, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: m_Constraints
-      value: 122
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7533129931674925058, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8268979018024072908, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: quotaYGameOver
-      value: -1
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8268979018024072908, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
+      propertyPath: durataForzaCaduta
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8268979018024072908, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
+      propertyPath: forzaCadutaInAvanti
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8268979018024072908, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: layerTerreno.m_Bits
@@ -53794,7 +53806,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8268979018024072908, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: spintaCadutaInAvanti
-      value: 1
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8268979018024072908, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
+      propertyPath: forzaOrizzontaleCaduta
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8268979018024072908, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: velocitaCadutaInAvanti
@@ -53803,6 +53819,18 @@ PrefabInstance:
     - target: {fileID: 8268979018024072908, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: altezzaControlloTerreno
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8268979018024072908, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
+      propertyPath: distanzaRilevamentoMuro
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8268979018024072908, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
+      propertyPath: forzaCadutaVersoIlBasso
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 8268979018024072908, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
+      propertyPath: forzaVersoIlBassoCaduta
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8268979018024072908, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: distanzaControlloTerreno
