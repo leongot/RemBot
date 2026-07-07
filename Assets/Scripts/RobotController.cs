@@ -14,6 +14,7 @@ public class RobotController : MonoBehaviour
 
     [Header("Collisione Movimento")]
     public float raggioControllo = 0.35f;
+    [SerializeField] private float distanzaBloccoMovimento = 6f;
 
     [Header("Sensore Nemico")]
     public Transform eyePoint;
@@ -646,11 +647,16 @@ public class RobotController : MonoBehaviour
             raggioControllo,
             direzione,
             out hit,
-            dimensioneCella,
+            distanzaBloccoMovimento,
             layerOstacoli,
             QueryTriggerInteraction.Ignore))
         {
-            Debug.LogWarning("[Robot] Movimento bloccato da: " + hit.collider.name);
+            Debug.LogWarning(
+                "[Robot] Movimento bloccato da: " + hit.collider.name +
+                " | Distanza hit: " + hit.distance +
+                " | Layer: " + LayerMask.LayerToName(hit.collider.gameObject.layer)
+            );
+
             yield break;
         }
 
@@ -759,7 +765,7 @@ public class RobotController : MonoBehaviour
                     raggioControllo,
                     transform.forward,
                     out hit,
-                    dimensioneCella,
+                    distanzaBloccoMovimento,
                     layerOstacoli,
                     QueryTriggerInteraction.Ignore
                 );
