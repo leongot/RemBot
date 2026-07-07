@@ -28,10 +28,10 @@ public static class LevelSaveSystem
         if (levelNumber <= 1)
             return true;
 
-        if (PlayerPrefs.HasKey(LEVEL_UNLOCKED_KEY + levelNumber))
-            return PlayerPrefs.GetInt(LEVEL_UNLOCKED_KEY + levelNumber, 0) == 1;
+        if (!IsLevelCompleted(levelNumber - 1))
+            return false;
 
-        return IsLevelCompleted(levelNumber - 1);
+        return PlayerPrefs.GetInt(LEVEL_UNLOCKED_KEY + levelNumber, 0) == 1;
     }
 
     public static void UnlockLevel(int levelNumber)
