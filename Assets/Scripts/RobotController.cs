@@ -614,6 +614,9 @@ public class RobotController : MonoBehaviour
         }
 
         Debug.LogWarning("[Robot] Vita esaurita. Robot disattivato.");
+        
+        if (GameUIManager.Instance != null)
+            GameUIManager.Instance.MostraGameOver();
     }
 
     // --- DEBUG VISIVO ---

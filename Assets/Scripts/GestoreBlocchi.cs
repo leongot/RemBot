@@ -57,6 +57,7 @@ public class GestoreBlocchi : MonoBehaviour
     private int numeroIstruzioniInserite = 0;
     private int scoreAttuale = 0;
     private int recordScore = 0;
+    private bool livelloCompletato = false;
 
     private const string RECORD_SCORE_KEY = "RECORD_SCORE";
 
@@ -351,28 +352,17 @@ public class GestoreBlocchi : MonoBehaviour
     }
 
     public void ProgrammaTerminato()
-    {
-        scoreAttuale = CalcolaScore();
+{
+    scoreAttuale = CalcolaScore();
 
-        LevelSaveSystem.SaveRecordScore(livelloCorrente, scoreAttuale);
+    AggiornaScoreUI();
 
-        recordScore = LevelSaveSystem.GetRecordScore(livelloCorrente);
-
-        int prossimoLivello = livelloCorrente + 1;
-
-        if (prossimoLivello <= numeroTotaleLivelli)
-        {
-            LevelSaveSystem.UnlockLevel(prossimoLivello);
-        }
-
-        AggiornaScoreUI();
-
-        Debug.Log(
-            "[GestoreBlocchi] Programma terminato. Livello: " + livelloCorrente +
-            " | Score: " + scoreAttuale +
-            " | Record: " + recordScore
-        );
-    }
+    Debug.Log(
+        "[GestoreBlocchi] Programma terminato. " +
+        "Score calcolato: " + scoreAttuale +
+        " | Il livello NON è ancora completato finché non raggiungi il goal."
+    );
+}
 
     private void AggiornaScoreUI()
     {
@@ -389,6 +379,35 @@ public class GestoreBlocchi : MonoBehaviour
         Debug.Log(
             "[Score] Istruzioni: " + numeroIstruzioniInserite +
             " | Score attuale: " + scoreAttuale +
+            " | Record: " + recordScore
+        );
+    }
+
+    public void CompletaLivelloDaGoal()
+    {
+        if (livelloCompletato)
+            return;
+
+        livelloCompletato = true;
+
+        scoreAttuale = CalcolaScore();
+
+        LevelSaveSystem.SaveRecordScore(livelloCorrente, scoreAttuale);
+
+        recordScore = LevelSaveSystem.GetRecordScore(livelloCorrente);
+
+        int prossimoLivello = livelloCorrente + 1;
+
+        if (prossimoLivello <= numeroTotaleLivelli)
+        {
+            LevelSaveSystem.UnlockLevel(prossimoLivello);
+        }
+
+        AggiornaScoreUI();
+
+        Debug.Log(
+            "[GestoreBlocchi] GOAL raggiunto. Livello completato: " + livelloCorrente +
+            " | Score: " + scoreAttuale +
             " | Record: " + recordScore
         );
     }
