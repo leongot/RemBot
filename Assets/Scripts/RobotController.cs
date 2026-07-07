@@ -50,6 +50,10 @@ public class RobotController : MonoBehaviour
     [SerializeField] private int maxHealth = 30;
     [SerializeField] private int currentHealth;
 
+    [Header("Game Over Caduta")]
+    [SerializeField] private bool gameOverSeCade = true;
+    [SerializeField] private float quotaYGameOver = -5f;
+
     [Header("Audio Movimento")]
     [SerializeField] private AudioClip walkSound;
     [SerializeField] private float intervalloSuonoPasso = 0.25f;
@@ -112,6 +116,26 @@ public class RobotController : MonoBehaviour
     private void Update()
     {
         ControllaWarningContinuo();
+    }
+
+    private void LateUpdate()
+    {
+        ControllaCaduta();
+    }
+
+    private void ControllaCaduta()
+    {
+        if (!gameOverSeCade)
+            return;
+
+        if (robotColpito)
+            return;
+
+        if (transform.position.y <= quotaYGameOver)
+        {
+            Debug.LogWarning("[Robot] Caduto fuori dalla mappa. Game Over.");
+            Muori("caduta");
+        }
     }
 
     private void PlaySound(AudioClip clip)
@@ -588,36 +612,44 @@ public class RobotController : MonoBehaviour
             return;
         }
 
-        currentHealth = 0;
-        robotColpito = true;
-
-        StopAllCoroutines();
-
-        if (audioSource != null)
-        {
-            audioSource.Stop();
-
-            if (deathSound != null)
-                audioSource.PlayOneShot(deathSound);
-        }
-
-        if (warningAudioSource != null && warningAudioSource != audioSource)
-            warningAudioSource.Stop();
-
-        if (animator != null)
-        {
-            animator.SetBool(PARAM_CAMMINA, false);
-            animator.SetBool("Open_Anim", false);
-
-            animator.ResetTrigger(TRIGGER_COLPITO);
-            animator.SetTrigger(TRIGGER_COLPITO);
-        }
-
-        Debug.LogWarning("[Robot] Vita esaurita. Robot disattivato.");
-        
-        if (GameUIManager.Instance != null)
-            GameUIManager.Instance.MostraGameOver();
+        Muori("danno laser");
     }
+
+    private void Muori(string motivo)
+    {
+    if (robotColpito)
+        return;
+
+    currentHealth = 0;
+    robotColpito = true;
+
+    StopAllCoroutines();
+
+    if (audioSource != null)
+    {
+        audioSource.Stop();
+
+        if (deathSound != null)
+            audioSource.PlayOneShot(deathSound);
+    }
+
+    if (warningAudioSource != null && warningAudioSource != audioSource)
+        warningAudioSource.Stop();
+
+    if (animator != null)
+    {
+        animator.SetBool(PARAM_CAMMINA, false);
+        animator.SetBool("Open_Anim", false);
+
+        animator.ResetTrigger(TRIGGER_COLPITO);
+        animator.SetTrigger(TRIGGER_COLPITO);
+    }
+
+    Debug.LogWarning("[Robot] Morte robot. Motivo: " + motivo);
+
+    if (GameUIManager.Instance != null)
+        GameUIManager.Instance.MostraGameOver();
+}
 
     // --- DEBUG VISIVO ---
 

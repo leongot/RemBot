@@ -14711,6 +14711,20 @@ MonoBehaviour:
   areaPrincipaleCodice: {fileID: 1477361519}
   slotAttivoComandi: {fileID: 0}
   slotAttivoCondizione: {fileID: 0}
+  loadingPanel: {fileID: 0}
+  loadingBarFill: {fileID: 0}
+  loadingText: {fileID: 0}
+  durataCaricamento: 4
+  loadingAudioSource: {fileID: 0}
+  loadingSound: {fileID: 0}
+  loadingVolume: 1
+  cameraSwitcher: {fileID: 0}
+  attesaDopoSwitchCamera: 2
+  recordScoreText: {fileID: 0}
+  currentScoreText: {fileID: 0}
+  scoreMassimo: 1000
+  livelloCorrente: 1
+  numeroTotaleLivelli: 3
 --- !u!4 &922087319
 Transform:
   m_ObjectHideFlags: 0
@@ -28341,9 +28355,36 @@ MonoBehaviour:
   layerOstacoli:
     serializedVersion: 2
     m_Bits: 64
+  distanzaRilevamentoMuro: 6
+  raggioControllo: 0.35
+  eyePoint: {fileID: 0}
+  layerNemici:
+    serializedVersion: 2
+    m_Bits: 0
+  distanzaRilevamentoNemico: 8
+  raggioSensoreNemico: 0.4
+  mostraDebugSensoreNemico: 1
+  proiettilePrefab: {fileID: 0}
+  distanzaSparo: 10
+  raggioSensoreSparo: 0.4
+  tempoSparo: 0.5
+  deathSound: {fileID: 0}
   animator: {fileID: 1363625458}
   altezzaOcchi: 5
   offsetAvantiOcchi: 6.5
+  audioSource: {fileID: 0}
+  prepareToShootSound: {fileID: 0}
+  shootSound: {fileID: 0}
+  reloadSound: {fileID: 0}
+  prepareDelay: 0.4
+  reloadDelay: 0.8
+  maxHealth: 30
+  currentHealth: 0
+  walkSound: {fileID: 0}
+  intervalloSuonoPasso: 0.25
+  warningAudioSource: {fileID: 0}
+  warningSound: {fileID: 0}
+  warningCooldown: 1
 --- !u!4 &1807964403
 Transform:
   m_ObjectHideFlags: 0
