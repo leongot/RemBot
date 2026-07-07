@@ -3,14 +3,11 @@ using UnityEngine;
 
 public class RobotController : MonoBehaviour
 {
-    [Header("Movement")]
-    [SerializeField]
-    float stepLength = 2f,
-          movementSpeed = 4f,
-          rotationSpeed = 360f;
-
-    [SerializeField]
-    LayerMask mask;
+    [Header("Impostazioni Griglia")]
+    public float dimensioneCella = 2f;
+    public float velocitaMovimento = 4f;
+    public float velocitaRotazione = 360f;
+    public LayerMask layerOstacoli;
 
     [Header("Sensore Rilevamento Muro")]
     public float distanzaRilevamentoMuro = 6f;
@@ -18,32 +15,21 @@ public class RobotController : MonoBehaviour
     [Header("Collisione Movimento")]
     public float raggioControllo = 0.35f;
 
-    [Header("Sensor")]
-    [SerializeField]
-    Transform sensor;
+    [Header("Sensore Nemico")]
+    public Transform eyePoint;
+    public LayerMask layerNemici;
+    public float distanzaRilevamentoNemico = 8f;
+    public float raggioSensoreNemico = 0.4f;
+    public bool mostraDebugSensoreNemico = true;
 
-    [SerializeField, Range(0f, 1f)]
-    float raySphereRadius = 0.4f;
-    
-    [SerializeField, Range(1f, 0f)]
-    float raySphereDistance = 8f;
-
-#if DEBUG
-    [SerializeField]
-    public bool showRaySphere = true;
-#endif
-
-    [Header("Shooting")]
-    [SerializeField]
-    GameObject proiettilePrefab;
-
+    [Header("Sparo")]
+    public GameObject proiettilePrefab;
     public float distanzaSparo = 10f;
     public float raggioSensoreSparo = 0.4f;
     public float tempoSparo = 0.5f;
 
-    [Header("Animation")]
     [Header("Audio Morte")]
-    [SerializeField] private AudioClip deathSound; 
+    [SerializeField] private AudioClip deathSound;
 
     [Header("Animazioni")]
     public Animator animator;
@@ -52,7 +38,7 @@ public class RobotController : MonoBehaviour
     public float altezzaOcchi = 1.2f;
     public float offsetAvantiOcchi = 0.4f;
 
-    [Header("Audio")]
+    [Header("Audio Sparo")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip prepareToShootSound;
     [SerializeField] private AudioClip shootSound;
@@ -95,30 +81,30 @@ public class RobotController : MonoBehaviour
         get { return maxHealth; }
     }
 
-    Vector3 posizioneIniziale;
-    Quaternion rotazioneIniziale;
+    private bool staEseguendo = false;
 
+    private Vector3 posizioneIniziale;
+    private Quaternion rotazioneIniziale;
 
-    bool ValidateAction(out RaycastHit info, float radius, float distance) => Physics.SphereCast(
-            sensor.position,
-            radius,
-            sensor.forward,
-            out info,
-            distance,
-            mask
-    );
-
-    void Awake()
+    private void Awake()
     {
         posizioneIniziale = transform.position;
         rotazioneIniziale = transform.rotation;
 
         currentHealth = maxHealth;
+
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
+
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
+
+        if (warningAudioSource == null)
+            warningAudioSource = audioSource;
     }
 
     private void Start()
     {
-        animator.SetBool("Open_Anim", true);   
         if (animator != null)
             animator.SetBool("Open_Anim", true);
     }
@@ -142,7 +128,6 @@ public class RobotController : MonoBehaviour
         audioSource.PlayOneShot(clip);
     }
 
-    public void FullReset()
     private void PlayWalkSound()
     {
         if (robotColpito)
@@ -183,27 +168,30 @@ public class RobotController : MonoBehaviour
         currentHealth = maxHealth;
         prossimoWarningTime = 0f;
 
-        audioSource.Stop();
-        
-        transform.SetPositionAndRotation(posizioneIniziale, rotazioneIniziale);
-        
         if (audioSource != null)
             audioSource.Stop();
 
         if (warningAudioSource != null && warningAudioSource != audioSource)
             warningAudioSource.Stop();
 
-        animator.SetBool(PARAM_CAMMINA, false);
-        animator.ResetTrigger(TRIGGER_COLPITO);
-        animator.SetBool("Open_Anim", true);
-        
+        transform.position = posizioneIniziale;
+        transform.rotation = rotazioneIniziale;
+
+        if (animator != null)
+        {
+            animator.SetBool(PARAM_CAMMINA, false);
+            animator.ResetTrigger(TRIGGER_COLPITO);
+            animator.SetBool("Open_Anim", true);
+        }
+
+        staEseguendo = false;
     }
 
     // --- AZIONI ---
 
     public IEnumerator MuoviAvanti()
     {
-        yield return Muovi(transform .forward);
+        yield return Muovi(transform.forward);
     }
 
     public IEnumerator MuoviIndietro()
@@ -234,21 +222,18 @@ public class RobotController : MonoBehaviour
         if (robotColpito)
             yield break;
 
-        /*
+        if (proiettilePrefab == null)
+        {
+            Debug.LogError("[Robot] Proiettile prefab non assegnato.");
+            yield break;
+        }
+
         RaycastHit hit;
 
         if (!RilevaNemicoPerSparo(out hit))
         {
             Debug.Log("[Robot] Nessun nemico davanti. Non sparo.");
             yield return new WaitForSeconds(tempoSparo);
-            yield break;
-        }
-        */
-
-        if (!ValidateAction(out RaycastHit info), )
-        {
-            Debug.Log("[Robot] Nessun nemico davanti. Non sparo.");
-            //yield return new WaitForSeconds(tempoSparo);
             yield break;
         }
 
@@ -262,9 +247,7 @@ public class RobotController : MonoBehaviour
             yield break;
 
         Vector3 origineSparo = GetOrigineOcchi();
-
-        Vector3 puntoMira = info.collider.bounds.center;
-
+        Vector3 puntoMira = hit.collider.bounds.center;
         Vector3 direzioneSparo = puntoMira - origineSparo;
 
         if (direzioneSparo.sqrMagnitude < 0.001f)
@@ -278,7 +261,7 @@ public class RobotController : MonoBehaviour
             rotazioneSparo
         );
 
-        Debug.Log("[Robot] Sparo verso nemico: " + info.collider.name);
+        Debug.Log("[Robot] Sparo verso nemico: " + hit.collider.name);
 
         PlaySound(shootSound);
         yield return new WaitForSeconds(tempoSparo);
@@ -294,8 +277,8 @@ public class RobotController : MonoBehaviour
 
     private Vector3 GetOrigineOcchi()
     {
-        if (sensor != null)
-            return sensor.position;
+        if (eyePoint != null)
+            return eyePoint.position;
 
         return transform.position
             + Vector3.up * altezzaOcchi
@@ -309,9 +292,8 @@ public class RobotController : MonoBehaviour
             + direzione.normalized * offsetAvantiOcchi;
     }
 
-    private bool RilevaNemicoPerCondizione()
+    private bool RilevaNemicoPerCondizione(out RaycastHit hit)
     {
-        /*
         Vector3 origine = GetOrigineOcchi();
 
         bool haColpito = Physics.SphereCast(
@@ -320,30 +302,27 @@ public class RobotController : MonoBehaviour
             transform.forward,
             out hit,
             distanzaRilevamentoNemico,
-            mask,
+            layerNemici,
             QueryTriggerInteraction.Ignore
         );
-        */
 
-        bool hit = ValidateAction(out RaycastHit info);
-
-
-        if (!hit)
+        if (!haColpito)
         {
             Debug.Log("[Sensore Nemico] Non colpisco nessun collider nemico.");
             return false;
         }
 
         Debug.Log(
-            "[Sensore Nemico] Colpito: " + info.collider.name +
-            " | Tag: " + info.collider.tag +
-            " | Root Tag: " + info.collider.transform.root.tag +
-            " | Layer: " + LayerMask.LayerToName(info.collider.gameObject.layer) +
-            " | IsTrigger: " + info.collider.isTrigger
+            "[Sensore Nemico] Colpito: " + hit.collider.name +
+            " | Tag: " + hit.collider.tag +
+            " | Root Tag: " + hit.collider.transform.root.tag +
+            " | Layer: " + LayerMask.LayerToName(hit.collider.gameObject.layer) +
+            " | IsTrigger: " + hit.collider.isTrigger +
+            " | Distanza: " + hit.distance
         );
 
-        return info.collider.CompareTag("Nemico") ||
-               info.collider.transform.root.CompareTag("Nemico");
+        return hit.collider.CompareTag("Nemico") ||
+               hit.collider.transform.root.CompareTag("Nemico");
     }
 
     private bool RilevaNemicoPerSparo(out RaycastHit hit)
@@ -356,7 +335,7 @@ public class RobotController : MonoBehaviour
             transform.forward,
             out hit,
             distanzaSparo,
-            mask,
+            layerNemici,
             QueryTriggerInteraction.Ignore
         );
 
@@ -448,8 +427,7 @@ public class RobotController : MonoBehaviour
         if (robotColpito)
             yield break;
 
-        Vector3 targetPos = transform.position + direzione * stepLength;
-
+        Vector3 targetPos = transform.position + direzione * dimensioneCella;
         Vector3 origineRaggio = GetOrigineSensoreMovimento(direzione);
 
         RaycastHit hit;
@@ -459,8 +437,8 @@ public class RobotController : MonoBehaviour
             raggioControllo,
             direzione,
             out hit,
-            stepLength,
-            mask,
+            dimensioneCella,
+            layerOstacoli,
             QueryTriggerInteraction.Ignore))
         {
             Debug.LogWarning("[Robot] Movimento bloccato da: " + hit.collider.name);
@@ -486,7 +464,7 @@ public class RobotController : MonoBehaviour
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 targetPos,
-                movementSpeed * Time.deltaTime
+                velocitaMovimento * Time.deltaTime
             );
 
             yield return null;
@@ -513,7 +491,7 @@ public class RobotController : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(
                 transform.rotation,
                 targetRot,
-                rotationSpeed * Time.deltaTime
+                velocitaRotazione * Time.deltaTime
             );
 
             yield return null;
@@ -531,92 +509,62 @@ public class RobotController : MonoBehaviour
         switch (condizione)
         {
             case TipoBlocco.Nemico:
-            {
-                return RilevaNemicoPerCondizione(out hit);
-            }
+                {
+                    return RilevaNemicoPerCondizione(out hit);
+                }
 
             case TipoBlocco.Muro:
-            {
-                Vector3 origineRaggio = GetOrigineSensoreMovimento(transform.forward);
+                {
+                    Vector3 origineRaggio = GetOrigineSensoreMovimento(transform.forward);
 
-                bool vedeMuro = Physics.SphereCast(
-                    origineRaggio,
-                    raggioControllo,
-                    transform.forward,
-                    out hit,
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    stepLength,
-                    mask,
-=======
-                    distanzaRilevamentoMuro,
-                    layerOstacoli,
->>>>>>> parent of ec14606 (Merge branch 'alt')
-=======
-                    distanzaRilevamentoMuro,
-                    layerOstacoli,
->>>>>>> parent of ec14606 (Merge branch 'alt')
-=======
-                    distanzaRilevamentoMuro,
-                    layerOstacoli,
->>>>>>> parent of 25d1aa5 (Merge branch 'main' of https://github.com/leongot/RemBot)
-                    QueryTriggerInteraction.Ignore
-                );
+                    bool vedeMuro = Physics.SphereCast(
+                        origineRaggio,
+                        raggioControllo,
+                        transform.forward,
+                        out hit,
+                        distanzaRilevamentoMuro,
+                        layerOstacoli,
+                        QueryTriggerInteraction.Ignore
+                    );
 
-                bool muroDavanti =
-                    vedeMuro &&
-                    (hit.collider.CompareTag("Muro") ||
-                     hit.collider.transform.root.CompareTag("Muro"));
+                    bool muroDavanti =
+                        vedeMuro &&
+                        (hit.collider.CompareTag("Muro") ||
+                         hit.collider.transform.root.CompareTag("Muro"));
 
-                return muroDavanti;
-            }
+                    return muroDavanti;
+                }
 
             case TipoBlocco.Libero:
-            {
-                Vector3 origineRaggio = GetOrigineSensoreMovimento(transform.forward);
-
-                bool trovaOstacolo = Physics.SphereCast(
-                    origineRaggio,
-                    raggioControllo,
-                    transform.forward,
-                    out hit,
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    stepLength,
-                    mask,
-=======
-                    dimensioneCella,
-                    layerOstacoli,
->>>>>>> parent of ec14606 (Merge branch 'alt')
-=======
-                    dimensioneCella,
-                    layerOstacoli,
->>>>>>> parent of ec14606 (Merge branch 'alt')
-=======
-                    dimensioneCella,
-                    layerOstacoli,
->>>>>>> parent of 25d1aa5 (Merge branch 'main' of https://github.com/leongot/RemBot)
-                    QueryTriggerInteraction.Ignore
-                );
-
-                if (trovaOstacolo)
                 {
-                    Debug.Log(
-                        "[Sensore Libero] Strada bloccata da: " + hit.collider.name +
-                        " | Tag: " + hit.collider.tag +
-                        " | Root Tag: " + hit.collider.transform.root.tag +
-                        " | Layer: " + LayerMask.LayerToName(hit.collider.gameObject.layer)
+                    Vector3 origineRaggio = GetOrigineSensoreMovimento(transform.forward);
+
+                    bool trovaOstacolo = Physics.SphereCast(
+                        origineRaggio,
+                        raggioControllo,
+                        transform.forward,
+                        out hit,
+                        dimensioneCella,
+                        layerOstacoli,
+                        QueryTriggerInteraction.Ignore
                     );
-                }
-                else
-                {
-                    Debug.Log("[Sensore Libero] Strada libera.");
-                }
 
-                return !trovaOstacolo;
-            }
+                    if (trovaOstacolo)
+                    {
+                        Debug.Log(
+                            "[Sensore Libero] Strada bloccata da: " + hit.collider.name +
+                            " | Tag: " + hit.collider.tag +
+                            " | Root Tag: " + hit.collider.transform.root.tag +
+                            " | Layer: " + LayerMask.LayerToName(hit.collider.gameObject.layer)
+                        );
+                    }
+                    else
+                    {
+                        Debug.Log("[Sensore Libero] Strada libera.");
+                    }
+
+                    return !trovaOstacolo;
+                }
 
             default:
                 return false;
@@ -674,56 +622,41 @@ public class RobotController : MonoBehaviour
     {
         if (!mostraDebugSensoreNemico)
             return;
-        }
 
-        // Se arriva qui, la vita è finita.
-        currentHealth = 0;
-        robotColpito = true;
+        Vector3 origine;
 
-        StopAllCoroutines();
-
-        if (audioSource != null)
+        if (eyePoint != null)
         {
-            audioSource.Stop();
+            origine = eyePoint.position;
         }
-
-        if (animator != null)
+        else
         {
-            animator.SetBool(PARAM_CAMMINA, false);
-            animator.SetBool("Open_Anim", false);
-
-            animator.ResetTrigger(TRIGGER_COLPITO);
-            animator.SetTrigger(TRIGGER_COLPITO);
+            origine = transform.position
+                + Vector3.up * altezzaOcchi
+                + transform.forward * offsetAvantiOcchi;
         }
 
-        Debug.LogWarning("[Robot] Vita esaurita. Robot disattivato.");
-    }
-
-#if DEBUG
-    void OnDrawGizmosSelected()
-    {
-        if (!showRaySphere) return;
-
-        Vector3 spottigEnd = sensor.position + transform.forward * raySphereDistance;
-        Vector3 shotingEnd = sensor.position + transform.forward * distanzaSparo;
+        Vector3 fineRilevamento = origine + transform.forward * distanzaRilevamentoNemico;
+        Vector3 fineSparo = origine + transform.forward * distanzaSparo;
 
         Gizmos.color = Color.magenta;
-        //Gizmos.DrawWireSphere(sensor.position, raySphereDistance);
-        Gizmos.DrawWireSphere(spottigEnd, raySphereDistance);
-        Gizmos.DrawLine(sensor.position, spottigEnd);
+        Gizmos.DrawWireSphere(origine, raggioSensoreNemico);
+        Gizmos.DrawWireSphere(fineRilevamento, raggioSensoreNemico);
+        Gizmos.DrawLine(origine, fineRilevamento);
 
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(shotingEnd, raggioSensoreSparo);
-        Gizmos.DrawLine(sensor.position, shotingEnd);
+        Gizmos.DrawWireSphere(fineSparo, raggioSensoreSparo);
+        Gizmos.DrawLine(origine, fineSparo);
+
+        Vector3 origineMovimento = transform.position
+            + Vector3.up * altezzaOcchi
+            + transform.forward * offsetAvantiOcchi;
+
+        Vector3 fineMuro = origineMovimento + transform.forward * dimensioneCella;
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(origineMovimento, raggioControllo);
+        Gizmos.DrawWireSphere(fineMuro, raggioControllo);
+        Gizmos.DrawLine(origineMovimento, fineMuro);
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-#endif
-=======
->>>>>>> parent of ec14606 (Merge branch 'alt')
-=======
->>>>>>> parent of ec14606 (Merge branch 'alt')
-=======
->>>>>>> parent of 25d1aa5 (Merge branch 'main' of https://github.com/leongot/RemBot)
 }
