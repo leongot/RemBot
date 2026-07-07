@@ -51,6 +51,7 @@ public class EsecutoreProgramma : MonoBehaviour
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         if (robot != null) robot.RipristinaPosizione();
 
     }
@@ -69,6 +70,12 @@ public class EsecutoreProgramma : MonoBehaviour
     }
 
 >>>>>>> parent of ec14606 (Merge branch 'alt')
+=======
+        if (robot != null)
+            robot.RipristinaPosizione();
+    }
+
+>>>>>>> parent of 25d1aa5 (Merge branch 'main' of https://github.com/leongot/RemBot)
 =======
         if (robot != null)
             robot.RipristinaPosizione();
