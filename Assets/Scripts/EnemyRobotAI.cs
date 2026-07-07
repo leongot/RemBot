@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class EnemyRobotAI : MonoBehaviour
@@ -22,6 +21,7 @@ public class EnemyRobotAI : MonoBehaviour
     [Header("Vision")]
     [SerializeField] private float visionRange = 18f;
     [SerializeField] private float visionAngle = 80f;
+    [SerializeField] private float tempoPrimaDiDimenticarePlayer = 2f;
 
     [Header("Shooting")]
     [SerializeField] private float fireRate = 0.7f;
@@ -39,19 +39,31 @@ public class EnemyRobotAI : MonoBehaviour
     [SerializeField] private float reloadSoundDelay = 0.4f;
     [SerializeField] private AudioClip enemyDetectedSound;
     [SerializeField] private float delayPrimaDiAttaccare = 1f;
+    [SerializeField] private float ritardoPrimoSparoDopoAnimazione = 0.3f;
     [SerializeField] private AudioClip deathSound;
 
     [Header("Audio Movimento")]
     [SerializeField] private AudioSource walkAudioSource;
     [SerializeField] private AudioClip enemyWalkSound;
-    
+
+    private enum StatoNemico
+    {
+        Pattuglia,
+        Allerta,
+        Attacco
+    }
+
+    private StatoNemico statoNemico = StatoNemico.Pattuglia;
+
     private RobotController playerRobotController;
     private int currentHealth;
     private int currentPatrolIndex = 0;
     private float nextFireTime = 0f;
+    private float tempoInizioAllerta = 0f;
+    private float ultimoTempoPlayerNelRaggio = 0f;
+
     private bool isDead = false;
-    private bool playerRilevato = false;
-    private float tempoRilevamentoPlayer = 0f;
+    private bool enemyDetectedRiprodotto = false;
 
     private const string PARAM_IS_RUNNING = "IsRunning";
     private const string PARAM_IS_SHOOTING = "IsShooting";
@@ -68,12 +80,11 @@ public class EnemyRobotAI : MonoBehaviour
             audioSource = GetComponent<AudioSource>();
 
         if (walkAudioSource == null)
-        walkAudioSource = GetComponent<AudioSource>();
+            walkAudioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
     {
-        
         if (player == null)
         {
             GameObject foundPlayer = GameObject.FindGameObjectWithTag("Player");
@@ -83,63 +94,43 @@ public class EnemyRobotAI : MonoBehaviour
         }
 
         if (player != null)
-        {
             playerRobotController = player.GetComponentInParent<RobotController>();
-        }
     }
-    
+
     private void Update()
     {
         if (isDead)
             return;
+
+        if (player == null)
+        {
+            ResetAggancioBersaglio();
+            Patrol();
+            return;
+        }
 
         if (playerRobotController != null && playerRobotController.IsColpito)
         {
             SetRunning(false);
             SetShooting(false);
             StopWalkSound();
-            playerRilevato = false;
+            ResetAggancioBersaglio();
             return;
         }
 
-        if (player == null)
+        switch (statoNemico)
         {
-            playerRilevato = false;
-            Patrol();
-            return;
-        }
+            case StatoNemico.Pattuglia:
+                GestisciPattuglia();
+                break;
 
-        if (CanSeePlayer())
-        {
-            if (playerRilevato == false)
-            {
-                playerRilevato = true;
-                tempoRilevamentoPlayer = Time.time;
-                SetRunning(false);
-                SetShooting(false);
+            case StatoNemico.Allerta:
+                GestisciAllerta();
+                break;
 
-                if (walkAudioSource != null) 
-                walkAudioSource.Stop();
-                
-                StartCoroutine(PlayEnemyDetectedSound());
-                Debug.Log("[EnemyRobotAI] Player rilevato. Attacco tra 1 secondo.");
-            }
-
-        if (Time.time - tempoRilevamentoPlayer < delayPrimaDiAttaccare)
-        {
-            SetRunning(false);
-            SetShooting(false);
-            StopWalkSound();
-            LookAtPlayer();
-            return;
-        }
-
-            AttackPlayer();
-        }
-        else
-        {
-            playerRilevato = false;
-            Patrol();
+            case StatoNemico.Attacco:
+                GestisciAttacco();
+                break;
         }
     }
 
@@ -150,9 +141,109 @@ public class EnemyRobotAI : MonoBehaviour
         currentPatrolIndex = 0;
 
         if (player != null)
-        {
             playerRobotController = player.GetComponentInParent<RobotController>();
+    }
+
+    private void GestisciPattuglia()
+    {
+        if (CanSeePlayer())
+        {
+            EntraInAllerta();
+            return;
         }
+
+        Patrol();
+    }
+
+    private void EntraInAllerta()
+    {
+        statoNemico = StatoNemico.Allerta;
+        tempoInizioAllerta = Time.time;
+        ultimoTempoPlayerNelRaggio = Time.time;
+        nextFireTime = Time.time + delayPrimaDiAttaccare;
+
+        SetRunning(false);
+        SetShooting(false);
+        StopWalkSound();
+        LookAtPlayer();
+
+        if (!enemyDetectedRiprodotto)
+        {
+            enemyDetectedRiprodotto = true;
+            PlaySound(enemyDetectedSound);
+            Debug.Log("[EnemyRobotAI] " + gameObject.name + " enemy detected. Attacco tra " + delayPrimaDiAttaccare + " secondi.");
+        }
+    }
+
+    private void GestisciAllerta()
+    {
+        if (PlayerPersoDavvero())
+        {
+            ResetAggancioBersaglio();
+            Patrol();
+            return;
+        }
+
+        SetRunning(false);
+        SetShooting(false);
+        StopWalkSound();
+        LookAtPlayer();
+
+        if (Time.time - tempoInizioAllerta >= delayPrimaDiAttaccare)
+        {
+            statoNemico = StatoNemico.Attacco;
+
+            SetRunning(false);
+            SetShooting(true);
+            StopWalkSound();
+            LookAtPlayer();
+
+            nextFireTime = Time.time + ritardoPrimoSparoDopoAnimazione;
+
+            return;
+        }
+    }
+
+    private void GestisciAttacco()
+    {
+        if (PlayerPersoDavvero())
+        {
+            ResetAggancioBersaglio();
+            Patrol();
+            return;
+        }
+
+        AttackPlayer();
+    }
+
+    private bool PlayerPersoDavvero()
+    {
+        if (PlayerDentroRaggioRilevazione())
+        {
+            ultimoTempoPlayerNelRaggio = Time.time;
+            return false;
+        }
+
+        return Time.time - ultimoTempoPlayerNelRaggio >= tempoPrimaDiDimenticarePlayer;
+    }
+
+    private void ResetAggancioBersaglio()
+    {
+        statoNemico = StatoNemico.Pattuglia;
+        enemyDetectedRiprodotto = false;
+        SetShooting(false);
+    }
+
+    private bool PlayerDentroRaggioRilevazione()
+    {
+        if (player == null)
+            return false;
+
+        Vector3 origin = GetVisionOrigin();
+        Vector3 target = player.position + Vector3.up * aimHeight;
+
+        float distanza = Vector3.Distance(origin, target);
+        return distanza <= visionRange;
     }
 
     private void PlaySound(AudioClip clip)
@@ -190,16 +281,11 @@ public class EnemyRobotAI : MonoBehaviour
         if (walkAudioSource == null)
             return;
 
+        if (!walkAudioSource.isPlaying)
+            return;
+
         walkAudioSource.Stop();
         walkAudioSource.loop = false;
-    }
-    
-    private IEnumerator PlayEnemyDetectedSound()
-    {
-        if (isDead)
-            yield break;
-
-        PlaySound(enemyDetectedSound);
     }
 
     private IEnumerator PlayReloadSoundAfterDelay()
@@ -209,9 +295,11 @@ public class EnemyRobotAI : MonoBehaviour
         if (isDead)
             yield break;
 
+        if (playerRobotController != null && playerRobotController.IsColpito)
+            yield break;
+
         PlaySound(reloadSound);
     }
-
 
     private void Patrol()
     {
@@ -260,22 +348,26 @@ public class EnemyRobotAI : MonoBehaviour
     {
         SetRunning(false);
         SetShooting(true);
-
         StopWalkSound();
 
         LookAtPlayer();
         ShootAtPlayer();
     }
 
+    private Vector3 GetVisionOrigin()
+    {
+        if (eyePoint != null)
+            return eyePoint.position;
+
+        return transform.position + Vector3.up * 1.5f;
+    }
+
     private bool CanSeePlayer()
     {
-        Vector3 origin;
+        if (player == null)
+            return false;
 
-        if (eyePoint != null)
-            origin = eyePoint.position;
-        else
-            origin = transform.position + Vector3.up * 1.5f;
-
+        Vector3 origin = GetVisionOrigin();
         Vector3 target = player.position + Vector3.up * aimHeight;
         Vector3 directionToPlayer = target - origin;
 
@@ -309,6 +401,9 @@ public class EnemyRobotAI : MonoBehaviour
 
     private void LookAtPlayer()
     {
+        if (player == null)
+            return;
+
         Vector3 targetPosition = player.position;
         targetPosition.y = transform.position.y;
 
@@ -333,44 +428,44 @@ public class EnemyRobotAI : MonoBehaviour
     }
 
     private void ShootAtPlayer()
-{
-    if (Time.time < nextFireTime)
-        return;
-
-    if (laserPrefab == null)
     {
-        Debug.LogError("Laser prefab non assegnato su " + gameObject.name);
-        return;
+        if (Time.time < nextFireTime)
+            return;
+
+        if (laserPrefab == null)
+        {
+            Debug.LogError("Laser prefab non assegnato su " + gameObject.name);
+            return;
+        }
+
+        if (bulletSpawnPoint == null)
+        {
+            Debug.LogError("Bullet Spawn Point non assegnato su " + gameObject.name);
+            return;
+        }
+
+        if (player == null)
+            return;
+
+        Vector3 target = player.position + Vector3.up * aimHeight;
+        Vector3 shootDirection = target - bulletSpawnPoint.position;
+
+        if (shootDirection.sqrMagnitude < 0.001f)
+            return;
+
+        Quaternion shootRotation = Quaternion.LookRotation(shootDirection.normalized);
+
+        Instantiate(
+            laserPrefab,
+            bulletSpawnPoint.position,
+            shootRotation
+        );
+
+        PlaySound(shootSound);
+        StartCoroutine(PlayReloadSoundAfterDelay());
+
+        nextFireTime = Time.time + fireRate;
     }
-
-    if (bulletSpawnPoint == null)
-    {
-        Debug.LogError("Bullet Spawn Point non assegnato su " + gameObject.name);
-        return;
-    }
-
-    Vector3 target = player.position + Vector3.up * aimHeight;
-    Vector3 shootDirection = target - bulletSpawnPoint.position;
-
-    if (shootDirection.sqrMagnitude < 0.001f)
-        return;
-
-    Quaternion shootRotation = Quaternion.LookRotation(shootDirection.normalized);
-
-    Instantiate(
-        laserPrefab,
-        bulletSpawnPoint.position,
-        shootRotation
-    );
-
-    // Suono dello sparo
-    PlaySound(shootSound);
-
-    // Suono della ricarica dopo un piccolo delay
-    StartCoroutine(PlayReloadSoundAfterDelay());
-
-    nextFireTime = Time.time + fireRate;
-}
 
     public void PrendiDanno(int damage)
     {
@@ -382,53 +477,56 @@ public class EnemyRobotAI : MonoBehaviour
         Debug.Log("[EnemyRobotAI] Danno ricevuto: " + damage + " | HP rimasti: " + currentHealth);
 
         if (currentHealth <= 0)
-        {
             StartCoroutine(DieRoutine());
-        }
     }
 
     private IEnumerator DieRoutine()
-{
-    isDead = true;
-    
-    SetShooting(false);
-    SetRunning(false);
-
-    StopWalkSound();
-    PlaySound(deathSound);
-
-    if (animator != null)
     {
-        animator.SetBool(PARAM_IS_SHOOTING, false);
-        animator.SetTrigger(TRIGGER_DIE);
+        isDead = true;
+
+        SetShooting(false);
+        SetRunning(false);
+        StopWalkSound();
+        PlaySound(deathSound);
+
+        if (animator != null)
+        {
+            animator.SetBool(PARAM_IS_SHOOTING, false);
+            animator.SetBool(PARAM_IS_RUNNING, false);
+            animator.SetTrigger(TRIGGER_DIE);
+        }
+
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+
+        foreach (Collider col in colliders)
+            col.enabled = false;
+
+        yield return new WaitForSeconds(deathAnimationDuration);
+        yield return new WaitForSeconds(delayAfterDeathAnimation);
+
+        Destroy(gameObject);
     }
-
-    Collider[] colliders = GetComponentsInChildren<Collider>();
-
-    foreach (Collider col in colliders)
-    {
-        col.enabled = false;
-    }
-
-    // Aspetta la durata dell'animazione Die
-    yield return new WaitForSeconds(deathAnimationDuration);
-
-    // Aspetta ancora un delay extra dopo l'animazione
-    yield return new WaitForSeconds(delayAfterDeathAnimation);
-
-    Destroy(gameObject);
-}
 
     private void SetRunning(bool running)
     {
-        if (animator != null)
-            animator.SetBool(PARAM_IS_RUNNING, running);
+        if (animator == null)
+            return;
+
+        if (animator.GetBool(PARAM_IS_RUNNING) == running)
+            return;
+
+        animator.SetBool(PARAM_IS_RUNNING, running);
     }
 
     private void SetShooting(bool shooting)
     {
-        if (animator != null)
-            animator.SetBool(PARAM_IS_SHOOTING, shooting);
+        if (animator == null)
+            return;
+
+        if (animator.GetBool(PARAM_IS_SHOOTING) == shooting)
+            return;
+
+        animator.SetBool(PARAM_IS_SHOOTING, shooting);
     }
 
     private void OnDrawGizmosSelected()
@@ -467,12 +565,7 @@ public class EnemyRobotAI : MonoBehaviour
                     nextIndex = 0;
 
                 if (patrolPoints[nextIndex] != null)
-                {
-                    Gizmos.DrawLine(
-                        patrolPoints[i].position,
-                        patrolPoints[nextIndex].position
-                    );
-                }
+                    Gizmos.DrawLine(patrolPoints[i].position, patrolPoints[nextIndex].position);
             }
         }
     }
