@@ -10,7 +10,7 @@ public class GlobalAlarmLightEffect : MonoBehaviour
     [SerializeField] private Light alarmLight;
 
     [Header("Effetto Lampeggio")]
-    //[SerializeField] private Color coloreAllarme = Color.red;
+    [SerializeField] private Color coloreAllarme = Color.red;
     [SerializeField] private float durataEffetto = 3f;
     [SerializeField] private float intensitaMassima = 2.5f;
     [SerializeField] private float velocitaLampeggio = 8f;
@@ -38,7 +38,7 @@ public class GlobalAlarmLightEffect : MonoBehaviour
             intensitaOriginaleLuce = alarmLight.intensity;
             luceAttivaOriginale = alarmLight.enabled;
 
-            //alarmLight.color = coloreAllarme;
+            alarmLight.color = coloreAllarme;
             alarmLight.intensity = 0f;
             alarmLight.enabled = true;
         }
@@ -71,7 +71,7 @@ public class GlobalAlarmLightEffect : MonoBehaviour
             if (alarmLight != null)
             {
                 alarmLight.enabled = true;
-                //alarmLight.color = coloreAllarme;
+                alarmLight.color = coloreAllarme;
                 alarmLight.intensity = lampeggio * intensitaMassima;
             }
 
@@ -81,7 +81,7 @@ public class GlobalAlarmLightEffect : MonoBehaviour
 
                 RenderSettings.ambientLight = Color.Lerp(
                     ambientLightOriginale,
-                    alarmLight.color,
+                    coloreAllarme,
                     lampeggio * forzaAmbienteRosso
                 );
             }
