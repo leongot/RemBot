@@ -7728,6 +7728,34 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 340492466}
   m_Mesh: {fileID: 4300000, guid: 150f1d6c324cb0741ab28ddb5fe215de, type: 3}
+--- !u!1 &342709710 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2822481900179606000, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
+  m_PrefabInstance: {fileID: 5287734454726191012}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &342709715
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 342709710}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.06906738
+  m_Height: 0.13813476
+  m_Direction: 1
+  m_Center: {x: -0.0012920619, y: 0.04735124, z: -0.00084266666}
 --- !u!1 &344656722
 GameObject:
   m_ObjectHideFlags: 0
@@ -53688,13 +53716,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 121964138161595745, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
+      propertyPath: m_Size.x
+      value: 0.099647425
+      objectReference: {fileID: 0}
+    - target: {fileID: 121964138161595745, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
+      propertyPath: m_Size.z
+      value: 0.10094824
+      objectReference: {fileID: 0}
+    - target: {fileID: 121964138161595745, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
+      propertyPath: m_Center.x
+      value: 0.0002492428
+      objectReference: {fileID: 0}
+    - target: {fileID: 121964138161595745, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
+      propertyPath: m_Center.z
+      value: -0.0019260884
+      objectReference: {fileID: 0}
     - target: {fileID: 1260250826815688688, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: OutputAudioMixerGroup
       value: 
       objectReference: {fileID: 24300002, guid: 6b010f02968627e40abbb42388f20382, type: 2}
     - target: {fileID: 6232250007446067824, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -47.6
+      value: -54.1
       objectReference: {fileID: 0}
     - target: {fileID: 6232250007446067824, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: m_LocalPosition.y
@@ -53702,7 +53746,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6232250007446067824, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 113.5
+      value: 120.43
       objectReference: {fileID: 0}
     - target: {fileID: 6232250007446067824, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: m_LocalRotation.w
@@ -53753,6 +53797,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8268979018024072908, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
+      propertyPath: velocitaCadutaInAvanti
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8268979018024072908, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: altezzaControlloTerreno
       value: 1
       objectReference: {fileID: 0}
@@ -53764,10 +53812,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Robot_Player
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 121964138161595745, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2822481900179606000, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 342709715}
   m_SourcePrefab: {fileID: 100100000, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
 --- !u!1001 &7498507118559718336
 PrefabInstance:
