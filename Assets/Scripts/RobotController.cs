@@ -29,7 +29,7 @@ public class RobotController : MonoBehaviour
     public float tempoSparo = 0.5f;
 
     [Header("Audio Morte")]
-    [SerializeField] private AudioClip deathSound; 
+    [SerializeField] private AudioClip deathSound;
 
     [Header("Animazioni")]
     public Animator animator;
@@ -509,62 +509,62 @@ public class RobotController : MonoBehaviour
         switch (condizione)
         {
             case TipoBlocco.Nemico:
-            {
-                return RilevaNemicoPerCondizione(out hit);
-            }
+                {
+                    return RilevaNemicoPerCondizione(out hit);
+                }
 
             case TipoBlocco.Muro:
-            {
-                Vector3 origineRaggio = GetOrigineSensoreMovimento(transform.forward);
+                {
+                    Vector3 origineRaggio = GetOrigineSensoreMovimento(transform.forward);
 
-                bool vedeMuro = Physics.SphereCast(
-                    origineRaggio,
-                    raggioControllo,
-                    transform.forward,
-                    out hit,
-                    distanzaRilevamentoMuro,
-                    layerOstacoli,
-                    QueryTriggerInteraction.Ignore
-                );
+                    bool vedeMuro = Physics.SphereCast(
+                        origineRaggio,
+                        raggioControllo,
+                        transform.forward,
+                        out hit,
+                        distanzaRilevamentoMuro,
+                        layerOstacoli,
+                        QueryTriggerInteraction.Ignore
+                    );
 
-                bool muroDavanti =
-                    vedeMuro &&
-                    (hit.collider.CompareTag("Muro") ||
-                     hit.collider.transform.root.CompareTag("Muro"));
+                    bool muroDavanti =
+                        vedeMuro &&
+                        (hit.collider.CompareTag("Muro") ||
+                         hit.collider.transform.root.CompareTag("Muro"));
 
-                return muroDavanti;
-            }
+                    return muroDavanti;
+                }
 
             case TipoBlocco.Libero:
-            {
-                Vector3 origineRaggio = GetOrigineSensoreMovimento(transform.forward);
-
-                bool trovaOstacolo = Physics.SphereCast(
-                    origineRaggio,
-                    raggioControllo,
-                    transform.forward,
-                    out hit,
-                    dimensioneCella,
-                    layerOstacoli,
-                    QueryTriggerInteraction.Ignore
-                );
-
-                if (trovaOstacolo)
                 {
-                    Debug.Log(
-                        "[Sensore Libero] Strada bloccata da: " + hit.collider.name +
-                        " | Tag: " + hit.collider.tag +
-                        " | Root Tag: " + hit.collider.transform.root.tag +
-                        " | Layer: " + LayerMask.LayerToName(hit.collider.gameObject.layer)
+                    Vector3 origineRaggio = GetOrigineSensoreMovimento(transform.forward);
+
+                    bool trovaOstacolo = Physics.SphereCast(
+                        origineRaggio,
+                        raggioControllo,
+                        transform.forward,
+                        out hit,
+                        dimensioneCella,
+                        layerOstacoli,
+                        QueryTriggerInteraction.Ignore
                     );
-                }
-                else
-                {
-                    Debug.Log("[Sensore Libero] Strada libera.");
-                }
 
-                return !trovaOstacolo;
-            }
+                    if (trovaOstacolo)
+                    {
+                        Debug.Log(
+                            "[Sensore Libero] Strada bloccata da: " + hit.collider.name +
+                            " | Tag: " + hit.collider.tag +
+                            " | Root Tag: " + hit.collider.transform.root.tag +
+                            " | Layer: " + LayerMask.LayerToName(hit.collider.gameObject.layer)
+                        );
+                    }
+                    else
+                    {
+                        Debug.Log("[Sensore Libero] Strada libera.");
+                    }
+
+                    return !trovaOstacolo;
+                }
 
             default:
                 return false;
