@@ -6,7 +6,7 @@ public class CameraSwitcher : MonoBehaviour
     [SerializeField] private GameObject playerCamera;
     [SerializeField] private GameObject startMenu;
 
-    private void Awake()
+    private void Start()
     {
         mainCamera.SetActive(true);
         playerCamera.SetActive(false);
@@ -15,18 +15,12 @@ public class CameraSwitcher : MonoBehaviour
             startMenu.SetActive(true);
     }
 
-    public void NewLevelStart()
+    public void StartGame()
     {
         mainCamera.SetActive(false);
         playerCamera.SetActive(true);
 
         if (startMenu != null)
             startMenu.SetActive(false);
-    }
-
-    public void ResetLevel()
-    {
-        mainCamera.SetActive(true);
-        playerCamera.SetActive(false);
     }
 }

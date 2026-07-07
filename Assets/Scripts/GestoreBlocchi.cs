@@ -215,8 +215,6 @@ public class GestoreBlocchi : MonoBehaviour
             return;
         }
 
-        cameraSwitcher.ResetLevel();
-
         foreach (Transform blocco in areaPrincipaleCodice)
         {
             Destroy(blocco.gameObject);
@@ -297,16 +295,14 @@ public class GestoreBlocchi : MonoBehaviour
         if (loadingPanel != null)
             loadingPanel.SetActive(false);
 
-        
         if (cameraSwitcher != null)
         {
-            cameraSwitcher.NewLevelStart();
+            cameraSwitcher.StartGame();
         }
         else
         {
             Debug.LogWarning("[GestoreBlocchi] CameraSwitcher non assegnato.");
         }
-        
 
         yield return new WaitForSeconds(attesaDopoSwitchCamera);
 
