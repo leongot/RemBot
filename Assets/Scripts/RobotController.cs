@@ -546,6 +546,7 @@ public class RobotController : MonoBehaviour
                     out hit,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     stepLength,
                     mask,
 =======
@@ -556,6 +557,10 @@ public class RobotController : MonoBehaviour
                     distanzaRilevamentoMuro,
                     layerOstacoli,
 >>>>>>> parent of ec14606 (Merge branch 'alt')
+=======
+                    distanzaRilevamentoMuro,
+                    layerOstacoli,
+>>>>>>> parent of 25d1aa5 (Merge branch 'main' of https://github.com/leongot/RemBot)
                     QueryTriggerInteraction.Ignore
                 );
 
@@ -578,6 +583,7 @@ public class RobotController : MonoBehaviour
                     out hit,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     stepLength,
                     mask,
 =======
@@ -588,6 +594,10 @@ public class RobotController : MonoBehaviour
                     dimensioneCella,
                     layerOstacoli,
 >>>>>>> parent of ec14606 (Merge branch 'alt')
+=======
+                    dimensioneCella,
+                    layerOstacoli,
+>>>>>>> parent of 25d1aa5 (Merge branch 'main' of https://github.com/leongot/RemBot)
                     QueryTriggerInteraction.Ignore
                 );
 
@@ -708,9 +718,12 @@ public class RobotController : MonoBehaviour
     }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 #endif
 =======
 >>>>>>> parent of ec14606 (Merge branch 'alt')
 =======
 >>>>>>> parent of ec14606 (Merge branch 'alt')
+=======
+>>>>>>> parent of 25d1aa5 (Merge branch 'main' of https://github.com/leongot/RemBot)
 }
