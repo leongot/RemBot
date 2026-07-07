@@ -98,26 +98,26 @@ public class EnemySpawner : MonoBehaviour
     }
 
     private void PlaySpawnSound()
-{
-    if (spawnSound == null)
     {
-        Debug.LogWarning("[EnemySpawner] Spawn sound non assegnato.");
-        return;
-    }
+        if (spawnSound == null)
+        {
+            Debug.LogWarning("[EnemySpawner] Spawn sound non assegnato.");
+            return;
+        }
 
-    if (audioSource != null)
-    {
-        audioSource.PlayOneShot(spawnSound, volumeSpawnSound);
-    }
-    else
-    {
-        AudioSource.PlayClipAtPoint(spawnSound, transform.position, volumeSpawnSound);
-    }
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(spawnSound, volumeSpawnSound);
+        }
+        else
+        {
+            AudioSource.PlayClipAtPoint(spawnSound, transform.position, volumeSpawnSound);
+        }
 
-    // Effetto luce rossa globale quando parte la sirena
-    if (GlobalAlarmLightEffect.Instance != null)
-    {
-        GlobalAlarmLightEffect.Instance.PlayAlarm();
+        // Effetto luce rossa globale quando parte la sirena
+        if (GlobalAlarmLightEffect.Instance != null)
+        {
+            GlobalAlarmLightEffect.Instance.PlayAlarm();
+        }
     }
-}
 }
