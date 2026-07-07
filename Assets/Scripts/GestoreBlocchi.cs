@@ -27,8 +27,8 @@ public class GestoreBlocchi : MonoBehaviour
     [Header("Riferimenti Aree Principali")]
     public Transform areaPrincipaleCodice;
 
-    Transform slotAttivoComandi;
-    Transform slotAttivoCondizione;
+    [HideInInspector] public Transform slotAttivoComandi;
+    [HideInInspector] public Transform slotAttivoCondizione;
 
     [Header("Schermata Caricamento")]
     [SerializeField] private GameObject loadingPanel;

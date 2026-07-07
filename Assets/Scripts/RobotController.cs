@@ -544,8 +544,13 @@ public class RobotController : MonoBehaviour
                     raggioControllo,
                     transform.forward,
                     out hit,
+<<<<<<< HEAD
                     stepLength,
                     mask,
+=======
+                    distanzaRilevamentoMuro,
+                    layerOstacoli,
+>>>>>>> parent of ec14606 (Merge branch 'alt')
                     QueryTriggerInteraction.Ignore
                 );
 
@@ -566,8 +571,13 @@ public class RobotController : MonoBehaviour
                     raggioControllo,
                     transform.forward,
                     out hit,
+<<<<<<< HEAD
                     stepLength,
                     mask,
+=======
+                    dimensioneCella,
+                    layerOstacoli,
+>>>>>>> parent of ec14606 (Merge branch 'alt')
                     QueryTriggerInteraction.Ignore
                 );
 
@@ -686,5 +696,8 @@ public class RobotController : MonoBehaviour
         Gizmos.DrawWireSphere(shotingEnd, raggioSensoreSparo);
         Gizmos.DrawLine(sensor.position, shotingEnd);
     }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> parent of ec14606 (Merge branch 'alt')
 }
