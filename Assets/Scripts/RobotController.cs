@@ -545,8 +545,13 @@ public class RobotController : MonoBehaviour
                     transform.forward,
                     out hit,
 <<<<<<< HEAD
+<<<<<<< HEAD
                     stepLength,
                     mask,
+=======
+                    distanzaRilevamentoMuro,
+                    layerOstacoli,
+>>>>>>> parent of ec14606 (Merge branch 'alt')
 =======
                     distanzaRilevamentoMuro,
                     layerOstacoli,
@@ -572,8 +577,13 @@ public class RobotController : MonoBehaviour
                     transform.forward,
                     out hit,
 <<<<<<< HEAD
+<<<<<<< HEAD
                     stepLength,
                     mask,
+=======
+                    dimensioneCella,
+                    layerOstacoli,
+>>>>>>> parent of ec14606 (Merge branch 'alt')
 =======
                     dimensioneCella,
                     layerOstacoli,
@@ -697,7 +707,10 @@ public class RobotController : MonoBehaviour
         Gizmos.DrawLine(sensor.position, shotingEnd);
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> parent of ec14606 (Merge branch 'alt')
 =======
 >>>>>>> parent of ec14606 (Merge branch 'alt')
 }

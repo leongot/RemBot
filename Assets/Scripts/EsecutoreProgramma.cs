@@ -49,12 +49,19 @@ public class EsecutoreProgramma : MonoBehaviour
         programmaInEsecuzione = false;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         if (robot != null) robot.RipristinaPosizione();
 
     }
 
     // Perche' una corotine? Tanto gestisce l'esecuzione dell'interno programma dell'utente.
     // Non e' meglio eseguirlo all'interno di Update
+=======
+        if (robot != null)
+            robot.RipristinaPosizione();
+    }
+
+>>>>>>> parent of ec14606 (Merge branch 'alt')
 =======
         if (robot != null)
             robot.RipristinaPosizione();
