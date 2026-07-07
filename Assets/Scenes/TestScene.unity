@@ -13691,7 +13691,7 @@ GameObject:
   - component: {fileID: 598800920}
   - component: {fileID: 598800919}
   m_Layer: 5
-  m_Name: Loading Panel
+  m_Name: Loading Code Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23274,7 +23274,7 @@ AudioSource:
   m_GameObject: {fileID: 922087317}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 6b010f02968627e40abbb42388f20382, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -31430,7 +31430,7 @@ AudioSource:
   m_GameObject: {fileID: 1262871356}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 6b010f02968627e40abbb42388f20382, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
@@ -53568,6 +53568,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1260250826815688688, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 24300002, guid: 6b010f02968627e40abbb42388f20382, type: 2}
     - target: {fileID: 6232250007446067824, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: m_LocalPosition.x
       value: 84.1
