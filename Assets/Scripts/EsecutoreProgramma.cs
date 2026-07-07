@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,20 +11,33 @@ public class EsecutoreProgramma : MonoBehaviour
 
     private bool programmaInEsecuzione = false;
 
+    [SerializeField]
+    GameObject topDownCamera;
+
+    [SerializeField]
+    GameObject followCamera;
+    
     public bool ProgrammaInEsecuzione
     {
         get { return programmaInEsecuzione; }
     }
 
     private void Awake()
-    {
+    {  
         Instance = this;
+        StartNewGame();
     }
 
+    private void StartNewGame()
+    {
+        topDownCamera.SetActive(true);
+        //robot.StartNewGame(spawnPoints.position);
+    }
     public void AvviaProgramma()
     {
-        if (programmaInEsecuzione)
-            return;
+        if (programmaInEsecuzione) return;
+        
+        followCamera.SetActive(true);
 
         if (robot == null)
         {
@@ -38,7 +52,7 @@ public class EsecutoreProgramma : MonoBehaviour
         }
 
         programmaInEsecuzione = true;
-
+ 
         Debug.Log("[Esecutore] Compilazione ed esecuzione avviata...");
         StartCoroutine(EseguiInsiemeBlocchi(GestoreBlocchi.Instance.areaPrincipaleCodice));
     }
@@ -48,10 +62,23 @@ public class EsecutoreProgramma : MonoBehaviour
         StopAllCoroutines();
         programmaInEsecuzione = false;
 
-        if (robot != null)
-            robot.RipristinaPosizione();
+        if (robot != null) robot.FullReset();
+
     }
 
+    private bool ValutaCondizioneDelloSlot(Transform slotCondizione)
+    {
+        // Se lo slot non ha figli, l'utente non ha messo nessuna condizione gialla
+        if (slotCondizione.childCount == 0) return false;
+
+        InfoBlocco infoCondizione = slotCondizione.GetChild(0).GetComponent<InfoBlocco>();
+        if (infoCondizione == null) return false;
+
+        return robot.VerificaCondizione(infoCondizione.tipo);
+    }
+
+    // Perche' una corotine? Tanto gestisce l'esecuzione dell'interno programma dell'utente.
+    // Non e' meglio eseguirlo all'interno di Update
     private IEnumerator EseguiInsiemeBlocchi(Transform contenitore)
     {
         if (contenitore == null)
@@ -178,7 +205,7 @@ public class EsecutoreProgramma : MonoBehaviour
         }
     }
 
-    private bool ValutaCondizioneDelloSlot(Transform slotCondizione)
+        private bool ValutaCondizioneDelloSlot(Transform slotCondizione)
     {
         if (slotCondizione == null)
             return false;
@@ -239,3 +266,5 @@ public class EsecutoreProgramma : MonoBehaviour
         return parent == bloccoCorrente;
     }
 }
+
+
