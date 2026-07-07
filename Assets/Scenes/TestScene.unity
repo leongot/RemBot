@@ -23206,8 +23206,6 @@ MonoBehaviour:
   prefabMuro: {fileID: 4430852701626833204, guid: 86d453e15c2b90a4dbe395ee8628ff71, type: 3}
   prefabNemico: {fileID: 4430852701626833204, guid: 8cfe5287c46e1e949bffd11be01798cd, type: 3}
   areaPrincipaleCodice: {fileID: 1477361519}
-  slotAttivoComandi: {fileID: 0}
-  slotAttivoCondizione: {fileID: 0}
   loadingPanel: {fileID: 598800917}
   loadingBarFill: {fileID: 709664517}
   loadingText: {fileID: 848827875}
@@ -23250,6 +23248,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EsecutoreProgramma
   robot: {fileID: 1807964402}
+  topDownCamera: {fileID: 330585543}
+  followCamera: {fileID: 259380485}
 --- !u!114 &922087321
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -62,19 +62,8 @@ public class EsecutoreProgramma : MonoBehaviour
         StopAllCoroutines();
         programmaInEsecuzione = false;
 
-        if (robot != null) robot.FullReset();
+        if (robot != null) robot.RipristinaPosizione();
 
-    }
-
-    private bool ValutaCondizioneDelloSlot(Transform slotCondizione)
-    {
-        // Se lo slot non ha figli, l'utente non ha messo nessuna condizione gialla
-        if (slotCondizione.childCount == 0) return false;
-
-        InfoBlocco infoCondizione = slotCondizione.GetChild(0).GetComponent<InfoBlocco>();
-        if (infoCondizione == null) return false;
-
-        return robot.VerificaCondizione(infoCondizione.tipo);
     }
 
     // Perche' una corotine? Tanto gestisce l'esecuzione dell'interno programma dell'utente.
@@ -205,7 +194,7 @@ public class EsecutoreProgramma : MonoBehaviour
         }
     }
 
-        private bool ValutaCondizioneDelloSlot(Transform slotCondizione)
+    private bool ValutaCondizioneDelloSlot(Transform slotCondizione)
     {
         if (slotCondizione == null)
             return false;

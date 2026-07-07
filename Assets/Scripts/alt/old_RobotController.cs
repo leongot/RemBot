@@ -3,6 +3,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/*
+
 public class old_RobotController : MonoBehaviour
 {
     [Header("Movement")]
@@ -57,11 +59,10 @@ public class old_RobotController : MonoBehaviour
 
     const string AudioClip_RobotFootsteps = "robot_footsteps",
                  AudioClip_RobotDeath = "robot_death",
-                 AudioClip_RobotWarning = "robot_warning",
-                 AudioClip_Robot
+                 AudioClip_RobotWarning = "robot_warning";
 
 
-    /* OLD AUDIO FIELDS
+    // OLD AUDIO FIELDS
     [Header("Audio Movimento")]
     [SerializeField] private AudioClip walkSound;
     [SerializeField] private float intervalloSuonoPasso = 0.25f;
@@ -75,8 +76,7 @@ public class old_RobotController : MonoBehaviour
     [SerializeField] private AudioClip shootSound;
     [SerializeField] private AudioClip reloadSound;
     private float prossimoWarningTime = 0f;
-
-    */
+    //
 
 #if UNITY_EDITOR
     [SerializeField]
@@ -151,7 +151,7 @@ public class old_RobotController : MonoBehaviour
     }
 
 
-    /* OLD AUDIO METHODS
+    // OLD AUDIO METHODS
     private void PlaySound(AudioClip clip)
     {
         if (robotColpito)
@@ -191,7 +191,7 @@ public class old_RobotController : MonoBehaviour
         warningAudioSource.PlayOneShot(warningSound);
         prossimoWarningTime = Time.time + warningCooldown;
     }
-    */
+    //
 
     IEnumerator PlayClipSound(string clipName)
     {
@@ -362,7 +362,7 @@ public class old_RobotController : MonoBehaviour
         yield return new WaitForSeconds(reloadDelay);
     }
     
-    /*
+    //
     private Vector3 GetOrigineOcchi()
     {
         if (sensor != null)
@@ -379,7 +379,7 @@ public class old_RobotController : MonoBehaviour
             + Vector3.up * altezzaOcchi
             + direzione.normalized * offsetAvantiOcchi;
     }
-    */
+    //
 
     // --- MOVIMENTO ---
 
@@ -455,7 +455,7 @@ public class old_RobotController : MonoBehaviour
 
     private bool RilevaNemicoPerCondizione()
     {
-        /*
+        //
         Vector3 origine = GetOrigineOcchi();
 
         bool haColpito = Physics.SphereCast(
@@ -467,7 +467,7 @@ public class old_RobotController : MonoBehaviour
             mask,
             QueryTriggerInteraction.Ignore
         );
-        */
+        //
 
         bool hit = ValidateAction(out RaycastHit info, raySphereRadius = 0.4f, range);
 
@@ -634,35 +634,6 @@ public class old_RobotController : MonoBehaviour
 
         Debug.LogWarning("[Robot] Vita esaurita. Robot disattivato.");
     }
-    /*
-    private void OnDrawGizmosSelected()
-    {
-        if (!mostraDebugSensoreNemico)
-            return;
-
-        // Se arriva qui, la vita è finita.
-        currentHealth = 0;
-        robotColpito = true;
-
-        StopAllCoroutines();
-
-        if (audioSource != null)
-        {
-            audioSource.Stop();
-        }
-
-        if (animator != null)
-        {
-            animator.SetBool(PARAM_CAMMINA, false);
-            animator.SetBool("Open_Anim", false);
-
-            animator.ResetTrigger(TRIGGER_COLPITO);
-            animator.SetTrigger(TRIGGER_COLPITO);
-        }
-
-        Debug.LogWarning("[Robot] Vita esaurita. Robot disattivato.");
-    }
-    */
 
 #if DEBUG
     void OnDrawGizmosSelected()
@@ -683,8 +654,4 @@ public class old_RobotController : MonoBehaviour
     }
 #endif
 }
-
-
-
-
-
+*/
