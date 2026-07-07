@@ -52,7 +52,7 @@ public class RobotController : MonoBehaviour
 
     [Header("Game Over Caduta")]
     [SerializeField] private bool gameOverSeCade = true;
-    [SerializeField] private float quotaYGameOver = -5f;
+    [SerializeField] private float quotaYGameOver = -100f;
 
     [Header("Controllo Terreno")]
     [SerializeField] private LayerMask layerTerreno;
@@ -149,12 +149,12 @@ public class RobotController : MonoBehaviour
     private void Update()
     {
         ControllaWarningContinuo();
+        ControllaGameOverCaduta();
     }
 
     private void LateUpdate()
     {
         ControllaTerrenoSotto();
-        ControllaGameOverCaduta();
     }
 
     // --- CADUTA ---
@@ -267,20 +267,34 @@ public class RobotController : MonoBehaviour
 
     private void ControllaGameOverCaduta()
     {
-        if (!staCadendo)
+        if (!gameOverSeCade)
             return;
 
         if (gameOverCadutaMostrato)
             return;
 
-        if (transform.position.y <= quotaYGameOver)
+        if (transform.position.y > quotaYGameOver)
+            return;
+
+        gameOverCadutaMostrato = true;
+
+        Debug.LogWarning(
+            "[Robot] Sono sotto quota " + quotaYGameOver +
+            ". Posizione Y attuale: " + transform.position.y +
+            ". Provo a mostrare Game Over."
+        );
+
+        if (GameUIManager.Instance != null)
         {
-            gameOverCadutaMostrato = true;
-
-            Debug.LogWarning("[Robot] Caduto fuori dalla mappa. Game Over.");
-
-            if (GameUIManager.Instance != null)
-                GameUIManager.Instance.MostraGameOver();
+            GameUIManager.Instance.MostraGameOver();
+        }
+        else
+        {
+            Debug.LogError(
+                "[Robot] GameUIManager.Instance è NULL. " +
+                "Controlla che GameUIManager sia su un GameObject attivo nella scena, " +
+                "per esempio Gestore Gioco."
+            );
         }
     }
 
