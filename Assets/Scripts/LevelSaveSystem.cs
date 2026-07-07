@@ -3,15 +3,35 @@ using UnityEngine;
 public static class LevelSaveSystem
 {
     private const string LEVEL_UNLOCKED_KEY = "LEVEL_UNLOCKED_";
+    private const string LEVEL_COMPLETED_KEY = "LEVEL_COMPLETED_";
     private const string LEVEL_RECORD_KEY = "LEVEL_RECORD_";
+    public const int MaxLevels = 10;
+
+    public static bool IsLevelCompleted(int levelNumber)
+    {
+        return PlayerPrefs.GetInt(LEVEL_COMPLETED_KEY + levelNumber, 0) == 1;
+    }
+
+    public static void MarkLevelCompleted(int levelNumber)
+    {
+        PlayerPrefs.SetInt(LEVEL_COMPLETED_KEY + levelNumber, 1);
+
+        if (levelNumber + 1 <= MaxLevels)
+            PlayerPrefs.SetInt(LEVEL_UNLOCKED_KEY + (levelNumber + 1), 1);
+
+        PlayerPrefs.Save();
+        Debug.Log("[LevelSaveSystem] Livello completato: " + levelNumber);
+    }
 
     public static bool IsLevelUnlocked(int levelNumber)
     {
-        // Il livello 1 è sempre sbloccato
-        if (levelNumber == 1)
+        if (levelNumber <= 1)
             return true;
 
-        return PlayerPrefs.GetInt(LEVEL_UNLOCKED_KEY + levelNumber, 0) == 1;
+        if (PlayerPrefs.HasKey(LEVEL_UNLOCKED_KEY + levelNumber))
+            return PlayerPrefs.GetInt(LEVEL_UNLOCKED_KEY + levelNumber, 0) == 1;
+
+        return IsLevelCompleted(levelNumber - 1);
     }
 
     public static void UnlockLevel(int levelNumber)

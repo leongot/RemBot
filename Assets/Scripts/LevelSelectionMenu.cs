@@ -8,33 +8,38 @@ public class LevelSelectionMenu : MonoBehaviour
     [SerializeField] private Button level2Button;
     [SerializeField] private Button level3Button;
 
-    public void Initialize()
-    {
-        UpdateLevelButtons();
-    }
+    public void Initialize() => UpdateLevelButtons();
 
     public void StartLevel(int levelNumber)
     {
-        if (!LevelProgress.IsLevelUnlocked(levelNumber)) return;
+        if (!LevelSaveSystem.IsLevelUnlocked(levelNumber))
+            return;
+
         SceneManager.LoadScene(levelNumber);
     }
 
     public void MarkLevelCompleted(int levelNumber)
     {
-        LevelProgress.SetLevelCompleted(levelNumber);
+        LevelSaveSystem.MarkLevelCompleted(levelNumber);
         UpdateLevelButtons();
     }
 
     public void ResetProgress()
     {
-        LevelProgress.ResetProgress();
+        LevelSaveSystem.ResetAllProgress();
         UpdateLevelButtons();
     }
 
     public void UpdateLevelButtons()
     {
-        if (level1Button != null) level1Button.interactable = LevelProgress.IsLevelUnlocked(1);
-        if (level2Button != null) level2Button.interactable = LevelProgress.IsLevelUnlocked(2);
-        if (level3Button != null) level3Button.interactable = LevelProgress.IsLevelUnlocked(3);
+        SetButtonInteractable(level1Button, 1);
+        SetButtonInteractable(level2Button, 2);
+        SetButtonInteractable(level3Button, 3);
+    }
+
+    private void SetButtonInteractable(Button button, int levelNumber)
+    {
+        if (button != null)
+            button.interactable = LevelSaveSystem.IsLevelUnlocked(levelNumber);
     }
 }
