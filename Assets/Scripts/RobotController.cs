@@ -75,6 +75,9 @@ public class RobotController : MonoBehaviour
     [SerializeField] private AudioClip warningSound;
     [SerializeField] private float warningCooldown = 1f;
 
+    [Header("Game Over Morte")]
+    [SerializeField] private float ritardoGameOverDopoMorte = 5f;
+
     private float prossimoWarningTime = 0f;
 
     private const string PARAM_CAMMINA = "Walk_Anim";
@@ -833,10 +836,23 @@ public class RobotController : MonoBehaviour
             animator.SetTrigger(TRIGGER_COLPITO);
         }
 
-        Debug.LogWarning("[Robot] Morte robot. Motivo: " + motivo);
+            Debug.LogWarning("[Robot] Morte robot. Motivo: " + motivo);
+
+            StartCoroutine(MostraGameOverDopoRitardo());
+    }
+
+    private IEnumerator MostraGameOverDopoRitardo()
+    {
+        yield return new WaitForSeconds(ritardoGameOverDopoMorte);
 
         if (GameUIManager.Instance != null)
+        {
             GameUIManager.Instance.MostraGameOver();
+        }
+        else
+        {
+            Debug.LogError("[Robot] GameUIManager.Instance è NULL. Non posso mostrare Game Over.");
+        }
     }
 
     // --- DEBUG VISIVO ---
