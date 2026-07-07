@@ -1271,7 +1271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1004492022cfcba418fa6c6ccb8693d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelButtonUI
-  levelNumber: 1
+  levelNumber: 3
   sceneName: 
   button: {fileID: 267150179}
   buttonImage: {fileID: 267150180}
@@ -3213,7 +3213,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &828144594
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5544,7 +5544,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1004492022cfcba418fa6c6ccb8693d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelButtonUI
-  levelNumber: 1
+  levelNumber: 2
   sceneName: 
   button: {fileID: 1438226571}
   buttonImage: {fileID: 1438226572}
@@ -6900,7 +6900,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1653381153
 RectTransform:
   m_ObjectHideFlags: 0
