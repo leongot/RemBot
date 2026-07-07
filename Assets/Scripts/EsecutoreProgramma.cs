@@ -48,40 +48,10 @@ public class EsecutoreProgramma : MonoBehaviour
         StopAllCoroutines();
         programmaInEsecuzione = false;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        if (robot != null) robot.RipristinaPosizione();
-
-    }
-
-    // Perche' una corotine? Tanto gestisce l'esecuzione dell'interno programma dell'utente.
-    // Non e' meglio eseguirlo all'interno di Update
-=======
         if (robot != null)
             robot.RipristinaPosizione();
     }
 
->>>>>>> parent of ec14606 (Merge branch 'alt')
-=======
-        if (robot != null)
-            robot.RipristinaPosizione();
-    }
-
->>>>>>> parent of ec14606 (Merge branch 'alt')
-=======
-        if (robot != null)
-            robot.RipristinaPosizione();
-    }
-
->>>>>>> parent of 25d1aa5 (Merge branch 'main' of https://github.com/leongot/RemBot)
-=======
-        if (robot != null)
-            robot.RipristinaPosizione();
-    }
-
->>>>>>> parent of 25d1aa5 (Merge branch 'main' of https://github.com/leongot/RemBot)
     private IEnumerator EseguiInsiemeBlocchi(Transform contenitore)
     {
         if (contenitore == null)
