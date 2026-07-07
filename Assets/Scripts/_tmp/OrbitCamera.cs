@@ -2,6 +2,7 @@ using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 using Vector2 = UnityEngine.Vector2;
+using UnityEngine.InputSystem.Utilities;
 
 [RequireComponent(typeof(Camera))]
 public class OrbitCamera : MonoBehaviour
@@ -43,7 +44,22 @@ public class OrbitCamera : MonoBehaviour
 
         const float e = 0.001f;
         if (input.x < -e || input.x < e || input.y < e || input.y > e)
-            orbitAngles += rotationSpeed * Time.deltaTime * input;
+            orbitAngles += rotationSpeed * Time.deltaTime * input;      
+    }
+
+    void Translate()
+    {
+        Vector2 input = new Vector2(
+                Input.GetAxis("Mouse Y"),
+                Input.GetAxis("Mouse X")
+        );
+
+        const float e = 0.001f;
+        if (input.x < -e || input.x < e || input.y < e || input.y > e)
+        {
+            transform.Translate(input * Time.deltaTime);
+            focus.position = transform.position + transform.forward * GetZoomFactor();
+        }
     }
 
     Vector3 GetMouseCursorPosition() => camera.ScreenToViewportPoint(Input.mousePosition);
@@ -58,12 +74,16 @@ public class OrbitCamera : MonoBehaviour
         prevDistance = distance;
     }
 
-    void LateUpdate()
+    void Update()
     {
-        if (Input.GetMouseButton(2))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && Input.GetMouseButton(2))
+        {
+            Debug.Log(Input.GetKeyDown(KeyCode.LeftShift));
+            Translate();
+        }
+        else if (Input.GetMouseButton(2))
             Rotate();
-
-        Debug.Log(GetZoomFactor());
+            
 
         float newDistance = GetZoomFactor();
         Quaternion lookRotation = Quaternion.Euler(orbitAngles);        

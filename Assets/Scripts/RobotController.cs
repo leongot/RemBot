@@ -13,6 +13,7 @@ public class RobotController : MonoBehaviour
     public float distanzaRilevamentoMuro = 6f;
 
     [Header("Collisione Movimento")]
+
     public float raggioControllo = 0.35f;
 
     [Header("Sensore Nemico")]
@@ -589,6 +590,7 @@ public class RobotController : MonoBehaviour
             layerOstacoli,
             QueryTriggerInteraction.Ignore
         );
+       
 
         if (!haColpito)
             return false;

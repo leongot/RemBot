@@ -6431,11 +6431,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5725000371507048362, guid: b2452a5c2cd649a4db9eebcd16f7b155, type: 3}
   m_PrefabInstance: {fileID: 1649892923}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &259380485 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1306027885426001008, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
-  m_PrefabInstance: {fileID: 5287734454726191012}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &268711541 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5725000371507048362, guid: b2452a5c2cd649a4db9eebcd16f7b155, type: 3}
@@ -23890,7 +23885,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e321509709f40c41913032e80ed4ff6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EsecutoreProgramma
-  robot: {fileID: 1807964402}
+  robot: {fileID: 0}
 --- !u!114 &922087321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23904,7 +23899,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraSwitcher
   mainCamera: {fileID: 330585543}
-  playerCamera: {fileID: 259380485}
+  playerCamera: {fileID: 0}
   startMenu: {fileID: 0}
 --- !u!82 &922087322
 AudioSource:
@@ -45535,6 +45530,7 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1805264099}
   m_Mesh: {fileID: 4300000, guid: 150f1d6c324cb0741ab28ddb5fe215de, type: 3}
+<<<<<<< Updated upstream
 --- !u!114 &1807964402 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8268979018024072908, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
@@ -45601,6 +45597,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 122
   m_CollisionDetection: 2
+=======
+>>>>>>> Stashed changes
 --- !u!1 &1808124521
 GameObject:
   m_ObjectHideFlags: 0
@@ -55514,7 +55512,7 @@ PrefabInstance:
     - target: {fileID: 1335704948506813592, guid: 0ba483477f9e66546a0ce3d8ecde2a0a, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 1807964403}
+      objectReference: {fileID: 0}
     - target: {fileID: 1335704948506813592, guid: 0ba483477f9e66546a0ce3d8ecde2a0a, type: 3}
       propertyPath: spacing
       value: 9
@@ -55619,6 +55617,7 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1262871360}
   m_SourcePrefab: {fileID: 100100000, guid: 0ba483477f9e66546a0ce3d8ecde2a0a, type: 3}
+<<<<<<< Updated upstream
 --- !u!1001 &5287734454726191012
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55796,6 +55795,8 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1807964406}
   m_SourcePrefab: {fileID: 100100000, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
+=======
+>>>>>>> Stashed changes
 --- !u!1001 &7498507118559718336
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55865,7 +55866,6 @@ SceneRoots:
   - {fileID: 586949461}
   - {fileID: 1415210087}
   - {fileID: 922087319}
-  - {fileID: 5287734454726191012}
   - {fileID: 983402818}
   - {fileID: 7498507118559718336}
   - {fileID: 5022370842047890188}
