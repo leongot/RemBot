@@ -62,8 +62,8 @@ public class OrbitCamera : MonoBehaviour
     {
         if (Input.GetMouseButton(2))
             Rotate();
-
-        Debug.Log(GetZoomFactor());
+        
+        //Debug.Log(GetZoomFactor());
 
         float newDistance = GetZoomFactor();
         Quaternion lookRotation = Quaternion.Euler(orbitAngles);        
