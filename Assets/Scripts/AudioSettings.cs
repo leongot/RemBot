@@ -47,7 +47,7 @@ public class AudioSettings : MonoBehaviour
         }
     }
 
-    // New: Play sound when opening a sub-menu or going forward
+    // Play sound when opening a sub-menu or going forward
     public void PlayForwardSound()
     {
         if (forwardSfxSource != null)
@@ -57,7 +57,7 @@ public class AudioSettings : MonoBehaviour
         }
     }
 
-    // New: Play sound when closing a sub-menu or going back
+    // Play sound when closing a sub-menu or going back
     public void PlayBackwardSound()
     {
         if (backwardSfxSource != null)

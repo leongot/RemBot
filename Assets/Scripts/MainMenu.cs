@@ -35,8 +35,6 @@ public class MainMenu : MonoBehaviour
         audioSettings?.PlayBackwardSound();
     }
 
-    // Level delegations (keeps existing UI wiring simple)
-
     public void StartLevel1() => levelSelectionMenu?.StartLevel(1);
     public void StartLevel2() => levelSelectionMenu?.StartLevel(2);
     public void StartLevel3() => levelSelectionMenu?.StartLevel(3);
