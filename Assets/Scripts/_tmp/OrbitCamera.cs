@@ -58,7 +58,7 @@ public class OrbitCamera : MonoBehaviour
         prevDistance = distance;
     }
 
-    void Update()
+    void LateUpdate()
     {
         if (Input.GetMouseButton(2))
             Rotate();

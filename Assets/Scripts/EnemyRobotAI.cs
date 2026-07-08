@@ -242,7 +242,7 @@ public class EnemyRobotAI : MonoBehaviour
         Vector3 origin = GetVisionOrigin();
         Vector3 target = player.position + Vector3.up * aimHeight;
 
-        float distanza = Vector3.Distance(origin, target);
+        float distanza = Vector3.Distance(origin, player.position);
         return distanza <= visionRange;
     }
 
