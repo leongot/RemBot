@@ -3459,11 +3459,7 @@ Transform:
   m_GameObject: {fileID: 520224340}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-<<<<<<< Updated upstream
-  m_LocalPosition: {x: -231.5, y: 0, z: -179.93}
-=======
   m_LocalPosition: {x: -213.236, y: 0, z: -71.962}
->>>>>>> Stashed changes
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8519,16 +8515,6 @@ MonoBehaviour:
   scoreMassimo: 1000
   livelloCorrente: 1
   numeroTotaleLivelli: 3
-  uiAudioSource: {fileID: 0}
-  suonoComando: {fileID: 0}
-  suonoControllo: {fileID: 0}
-  suonoCondizione: {fileID: 0}
-  suonoStart: {fileID: 0}
-  suonoReset: {fileID: 0}
-  suonoSlotCondizione: {fileID: 0}
-  suonoSlotComando: {fileID: 0}
-  volumePulsanti: 1
-  ritardoDopoClickStart: 0.5
 --- !u!4 &922087319
 Transform:
   m_ObjectHideFlags: 0
@@ -8675,10 +8661,6 @@ MonoBehaviour:
   levelCompleteSound: {fileID: 0}
   volumeAudioFinePartita: 1
   ritardoSchermataVittoria: 1
-  musicaLivelloSource: {fileID: 0}
-  musicaLivello: {fileID: 0}
-  volumeMusicaLivello: 0.4
-  fermaMusicaAFinePartita: 1
 --- !u!1 &935327831
 GameObject:
   m_ObjectHideFlags: 0
@@ -16469,7 +16451,7 @@ Transform:
   m_GameObject: {fileID: 1917105481}
   serializedVersion: 2
   m_LocalRotation: {x: 0.23331967, y: -0.008751463, z: 0.0020999527, w: 0.97235847}
-  m_LocalPosition: {x: 0, y: 101.19999, z: 0}
+  m_LocalPosition: {x: -16.646513, y: 101.19999, z: -288.85413}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -18682,11 +18664,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8190072604060763577, guid: 0ba483477f9e66546a0ce3d8ecde2a0a, type: 3}
       propertyPath: m_LocalPosition.x
-<<<<<<< Updated upstream
-      value: -28.4
-=======
       value: 34.65
->>>>>>> Stashed changes
       objectReference: {fileID: 0}
     - target: {fileID: 8190072604060763577, guid: 0ba483477f9e66546a0ce3d8ecde2a0a, type: 3}
       propertyPath: m_LocalPosition.y
