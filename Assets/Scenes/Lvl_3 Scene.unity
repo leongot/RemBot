@@ -12782,7 +12782,7 @@ MonoBehaviour:
   m_text: GAME OVER
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ffa046993785d2949b517e0e9663050e, type: 2}
-  m_sharedMaterial: {fileID: -6663708096564256855, guid: ffa046993785d2949b517e0e9663050e, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 57f94b29fed1a5c44a1fa64d5baf4b11, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -13844,7 +13844,7 @@ MonoBehaviour:
   m_text: LIVELLO COMPLETATO
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ffa046993785d2949b517e0e9663050e, type: 2}
-  m_sharedMaterial: {fileID: -6663708096564256855, guid: ffa046993785d2949b517e0e9663050e, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 57f94b29fed1a5c44a1fa64d5baf4b11, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -18181,7 +18181,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OrbitCamera
   focus: {fileID: 1999078534}
   camera: {fileID: 0}
-  distance: 70
   rotationSpeed: 720
 --- !u!1 &1917565260
 GameObject:
@@ -19453,6 +19452,7 @@ MonoBehaviour:
   mainCamera: {fileID: 1917105481}
   playerCamera: {fileID: 259380485}
   startMenu: {fileID: 0}
+  gridBorderGenerator: {fileID: 1917565262}
 --- !u!4 &2086898549
 Transform:
   m_ObjectHideFlags: 0
