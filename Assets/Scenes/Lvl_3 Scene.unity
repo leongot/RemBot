@@ -628,7 +628,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922087318}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GestoreBlocchi, Assembly-CSharp
         m_MethodName: BottoneSinistra
         m_Mode: 1
@@ -1566,7 +1566,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922087318}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GestoreBlocchi, Assembly-CSharp
         m_MethodName: BottoneAvanti
         m_Mode: 1
@@ -1817,7 +1817,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922087318}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GestoreBlocchi, Assembly-CSharp
         m_MethodName: BottoneDestra
         m_Mode: 1
@@ -3282,7 +3282,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922087318}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GestoreBlocchi, Assembly-CSharp
         m_MethodName: TastoStart
         m_Mode: 1
@@ -5527,7 +5527,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922087318}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GestoreBlocchi, Assembly-CSharp
         m_MethodName: BottoneIf
         m_Mode: 1
@@ -5660,7 +5660,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922087318}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GestoreBlocchi, Assembly-CSharp
         m_MethodName: BottoneMuro
         m_Mode: 1
@@ -6369,7 +6369,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922087318}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GestoreBlocchi, Assembly-CSharp
         m_MethodName: BottoneSpara
         m_Mode: 1
@@ -8456,211 +8456,6 @@ Transform:
   - {fileID: 2034109903}
   m_Father: {fileID: 985668969}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &922087317
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 922087319}
-  - component: {fileID: 922087318}
-  - component: {fileID: 922087320}
-  - component: {fileID: 922087323}
-  - component: {fileID: 922087322}
-  m_Layer: 0
-  m_Name: _GestoreGioco
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &922087318
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 922087317}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 860662202a3c21549b18e8ede6f8abd0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GestoreBlocchi
-  prefabAvanti: {fileID: 4430852701626833204, guid: 2a3da40765c21184d804389e556b75a1, type: 3}
-  prefabSinistra: {fileID: 4430852701626833204, guid: a21a2eb7c0df9334fb56cfa9f6d1fcc9, type: 3}
-  prefabDestra: {fileID: 4430852701626833204, guid: dc9ae054e943c3b419c9d9854ca39b85, type: 3}
-  prefabIndietro: {fileID: 4430852701626833204, guid: 0bfb68a73939ca441838bbb83ed94eb4, type: 3}
-  prefabSpara: {fileID: 4430852701626833204, guid: e77d6c940632f174183bbf4da2f6bd90, type: 3}
-  prefabWhile: {fileID: 2412933917884733723, guid: 8badc7485e90e4a499996cac0bb1620d, type: 3}
-  prefabIf: {fileID: 2412933917884733723, guid: bb1d21b2899beb148af02b40f7ecfd4f, type: 3}
-  prefabLibero: {fileID: 4430852701626833204, guid: c21826590c1c7d74896dd1b36b64dbd7, type: 3}
-  prefabMuro: {fileID: 4430852701626833204, guid: 86d453e15c2b90a4dbe395ee8628ff71, type: 3}
-  prefabNemico: {fileID: 4430852701626833204, guid: 8cfe5287c46e1e949bffd11be01798cd, type: 3}
-  areaPrincipaleCodice: {fileID: 1477361519}
-  slotAttivoComandi: {fileID: 0}
-  slotAttivoCondizione: {fileID: 0}
-  loadingPanel: {fileID: 598800917}
-  loadingBarFill: {fileID: 709664517}
-  loadingText: {fileID: 848827875}
-  durataCaricamento: 4
-  loadingAudioSource: {fileID: 922087322}
-  loadingSound: {fileID: 8300000, guid: fcfdf58d0edd1ed41b043d6e475c55df, type: 3}
-  loadingVolume: 1
-  cameraSwitcher: {fileID: 2086898548}
-  attesaDopoSwitchCamera: 1.5
-  recordScoreText: {fileID: 2095972747}
-  currentScoreText: {fileID: 660563670}
-  scoreMassimo: 1000
-  livelloCorrente: 1
-  numeroTotaleLivelli: 3
---- !u!4 &922087319
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 922087317}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1631.2852, y: 670.43384, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &922087320
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 922087317}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e321509709f40c41913032e80ed4ff6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EsecutoreProgramma
-  robot: {fileID: 1807964402}
---- !u!82 &922087322
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 922087317}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: 6b010f02968627e40abbb42388f20382, type: 2}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &922087323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 922087317}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f751583c76f7fc4fafd127a6d841b59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameUIManager
-  gameOverPanel: {fileID: 1070552846}
-  levelCompletePanel: {fileID: 1398898399}
-  nomeScenaMenu: MainMenu
-  nomeScenaProssimoLivello: 
-  uiAudioSource: {fileID: 0}
-  gameOverSound: {fileID: 0}
-  levelCompleteSound: {fileID: 0}
-  volumeAudioFinePartita: 1
-  ritardoSchermataVittoria: 1
 --- !u!1 &935327831
 GameObject:
   m_ObjectHideFlags: 0
@@ -9326,7 +9121,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922087318}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GestoreBlocchi, Assembly-CSharp
         m_MethodName: TastoResetProgramma
         m_Mode: 1
@@ -9948,7 +9743,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922087318}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GestoreBlocchi, Assembly-CSharp
         m_MethodName: BottoneIndietro
         m_Mode: 1
@@ -10714,7 +10509,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922087323}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameUIManager, Assembly-CSharp
         m_MethodName: TornaAlMenu
         m_Mode: 1
@@ -11306,7 +11101,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922087323}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameUIManager, Assembly-CSharp
         m_MethodName: EsciDalGioco
         m_Mode: 1
@@ -12500,7 +12295,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922087323}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameUIManager, Assembly-CSharp
         m_MethodName: RiprovaLivello
         m_Mode: 1
@@ -13067,7 +12862,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922087323}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameUIManager, Assembly-CSharp
         m_MethodName: EsciDalGioco
         m_Mode: 1
@@ -13337,7 +13132,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922087318}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GestoreBlocchi, Assembly-CSharp
         m_MethodName: BottoneLibero
         m_Mode: 1
@@ -15424,7 +15219,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922087318}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GestoreBlocchi, Assembly-CSharp
         m_MethodName: BottoneNemico
         m_Mode: 1
@@ -15550,17 +15345,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1794107312}
   m_CullTransparentMesh: 1
---- !u!114 &1807964402 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8268979018024072908, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
-  m_PrefabInstance: {fileID: 5287734454726191012}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1066791560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afddf2a178ca8f14f9c5257f9b93b8c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RobotController
 --- !u!4 &1807964403 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6232250007446067824, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
@@ -15853,7 +15637,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922087318}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GestoreBlocchi, Assembly-CSharp
         m_MethodName: BottoneWhile
         m_Mode: 1
@@ -17404,7 +17188,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922087318}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GestoreBlocchi, Assembly-CSharp
         m_MethodName: TastoResetScena
         m_Mode: 1
@@ -17737,7 +17521,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922087323}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameUIManager, Assembly-CSharp
         m_MethodName: RiprovaLivello
         m_Mode: 1
@@ -18277,7 +18061,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 922087323}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameUIManager, Assembly-CSharp
         m_MethodName: TornaAlMenu
         m_Mode: 1
@@ -18582,6 +18366,103 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2144820741}
   m_CullTransparentMesh: 1
+--- !u!1001 &4354517044786769242
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2404884298444164496, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: robot
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4525748599800728712, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: m_Name
+      value: _GestoreGioco
+      objectReference: {fileID: 0}
+    - target: {fileID: 5740270619807904229, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1631.2852
+      objectReference: {fileID: 0}
+    - target: {fileID: 5740270619807904229, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 670.43384
+      objectReference: {fileID: 0}
+    - target: {fileID: 5740270619807904229, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5740270619807904229, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5740270619807904229, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5740270619807904229, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5740270619807904229, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5740270619807904229, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5740270619807904229, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5740270619807904229, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7153388540262878294, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: loadingText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7153388540262878294, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: loadingPanel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7153388540262878294, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: cameraSwitcher
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7153388540262878294, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: loadingBarFill
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7153388540262878294, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: recordScoreText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7153388540262878294, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: currentScoreText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7153388540262878294, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: areaPrincipaleCodice
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8031888804569055587, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: gameOverPanel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8031888804569055587, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: levelCompletePanel
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
 --- !u!1001 &5022370842047890188
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19011,8 +18892,8 @@ SceneRoots:
   - {fileID: 1917105485}
   - {fileID: 637470947}
   - {fileID: 586949461}
+  - {fileID: 4354517044786769242}
   - {fileID: 1415210087}
-  - {fileID: 922087319}
   - {fileID: 5287734454726191012}
   - {fileID: 7498507118559718336}
   - {fileID: 5022370842047890188}
