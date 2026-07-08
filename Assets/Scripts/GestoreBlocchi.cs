@@ -54,6 +54,22 @@ public class GestoreBlocchi : MonoBehaviour
     [SerializeField] private int livelloCorrente = 1;
     [SerializeField] private int numeroTotaleLivelli = 3;
 
+    [Header("Audio Pulsanti")]
+    [SerializeField] private AudioSource uiAudioSource;
+
+    [SerializeField] private AudioClip suonoComando;
+    [SerializeField] private AudioClip suonoControllo;
+    [SerializeField] private AudioClip suonoCondizione;
+    [SerializeField] private AudioClip suonoStart;
+    [SerializeField] private AudioClip suonoReset;
+    [SerializeField] private AudioClip suonoSlotCondizione;
+    [SerializeField] private AudioClip suonoSlotComando;
+
+    [SerializeField] private float volumePulsanti = 1f;
+
+    [Header("Ritardo Start")]
+    [SerializeField] private float ritardoDopoClickStart = 0.5f;
+
     private int numeroIstruzioniInserite = 0;
     private int scoreAttuale = 0;
     private int recordScore = 0;
@@ -94,6 +110,9 @@ public class GestoreBlocchi : MonoBehaviour
         if (loadingText != null)
             loadingText.text = "0%";
 
+        if (uiAudioSource == null)
+            uiAudioSource = GetComponent<AudioSource>();
+
         AggiornaScoreUI();
     }
 
@@ -104,6 +123,8 @@ public class GestoreBlocchi : MonoBehaviour
             Debug.Log("[GestoreBlocchi] Programma bloccato: non puoi più selezionare slot.");
             return;
         }
+
+        PlayButtonSound(suonoSlotComando);
 
         slotAttivoComandi = nuovoSlot;
         Debug.Log("[GestoreBlocchi] Slot comandi attivo: " + nuovoSlot.name);
@@ -116,6 +137,8 @@ public class GestoreBlocchi : MonoBehaviour
             Debug.Log("[GestoreBlocchi] Programma bloccato: non puoi più cambiare condizioni.");
             return;
         }
+
+        PlayButtonSound(suonoSlotCondizione);
 
         slotAttivoCondizione = nuovoSlot;
         Debug.Log("[GestoreBlocchi] Slot condizione attivo: " + nuovoSlot.name);
@@ -192,8 +215,21 @@ public class GestoreBlocchi : MonoBehaviour
         AggiornaScoreUI();
     }
 
+    private void PlayButtonSound(AudioClip clip)
+    {
+        if (uiAudioSource == null)
+            return;
+
+        if (clip == null)
+            return;
+
+        uiAudioSource.PlayOneShot(clip, volumePulsanti);
+    }
+
     public void TastoStart()
     {
+        PlayButtonSound(suonoStart);
+
         if (programmaBloccato || caricamentoInCorso)
         {
             Debug.Log("[GestoreBlocchi] START già premuto.");
@@ -209,6 +245,8 @@ public class GestoreBlocchi : MonoBehaviour
 
     public void TastoResetProgramma()
     {
+        PlayButtonSound(suonoReset);
+
         if (programmaBloccato)
         {
             Debug.Log("[GestoreBlocchi] Non puoi resettare solo il programma dopo START. Usa Reset Level.");
@@ -238,9 +276,7 @@ public class GestoreBlocchi : MonoBehaviour
 
     public void TastoResetScena()
     {
-        // Reset level: ricarica tutta la scena.
-        // scoreAttuale torna a 0 perché Awake() lo reimposta.
-        // recordScore resta salvato in PlayerPrefs.
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -254,6 +290,8 @@ public class GestoreBlocchi : MonoBehaviour
 
         if (PannelloCondizioni.Instance != null)
             PannelloCondizioni.Instance.Nascondi();
+            
+        yield return new WaitForSecondsRealtime(ritardoDopoClickStart);
 
         if (loadingPanel != null)
             loadingPanel.SetActive(true);
@@ -414,15 +452,63 @@ public class GestoreBlocchi : MonoBehaviour
         );
     }
 
-    public void BottoneAvanti()   => InstanziaComando(prefabAvanti);
-    public void BottoneSinistra() => InstanziaComando(prefabSinistra);
-    public void BottoneDestra()   => InstanziaComando(prefabDestra);
-    public void BottoneIndietro() => InstanziaComando(prefabIndietro);
-    public void BottoneSpara()    => InstanziaComando(prefabSpara);
-    public void BottoneWhile()    => InstanziaComando(prefabWhile);
-    public void BottoneIf()       => InstanziaComando(prefabIf);
+    public void BottoneAvanti()
+    {
+        PlayButtonSound(suonoComando);
+        InstanziaComando(prefabAvanti);
+    }
 
-    public void BottoneLibero()  => InstanziaCondizione(prefabLibero);
-    public void BottoneMuro()    => InstanziaCondizione(prefabMuro);
-    public void BottoneNemico()  => InstanziaCondizione(prefabNemico);
+    public void BottoneSinistra()
+    {
+        PlayButtonSound(suonoComando);
+        InstanziaComando(prefabSinistra);
+    }
+
+    public void BottoneDestra()
+    {
+        PlayButtonSound(suonoComando);
+        InstanziaComando(prefabDestra);
+    }
+
+    public void BottoneIndietro()
+    {
+        PlayButtonSound(suonoComando);
+        InstanziaComando(prefabIndietro);
+    }
+
+    public void BottoneSpara()
+    {
+        PlayButtonSound(suonoComando);
+        InstanziaComando(prefabSpara);
+    }
+
+    public void BottoneWhile()
+    {
+        PlayButtonSound(suonoControllo);
+        InstanziaComando(prefabWhile);
+    }
+
+    public void BottoneIf()
+    {
+        PlayButtonSound(suonoControllo);
+        InstanziaComando(prefabIf);
+    }
+
+    public void BottoneLibero()
+    {
+        PlayButtonSound(suonoCondizione);
+        InstanziaCondizione(prefabLibero);
+    }
+
+    public void BottoneMuro()
+    {
+        PlayButtonSound(suonoCondizione);
+        InstanziaCondizione(prefabMuro);
+    }
+
+    public void BottoneNemico()
+    {
+        PlayButtonSound(suonoCondizione);
+        InstanziaCondizione(prefabNemico);
+    }
 }

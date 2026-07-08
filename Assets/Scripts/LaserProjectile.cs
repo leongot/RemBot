@@ -14,6 +14,12 @@ public class LaserProjectile : MonoBehaviour
     [Header("Damage")]
     [SerializeField] private int damage = 10;
 
+    [Header("Audio Impatto")]
+    [SerializeField] private AudioClip impactSound;
+    [SerializeField] private float impactVolume = 1f;
+
+private bool haGiaColpito = false;
+
     private void Awake()
     {
         SetupVisual();
@@ -83,11 +89,29 @@ public class LaserProjectile : MonoBehaviour
 
         if (robot != null)
         {
+            RiproduciSuonoImpatto();
             robot.ColpitoDaLaser(damage);
             Destroy(gameObject);
             return;
         }
 
         Destroy(gameObject);
+    }
+
+    private void RiproduciSuonoImpatto()
+    {
+        if (haGiaColpito)
+            return;
+
+        haGiaColpito = true;
+
+        if (impactSound != null)
+        {
+            AudioSource.PlayClipAtPoint(
+                impactSound,
+                transform.position,
+                impactVolume
+            );
+        }
     }
 }   

@@ -7,6 +7,12 @@ public class PlayerProjectile : MonoBehaviour
     [SerializeField] private float lifeTime = 3f;
     [SerializeField] private int damage = 10;
 
+    [Header("Audio Impatto")]
+    [SerializeField] private AudioClip impactSound;
+    [SerializeField] private float impactVolume = 1f;
+
+private bool haGiaColpito = false;
+
     private void Start()
     {
         Destroy(gameObject, lifeTime);
@@ -31,6 +37,8 @@ private void OnTriggerEnter(Collider other)
 
     if (isNemico)
     {
+        RiproduciSuonoImpatto();
+        
         EnemyRobotAI enemy = other.GetComponentInParent<EnemyRobotAI>();
 
         if (enemy != null)
@@ -46,7 +54,24 @@ private void OnTriggerEnter(Collider other)
 }
 
     private void Awake()
+    {
+        Debug.Log("[PlayerProjectile] Creato in scena: " + gameObject.name);
+    }
+
+private void RiproduciSuonoImpatto()
 {
-    Debug.Log("[PlayerProjectile] Creato in scena: " + gameObject.name);
+    if (haGiaColpito)
+        return;
+
+    haGiaColpito = true;
+
+    if (impactSound != null)
+    {
+        AudioSource.PlayClipAtPoint(
+            impactSound,
+            transform.position,
+            impactVolume
+        );
+    }
 }
 }

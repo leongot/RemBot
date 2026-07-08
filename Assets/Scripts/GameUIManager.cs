@@ -23,6 +23,13 @@ public class GameUIManager : MonoBehaviour
     [Header("Ritardi UI")]
     [SerializeField] private float ritardoSchermataVittoria = 1f;
 
+    [Header("Musica Livello")]
+    [SerializeField] private AudioSource musicaLivelloSource;
+    [SerializeField] private AudioClip musicaLivello;
+    [SerializeField] private float volumeMusicaLivello = 0.4f;
+    [SerializeField] private bool fermaMusicaAFinePartita = true;
+
+
     private bool partitaFinita = false;
 
     public bool PartitaFinita
@@ -35,6 +42,8 @@ public class GameUIManager : MonoBehaviour
         Instance = this;
 
         Time.timeScale = 1f;
+
+        AvviaMusicaLivello();
 
         if (uiAudioSource == null)
             uiAudioSource = GetComponent<AudioSource>();
@@ -66,6 +75,8 @@ public class GameUIManager : MonoBehaviour
 
         PlayAudioFinePartita(gameOverSound);
 
+        FermaMusicaLivello();
+
         if (gameOverPanel != null)
             gameOverPanel.SetActive(true);
         else
@@ -85,7 +96,6 @@ public class GameUIManager : MonoBehaviour
 
         PlayAudioFinePartita(levelCompleteSound);
 
-    
         StartCoroutine(MostraLevelCompleteDopoRitardo());
 
     }
@@ -99,6 +109,34 @@ public class GameUIManager : MonoBehaviour
 
             uiAudioSource.PlayOneShot(clip, volumeAudioFinePartita);
     }
+
+            private void AvviaMusicaLivello()
+        {
+            if (musicaLivelloSource == null)
+                return;
+
+            if (musicaLivello == null)
+                return;
+
+            musicaLivelloSource.clip = musicaLivello;
+            musicaLivelloSource.volume = volumeMusicaLivello;
+            musicaLivelloSource.loop = true;
+            musicaLivelloSource.playOnAwake = false;
+            musicaLivelloSource.spatialBlend = 0f;
+
+            musicaLivelloSource.Play();
+        }
+
+        private void FermaMusicaLivello()
+        {
+            if (!fermaMusicaAFinePartita)
+                return;
+
+            if (musicaLivelloSource == null)
+                return;
+
+            musicaLivelloSource.Stop();
+        }
 
     private IEnumerator MostraLevelCompleteDopoRitardo()
     {
@@ -115,6 +153,8 @@ public class GameUIManager : MonoBehaviour
         }
 
         Time.timeScale = 0f;
+
+        FermaMusicaLivello();
     }
 
     public void RiprovaLivello()

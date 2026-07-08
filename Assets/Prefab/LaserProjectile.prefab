@@ -194,6 +194,8 @@ MonoBehaviour:
   laserLength: 2
   laserRadius: 0.2
   damage: 10
+  impactSound: {fileID: 8300000, guid: 4fb135d3c45ee7343ba34122f8adc35f, type: 3}
+  impactVolume: 1
 --- !u!136 &4773159796826580477
 CapsuleCollider:
   m_ObjectHideFlags: 0
