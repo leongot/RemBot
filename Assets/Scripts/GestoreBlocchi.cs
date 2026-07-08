@@ -231,6 +231,8 @@ public class GestoreBlocchi : MonoBehaviour
 
         AggiornaScoreUI();
 
+        cameraSwitcher.Reset();
+
         Debug.Log("[GestoreBlocchi] Area codice resettata.");
     }
 
@@ -297,7 +299,7 @@ public class GestoreBlocchi : MonoBehaviour
 
         if (cameraSwitcher != null)
         {
-            cameraSwitcher.StartGame();
+            cameraSwitcher.NewGameStart();
         }
         else
         {
@@ -352,17 +354,17 @@ public class GestoreBlocchi : MonoBehaviour
     }
 
     public void ProgrammaTerminato()
-{
-    scoreAttuale = CalcolaScore();
+    {
+        scoreAttuale = CalcolaScore();
 
-    AggiornaScoreUI();
+        AggiornaScoreUI();
 
-    Debug.Log(
-        "[GestoreBlocchi] Programma terminato. " +
-        "Score calcolato: " + scoreAttuale +
-        " | Il livello NON è ancora completato finché non raggiungi il goal."
-    );
-}
+        Debug.Log(
+            "[GestoreBlocchi] Programma terminato. " +
+            "Score calcolato: " + scoreAttuale +
+            " | Il livello NON è ancora completato finché non raggiungi il goal."
+        );
+    }
 
     private void AggiornaScoreUI()
     {

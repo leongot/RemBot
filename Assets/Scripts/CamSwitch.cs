@@ -6,19 +6,26 @@ public class CameraSwitcher : MonoBehaviour
     [SerializeField] private GameObject playerCamera;
     [SerializeField] private GameObject startMenu;
 
-    private void Start()
+
+    void Start()
     {
         mainCamera.SetActive(true);
         playerCamera.SetActive(false);
+    }
+
+    public void NewGameStart()
+    {
+        mainCamera.SetActive(false);
+        playerCamera.SetActive(true);
 
         if (startMenu != null)
             startMenu.SetActive(true);
     }
 
-    public void StartGame()
+    public void Reset()
     {
-        mainCamera.SetActive(false);
-        playerCamera.SetActive(true);
+        mainCamera.SetActive(true);
+        playerCamera.SetActive(false);
 
         if (startMenu != null)
             startMenu.SetActive(false);

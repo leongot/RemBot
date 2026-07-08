@@ -31,7 +31,7 @@ public class OrbitCamera : MonoBehaviour
         //Debug.Log(input);
         value -= input * scale;
 
-        return Mathf.Clamp(value, 20f, 100f);
+        return Mathf.Clamp(value, 20f, 150f);
     }
 
     void Rotate()
@@ -58,7 +58,7 @@ public class OrbitCamera : MonoBehaviour
         prevDistance = distance;
     }
 
-    void LateUpdate()
+    void Update()
     {
         if (Input.GetMouseButton(2))
             Rotate();
