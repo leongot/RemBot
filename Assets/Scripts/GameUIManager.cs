@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,6 +14,15 @@ public class GameUIManager : MonoBehaviour
     [SerializeField] private string nomeScenaMenu = "MainMenu";
     [SerializeField] private string nomeScenaProssimoLivello = "";
 
+    [Header("Audio Fine Partita")]
+    [SerializeField] private AudioSource uiAudioSource;
+    [SerializeField] private AudioClip gameOverSound;
+    [SerializeField] private AudioClip levelCompleteSound;
+    [SerializeField] private float volumeAudioFinePartita = 1f;
+
+    [Header("Ritardi UI")]
+    [SerializeField] private float ritardoSchermataVittoria = 1f;
+
     private bool partitaFinita = false;
 
     public bool PartitaFinita
@@ -24,11 +34,15 @@ public class GameUIManager : MonoBehaviour
     {
         Instance = this;
 
-        // Importantissimo: quando carichi o ricarichi una scena,
-        // il tempo deve tornare normale.
         Time.timeScale = 1f;
 
-        Debug.Log("[GameUIManager] Awake eseguito su: " + gameObject.name);
+        if (uiAudioSource == null)
+            uiAudioSource = GetComponent<AudioSource>();
+
+        if (uiAudioSource == null)
+            uiAudioSource = gameObject.AddComponent<AudioSource>();
+
+        uiAudioSource.playOnAwake = false;
 
         if (gameOverPanel != null)
             gameOverPanel.SetActive(false);
@@ -50,12 +64,13 @@ public class GameUIManager : MonoBehaviour
 
         Debug.Log("[GameUIManager] Mostro Game Over e blocco il gioco.");
 
+        PlayAudioFinePartita(gameOverSound);
+
         if (gameOverPanel != null)
             gameOverPanel.SetActive(true);
         else
             Debug.LogError("[GameUIManager] Game Over Panel non assegnato.");
 
-        // Blocca il gioco sotto al pannello.
         Time.timeScale = 0f;
     }
 
@@ -66,24 +81,45 @@ public class GameUIManager : MonoBehaviour
 
         partitaFinita = true;
 
-        Debug.Log("[GameUIManager] Mostro Level Complete e blocco il gioco.");
+        Debug.Log("[GameUIManager] Vittoria raggiunta. Avvio suono e mostro pannello tra " + ritardoSchermataVittoria + " secondo/i.");
+
+        PlayAudioFinePartita(levelCompleteSound);
+
+    
+        StartCoroutine(MostraLevelCompleteDopoRitardo());
+
+    }
+        private void PlayAudioFinePartita(AudioClip clip)
+        {
+            if (uiAudioSource == null)
+                return;
+
+            if (clip == null)
+                return;
+
+            uiAudioSource.PlayOneShot(clip, volumeAudioFinePartita);
+    }
+
+    private IEnumerator MostraLevelCompleteDopoRitardo()
+    {
+        yield return new WaitForSecondsRealtime(ritardoSchermataVittoria);
 
         if (levelCompletePanel != null)
+        {
             levelCompletePanel.SetActive(true);
+            Debug.Log("[GameUIManager] Level Complete Panel mostrato dopo il ritardo.");
+        }
         else
-            Debug.LogError("[GameUIManager] Level Complete Panel non assegnato.");
+        {
+            Debug.LogError("[GameUIManager] Impossibile mostrare Level Complete: panel non assegnato.");
+        }
 
-        // Blocca il gioco sotto al pannello.
         Time.timeScale = 0f;
     }
 
     public void RiprovaLivello()
     {
-        Debug.Log("[GameUIManager] Ricarico il livello corrente.");
-
-        // Prima di cambiare scena, riattiva il tempo.
         Time.timeScale = 1f;
-
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -95,11 +131,7 @@ public class GameUIManager : MonoBehaviour
             return;
         }
 
-        Debug.Log("[GameUIManager] Torno al menu: " + nomeScenaMenu);
-
-        // Prima di cambiare scena, riattiva il tempo.
         Time.timeScale = 1f;
-
         SceneManager.LoadScene(nomeScenaMenu);
     }
 
@@ -111,18 +143,12 @@ public class GameUIManager : MonoBehaviour
             return;
         }
 
-        Debug.Log("[GameUIManager] Carico prossimo livello: " + nomeScenaProssimoLivello);
-
-        // Prima di cambiare scena, riattiva il tempo.
         Time.timeScale = 1f;
-
         SceneManager.LoadScene(nomeScenaProssimoLivello);
     }
 
     public void EsciDalGioco()
     {
-        Debug.Log("[GameUIManager] Esco dal gioco.");
-
         Time.timeScale = 1f;
 
         Application.Quit();
