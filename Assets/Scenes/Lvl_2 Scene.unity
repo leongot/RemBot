@@ -6605,6 +6605,11 @@ MonoBehaviour:
   levelCompletePanel: {fileID: 1398898399}
   nomeScenaMenu: MainMenu
   nomeScenaProssimoLivello: 
+  uiAudioSource: {fileID: 0}
+  gameOverSound: {fileID: 0}
+  levelCompleteSound: {fileID: 0}
+  volumeAudioFinePartita: 1
+  ritardoSchermataVittoria: 1
 --- !u!1 &935327831
 GameObject:
   m_ObjectHideFlags: 0
@@ -7455,7 +7460,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.010253906, y: 0.0044555664}
+  m_AnchoredPosition: {x: 0.010253906, y: 0.0043945312}
   m_SizeDelta: {x: -0.00012207, y: -0.010986}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1070552848
@@ -12811,7 +12816,7 @@ Transform:
   m_GameObject: {fileID: 1917565260}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.3, y: -0.6, z: -3.21}
+  m_LocalPosition: {x: -2.1999998, y: -0.6, z: -15.459999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13113,7 +13118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ScrollRect
   m_Content: {fileID: 1477361519}
   m_Horizontal: 0
-  m_Vertical: 1
+  m_Vertical: 0
   m_MovementType: 1
   m_Elasticity: 0.1
   m_Inertia: 1

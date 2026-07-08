@@ -24,7 +24,7 @@ public class OrbitCamera : MonoBehaviour
 
     float GetZoomFactor()
     {
-        const float scale = 4f;
+        const float scale = 6.0f;
 
         float value = prevDistance;
         float input = Input.GetAxis("Mouse ScrollWheel");
