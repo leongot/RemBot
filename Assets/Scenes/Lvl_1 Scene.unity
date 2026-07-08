@@ -11260,6 +11260,7 @@ MonoBehaviour:
   mainCamera: {fileID: 1201513532}
   playerCamera: {fileID: 259380485}
   startMenu: {fileID: 0}
+  gridBorderGenerator: {fileID: 1917565260}
 --- !u!1001 &1637456998
 PrefabInstance:
   m_ObjectHideFlags: 0
