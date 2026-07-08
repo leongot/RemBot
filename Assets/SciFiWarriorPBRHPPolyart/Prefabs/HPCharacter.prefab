@@ -2270,7 +2270,7 @@ MonoBehaviour:
   moveSpeed: 8
   rotationSpeed: 8
   reachDistance: 0.5
-  visionRange: 45
+  visionRange: 60
   visionAngle: 90
   tempoPrimaDiDimenticarePlayer: 2
   fireRate: 0.7
