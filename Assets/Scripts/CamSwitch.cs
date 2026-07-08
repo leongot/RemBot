@@ -6,6 +6,8 @@ public class CameraSwitcher : MonoBehaviour
     [SerializeField] private GameObject playerCamera;
     [SerializeField] private GameObject startMenu;
 
+    [SerializeField]
+    Transform gridBorderGenerator;
 
     void Start()
     {
@@ -20,6 +22,10 @@ public class CameraSwitcher : MonoBehaviour
 
         if (startMenu != null)
             startMenu.SetActive(true);
+
+        for (int i = 0; i < gridBorderGenerator.childCount; i++)
+            gridBorderGenerator.transform.GetChild(i).GetComponent<Renderer>().enabled = false;
+        
     }
 
     public void Reset()
@@ -29,5 +35,8 @@ public class CameraSwitcher : MonoBehaviour
 
         if (startMenu != null)
             startMenu.SetActive(false);
+
+        for (int i = 0; i < gridBorderGenerator.childCount; i++)
+            gridBorderGenerator.transform.GetChild(i).GetComponent<Renderer>().enabled = true;
     }
 }
