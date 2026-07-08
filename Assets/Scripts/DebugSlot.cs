@@ -1,10 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-/// <summary>
-/// Script TEMPORANEO di debug. Aggiungilo alla casella gialla
-/// per capire se i click arrivano. Rimuovilo dopo aver fixato il problema.
-/// </summary>
+
 public class DebugSlot : MonoBehaviour, IPointerClickHandler
 {
     public void OnPointerClick(PointerEventData eventData)

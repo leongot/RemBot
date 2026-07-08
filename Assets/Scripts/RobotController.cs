@@ -308,8 +308,7 @@ public class RobotController : MonoBehaviour
         }
     }
 
-    // --- AUDIO ---
-
+    
     private void PlaySound(AudioClip clip)
     {
         if (robotColpito || staCadendo)
@@ -394,7 +393,7 @@ public class RobotController : MonoBehaviour
         staEseguendo = false;
     }
 
-    // --- AZIONI ---
+   
 
     public IEnumerator MuoviAvanti()
     {
@@ -489,7 +488,7 @@ public class RobotController : MonoBehaviour
         yield return new WaitForSeconds(reloadDelay);
     }
 
-    // --- SENSORI ---
+   
 
     private Vector3 GetOrigineOcchi()
     {
@@ -636,7 +635,7 @@ public class RobotController : MonoBehaviour
         }
     }
 
-    // --- MOVIMENTO ---
+    
 
     private IEnumerator Muovi(Vector3 direzione)
     {
@@ -727,7 +726,7 @@ public class RobotController : MonoBehaviour
         transform.rotation = targetRot;
     }
 
-    // --- CONDIZIONI ---
+   
 
     public bool VerificaCondizione(TipoBlocco condizione)
     {
@@ -798,7 +797,7 @@ public class RobotController : MonoBehaviour
         }
     }
 
-    // --- DANNO ---
+   
 
     public void ColpitoDaLaser(int danno)
     {
@@ -811,7 +810,6 @@ public class RobotController : MonoBehaviour
 
         if (currentHealth > 0)
         {
-            // Il robot ha preso danno, ma è ancora vivo.
             return;
         }
 
@@ -867,7 +865,7 @@ public class RobotController : MonoBehaviour
         }
     }
 
-    // --- DEBUG VISIVO ---
+    
 
     private void OnDrawGizmosSelected()
     {

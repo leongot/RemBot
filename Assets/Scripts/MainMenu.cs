@@ -8,13 +8,13 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private LevelSelectionMenu levelSelectionMenu;
     private void Start()
     {
-        // Debug print the actual window dimensions on launch
+       
         Debug.Log($"Game started with resolution: {Screen.width} x {Screen.height}");
         audioSettings?.Initialize();
         levelSelectionMenu?.Initialize();
     }
 
-    // Audio delegations
+    
 
     public void SetVolume(float sliderValue)
     {

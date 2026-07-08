@@ -7,7 +7,7 @@ public class ScreenSettings : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     
-    // CHANGE: Store the actual filtered resolutions so the indices match the dropdown 1:1
+    
     private List<Resolution> filteredResolutions = new List<Resolution>();
 
     private void Start()
@@ -36,11 +36,11 @@ public class ScreenSettings : MonoBehaviour
                 uniqueResolutionStrings.Add(option);
                 options.Add(option);
                 
-                // Keep track of the actual Resolution struct matching this UI slot
+                
                 filteredResolutions.Add(allResolutions[i]);
             }
 
-            // Track if this matches the machine's current active screen resolution
+            
             if (allResolutions[i].width == Screen.width && allResolutions[i].height == Screen.height)
             {
                 currentResolutionIndex = options.Count - 1;
@@ -54,10 +54,10 @@ public class ScreenSettings : MonoBehaviour
 
     public void SetResolution(int resolutionIndex)
     {
-        // Safety guard clause
+        
         if (resolutionIndex < 0 || resolutionIndex >= filteredResolutions.Count) return;
 
-        // FIX: Pull from our cleanly matching filtered list instead of the raw array!
+        
         Resolution selectedRes = filteredResolutions[resolutionIndex];
         Screen.SetResolution(selectedRes.width, selectedRes.height, Screen.fullScreenMode);
     }
@@ -70,7 +70,7 @@ public class ScreenSettings : MonoBehaviour
 
     public void RefreshResolutionOptions()
     {
-        // Re-read the physical monitor capabilities in case they plugged in a new screen
+       
         Resolution[] allResolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
 
@@ -91,7 +91,7 @@ public class ScreenSettings : MonoBehaviour
                 filteredResolutions.Add(allResolutions[i]);
             }
 
-            // Match against the current window width/height dynamically
+          
             if (allResolutions[i].width == Screen.width && allResolutions[i].height == Screen.height)
             {
                 currentResolutionIndex = options.Count - 1;

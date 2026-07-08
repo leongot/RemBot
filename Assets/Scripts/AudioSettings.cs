@@ -47,7 +47,7 @@ public class AudioSettings : MonoBehaviour
         }
     }
 
-    // Play sound when opening a sub-menu or going forward
+   
     public void PlayForwardSound()
     {
         if (forwardSfxSource != null)

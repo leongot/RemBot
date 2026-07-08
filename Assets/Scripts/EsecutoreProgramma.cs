@@ -227,9 +227,7 @@ public class EsecutoreProgramma : MonoBehaviour
 
         while (parent != null && parent != bloccoCorrente)
         {
-            // Se salendo trovo un altro InfoBlocco,
-            // vuol dire che questo slot appartiene a un blocco annidato,
-            // non al blocco corrente.
+    
             if (parent.GetComponent<InfoBlocco>() != null)
                 return false;
 

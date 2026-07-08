@@ -41,12 +41,10 @@ private bool haGiaColpito = false;
         if (laserBody == null)
             return;
 
-        // Il Cylinder di Unity è lungo sull'asse Y.
-        // Lo ruotiamo per farlo puntare sull'asse Z del proiettile.
+        
         laserBody.localRotation = Quaternion.Euler(90f, 0f, 0f);
 
-        // Il cilindro di Unity è alto circa 2 unità,
-        // quindi usiamo laserLength * 0.5f per ottenere la lunghezza desiderata.
+      
         laserBody.localScale = new Vector3(
             laserRadius,
             laserLength * 0.5f,
@@ -65,7 +63,7 @@ private bool haGiaColpito = false;
 
         capsule.isTrigger = true;
 
-        // 0 = X, 1 = Y, 2 = Z
+       
         capsule.direction = 2;
 
         capsule.radius = laserRadius;
@@ -78,7 +76,7 @@ private bool haGiaColpito = false;
         if (other.isTrigger)
             return;
 
-        // Ignora i nemici, così il laser del nemico non colpisce il nemico stesso
+      
         if (other.CompareTag("Nemico") || other.transform.root.CompareTag("Nemico") ||
             other.CompareTag("Enemy") || other.transform.root.CompareTag("Enemy"))
         {

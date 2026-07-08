@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-// 1. Force the script to execute lifecycle methods in Editor Mode
+
 [ExecuteAlways]
 public class TabMenu : MonoBehaviour
 {
@@ -68,7 +68,7 @@ public class TabMenu : MonoBehaviour
     {
         Initialize();
 
-        // Only register runtime events if we are actually playing the game
+       
         if (Application.isPlaying)
         {
             foreach (var toggle in tabs)
@@ -144,7 +144,7 @@ public class TabMenu : MonoBehaviour
     {
         for (int i = 0; i < pages.Count; i++)
         {
-            if (pages[i] == null) continue; // Safety guard clause
+            if (pages[i] == null) continue; 
 
             bool isActivePage = (i == pageIndex);
             pages[i].alpha = isActivePage ? 1.0f : 0.0f;

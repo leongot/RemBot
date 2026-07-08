@@ -164,12 +164,11 @@ public class GestoreBlocchi : MonoBehaviour
         GameObject nuovoComando = Instantiate(prefab, slotAttivoComandi);
         nuovoComando.transform.localScale = Vector3.one;
 
-        // Ogni blocco comando/controllo inserito aumenta il numero istruzioni.
-        // Vale anche per IF e WHILE, perché anche loro passano da InstanziaComando().
+    
         numeroIstruzioniInserite++;
         scoreAttuale = 0;
 
-        // Torna all'area principale e deseleziona la condizione.
+        
         slotAttivoComandi = areaPrincipaleCodice;
         slotAttivoCondizione = null;
 
@@ -236,7 +235,7 @@ public class GestoreBlocchi : MonoBehaviour
             return;
         }
 
-        // Prima dell'esecuzione lo score deve rimanere visibile come SCORE: 0.
+        
         scoreAttuale = 0;
         AggiornaScoreUI();
 
@@ -434,14 +433,9 @@ public class GestoreBlocchi : MonoBehaviour
 
         LevelSaveSystem.SaveRecordScore(livelloCorrente, scoreAttuale);
 
+        LevelSaveSystem.MarkLevelCompleted(livelloCorrente);
+
         recordScore = LevelSaveSystem.GetRecordScore(livelloCorrente);
-
-        int prossimoLivello = livelloCorrente + 1;
-
-        if (prossimoLivello <= numeroTotaleLivelli)
-        {
-            LevelSaveSystem.UnlockLevel(prossimoLivello);
-        }
 
         AggiornaScoreUI();
 
