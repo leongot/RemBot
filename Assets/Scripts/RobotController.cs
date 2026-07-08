@@ -163,6 +163,12 @@ public class RobotController : MonoBehaviour
 
     // --- CADUTA ---
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Muro"))
+            Muori("Wall hit");
+    }
+
     private void ControllaTerrenoSotto()
     {
         if (!gameOverSeCade)

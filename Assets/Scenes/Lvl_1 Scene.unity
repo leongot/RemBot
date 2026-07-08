@@ -6555,7 +6555,7 @@ MonoBehaviour:
   loadingAudioSource: {fileID: 922087322}
   loadingSound: {fileID: 8300000, guid: fcfdf58d0edd1ed41b043d6e475c55df, type: 3}
   loadingVolume: 1
-  cameraSwitcher: {fileID: 0}
+  cameraSwitcher: {fileID: 1588054787}
   attesaDopoSwitchCamera: 1.5
   recordScoreText: {fileID: 2095972747}
   currentScoreText: {fileID: 660563670}
@@ -6703,6 +6703,11 @@ MonoBehaviour:
   levelCompletePanel: {fileID: 1398898399}
   nomeScenaMenu: MainMenu
   nomeScenaProssimoLivello: 
+  uiAudioSource: {fileID: 0}
+  gameOverSound: {fileID: 0}
+  levelCompleteSound: {fileID: 0}
+  volumeAudioFinePartita: 1
+  ritardoSchermataVittoria: 1
 --- !u!1 &935327831
 GameObject:
   m_ObjectHideFlags: 0
@@ -8250,6 +8255,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1201513536}
   - component: {fileID: 1201513535}
+  - component: {fileID: 1201513537}
   - component: {fileID: 1201513534}
   - component: {fileID: 1201513533}
   m_Layer: 0
@@ -8385,6 +8391,14 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 40, y: 0, z: 0}
+--- !u!81 &1201513537
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1201513532}
+  m_Enabled: 1
 --- !u!1 &1208371235
 GameObject:
   m_ObjectHideFlags: 0
