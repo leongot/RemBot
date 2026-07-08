@@ -12,8 +12,8 @@ public class OrbitCamera : MonoBehaviour
     [SerializeField]
     Camera camera;
 
-    [SerializeField, Range(20f, 100f)]
-    float distance = 20f;
+    //[SerializeField, Range(20f, 100f)]
+    //float distance = 20f;
 
     [SerializeField, Range(0f, 1080f)]
     float rotationSpeed = 360f;
@@ -50,6 +50,8 @@ public class OrbitCamera : MonoBehaviour
 
     void Awake()
     {
+        float distance = Vector3.Distance(focus.position, transform.position);
+
         Quaternion lookRotation = Quaternion.Euler(orbitAngles);
         Vector3 lookPosition = focus.position - transform.forward * distance;
 
