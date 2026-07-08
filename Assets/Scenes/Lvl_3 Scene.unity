@@ -3369,7 +3369,7 @@ Transform:
   m_GameObject: {fileID: 520224340}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -240.758, y: 0, z: -187.291}
+  m_LocalPosition: {x: -231.5, y: 0, z: -179.93}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17386,7 +17386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d099b67000b9ff48b088c12beba0983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraSwitcher
-  mainCamera: {fileID: 0}
+  mainCamera: {fileID: 1917105481}
   playerCamera: {fileID: 259380485}
   startMenu: {fileID: 0}
 --- !u!4 &2086898549
@@ -18144,7 +18144,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8190072604060763577, guid: 0ba483477f9e66546a0ce3d8ecde2a0a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -41.070007
+      value: -28.4
       objectReference: {fileID: 0}
     - target: {fileID: 8190072604060763577, guid: 0ba483477f9e66546a0ce3d8ecde2a0a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -18236,15 +18236,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6232250007446067824, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6232250007446067824, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6232250007446067824, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6232250007446067824, guid: 26eef0e67b8d9c34b875d2fa34bc21ab, type: 3}
       propertyPath: m_LocalPosition.x
