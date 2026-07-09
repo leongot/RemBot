@@ -3,18 +3,27 @@ using UnityEngine;
 
 public class RobotController : MonoBehaviour
 {
-    [Header("Impostazioni Griglia")]
-    public float dimensioneCella = 2f;
+    [Header("Impostazioni Griglia / Movimento")]
+    public float dimensioneCella = 12f;
     public float velocitaMovimento = 4f;
     public float velocitaRotazione = 360f;
     public LayerMask layerOstacoli;
 
-    [Header("Sensore Rilevamento Muro")]
-    public float distanzaRilevamentoMuro = 6f;
+    [Header("Sensore Muro - Condizioni")]
+    [Tooltip("Distanza corta usata da IF(MURO), WHILE(LIBERO) e warning muro. Non metterla a 12.")]
+    public float distanzaRilevamentoMuro = 1.2f;
 
-    [Header("Collisione Movimento")]
+    [Header("Vecchia Collisione Movimento - Non più usata per il muro")]
     public float raggioControllo = 0.35f;
-    [SerializeField] private float distanzaBloccoMovimento = 6f;
+    [SerializeField] private float distanzaBloccoMovimento = 2f;
+
+    [Header("Sensore Muro Corpo")]
+    [SerializeField] private float altezzaSensoreMuro = 0.8f;
+    [SerializeField] private float offsetAvantiSensoreMuro = 0f;
+    [SerializeField] private float raggioSensoreMuro = 0.3f;
+    [SerializeField] private float distanzaStopMuro = 0.8f;
+    [SerializeField] private float margineAnticipoMuro = 0.15f;
+    [SerializeField] private float durataMemoriaMuro = 0.8f;
 
     [Header("Sensore Nemico")]
     public Transform eyePoint;
@@ -88,10 +97,16 @@ public class RobotController : MonoBehaviour
     private bool staCadendo = false;
     private bool gameOverCadutaMostrato = false;
 
+    private bool ultimoMovimentoFermatoDaMuro = false;
+    private float tempoUltimoBloccoMuro = -999f;
+
     private Rigidbody rb;
     private RigidbodyConstraints vincoliInizialiRb;
     private bool rbKinematicIniziale;
     private bool rbUseGravityIniziale;
+
+    private Vector3 posizioneIniziale;
+    private Quaternion rotazioneIniziale;
 
     public bool IsColpito
     {
@@ -112,11 +127,6 @@ public class RobotController : MonoBehaviour
     {
         get { return maxHealth; }
     }
-
-    private bool staEseguendo = false;
-
-    private Vector3 posizioneIniziale;
-    private Quaternion rotazioneIniziale;
 
     private void Awake()
     {
@@ -161,154 +171,10 @@ public class RobotController : MonoBehaviour
         ControllaTerrenoSotto();
     }
 
-    // --- CADUTA ---
+    // ---------------------------------------------------------
+    // AUDIO
+    // ---------------------------------------------------------
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Muro"))
-            Muori("Wall hit");
-    }
-
-    private void ControllaTerrenoSotto()
-    {
-        if (!gameOverSeCade)
-            return;
-
-        if (robotColpito || staCadendo)
-            return;
-
-        if (!HaTerrenoSotto(transform.position))
-        {
-            IniziaMorteDaCaduta();
-        }
-    }
-
-    private bool HaTerrenoSotto(Vector3 posizione)
-    {
-        Vector3 origine = posizione + Vector3.up * altezzaControlloTerreno;
-
-        return Physics.SphereCast(
-            origine,
-            raggioControlloTerreno,
-            Vector3.down,
-            out RaycastHit hit,
-            distanzaControlloTerreno,
-            layerTerreno,
-            QueryTriggerInteraction.Ignore
-        );
-    }
-
-    private void IniziaMorteDaCaduta()
-    {
-        if (staCadendo)
-            return;
-
-        staCadendo = true;
-        robotColpito = true;
-        currentHealth = 0;
-
-        StopAllCoroutines();
-
-        if (audioSource != null)
-        {
-            audioSource.Stop();
-
-            if (deathSound != null)
-                audioSource.PlayOneShot(deathSound);
-        }
-
-        if (warningAudioSource != null && warningAudioSource != audioSource)
-            warningAudioSource.Stop();
-
-        if (animator != null)
-        {
-            animator.SetBool(PARAM_CAMMINA, false);
-            animator.SetBool("Open_Anim", false);
-
-            animator.ResetTrigger(TRIGGER_COLPITO);
-            animator.SetTrigger(TRIGGER_COLPITO);
-        }
-
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-
-            // Durante la traslazione manuale il Rigidbody non deve combattere contro i collider del bordo.
-            rb.isKinematic = true;
-            rb.useGravity = false;
-        }
-
-        StartCoroutine(TraslazioneCadutaPoiFisica());
-
-        Debug.LogWarning("[Robot] Ha perso il terreno sotto: avvio traslazione diagonale di caduta.");
-    }
-
-    private IEnumerator TraslazioneCadutaPoiFisica()
-    {
-        float tempo = 0f;
-        Vector3 direzioneAvanti = transform.forward.normalized;
-
-        while (tempo < durataTraslazioneCaduta)
-        {
-            Vector3 spostamento =
-                direzioneAvanti * velocitaTraslazioneAvanti +
-                Vector3.down * velocitaTraslazioneBasso;
-
-            transform.position += spostamento * Time.deltaTime;
-
-            tempo += Time.deltaTime;
-            yield return null;
-        }
-
-        if (rb != null)
-        {
-            rb.isKinematic = false;
-            rb.useGravity = true;
-            rb.constraints = RigidbodyConstraints.None;
-
-            rb.linearVelocity = Vector3.down * velocitaFisicaInizialeCaduta;
-            rb.angularVelocity = Vector3.zero;
-            rb.WakeUp();
-        }
-
-        Debug.Log("[Robot] Traslazione caduta finita: ora il Rigidbody cade liberamente.");
-    }
-
-    private void ControllaGameOverCaduta()
-    {
-        if (!gameOverSeCade)
-            return;
-
-        if (gameOverCadutaMostrato)
-            return;
-
-        if (transform.position.y > quotaYGameOver)
-            return;
-
-        gameOverCadutaMostrato = true;
-
-        Debug.LogWarning(
-            "[Robot] Sono sotto quota " + quotaYGameOver +
-            ". Posizione Y attuale: " + transform.position.y +
-            ". Provo a mostrare Game Over."
-        );
-
-        if (GameUIManager.Instance != null)
-        {
-            GameUIManager.Instance.MostraGameOver();
-        }
-        else
-        {
-            Debug.LogError(
-                "[Robot] GameUIManager.Instance è NULL. " +
-                "Controlla che GameUIManager sia su un GameObject attivo nella scena, " +
-                "per esempio Gestore Gioco."
-            );
-        }
-    }
-
-    
     private void PlaySound(AudioClip clip)
     {
         if (robotColpito || staCadendo)
@@ -355,6 +221,10 @@ public class RobotController : MonoBehaviour
         prossimoWarningTime = Time.time + warningCooldown;
     }
 
+    // ---------------------------------------------------------
+    // RESET ROBOT
+    // ---------------------------------------------------------
+
     public void RipristinaPosizione()
     {
         StopAllCoroutines();
@@ -364,6 +234,9 @@ public class RobotController : MonoBehaviour
         gameOverCadutaMostrato = false;
         currentHealth = maxHealth;
         prossimoWarningTime = 0f;
+
+        ultimoMovimentoFermatoDaMuro = false;
+        tempoUltimoBloccoMuro = -999f;
 
         if (audioSource != null)
             audioSource.Stop();
@@ -389,11 +262,11 @@ public class RobotController : MonoBehaviour
             animator.ResetTrigger(TRIGGER_COLPITO);
             animator.SetBool("Open_Anim", true);
         }
-
-        staEseguendo = false;
     }
 
-   
+    // ---------------------------------------------------------
+    // MOVIMENTO PUBBLICO
+    // ---------------------------------------------------------
 
     public IEnumerator MuoviAvanti()
     {
@@ -431,6 +304,10 @@ public class RobotController : MonoBehaviour
 
         yield return Ruota(90f);
     }
+
+    // ---------------------------------------------------------
+    // SPARO
+    // ---------------------------------------------------------
 
     public IEnumerator Spara()
     {
@@ -488,7 +365,9 @@ public class RobotController : MonoBehaviour
         yield return new WaitForSeconds(reloadDelay);
     }
 
-   
+    // ---------------------------------------------------------
+    // ORIGINI SENSORI
+    // ---------------------------------------------------------
 
     private Vector3 GetOrigineOcchi()
     {
@@ -500,12 +379,152 @@ public class RobotController : MonoBehaviour
             + transform.forward * offsetAvantiOcchi;
     }
 
-    private Vector3 GetOrigineSensoreMovimento(Vector3 direzione)
+    private Vector3 NormalizzaDirezioneOrizzontale(Vector3 direzione)
     {
-        return transform.position
-            + Vector3.up * altezzaOcchi
-            + direzione.normalized * offsetAvantiOcchi;
+        direzione.y = 0f;
+
+        if (direzione.sqrMagnitude < 0.001f)
+        {
+            direzione = transform.forward;
+            direzione.y = 0f;
+        }
+
+        if (direzione.sqrMagnitude < 0.001f)
+            return Vector3.forward;
+
+        return direzione.normalized;
     }
+
+    private Vector3 GetOrigineSensoreMuro(Vector3 direzione)
+    {
+        direzione = NormalizzaDirezioneOrizzontale(direzione);
+
+        return transform.position
+            + Vector3.up * altezzaSensoreMuro
+            + direzione * offsetAvantiSensoreMuro;
+    }
+
+    // ---------------------------------------------------------
+    // SENSORE MURO CORRETTO
+    // ---------------------------------------------------------
+
+    private bool ColliderEMuro(Collider col)
+    {
+        if (col == null)
+            return false;
+
+        return col.CompareTag("Muro") ||
+               col.transform.root.CompareTag("Muro");
+    }
+
+    private bool ColliderDavantiAlSensore(Collider col, Vector3 origine, Vector3 direzione)
+    {
+        if (col == null)
+            return false;
+
+        direzione = NormalizzaDirezioneOrizzontale(direzione);
+
+        Vector3 puntoPiuVicino = col.ClosestPoint(origine);
+        Vector3 versoCollider = puntoPiuVicino - origine;
+
+        if (versoCollider.sqrMagnitude < 0.0001f)
+            return true;
+
+        float davanti = Vector3.Dot(direzione, versoCollider.normalized);
+
+        return davanti >= -0.05f;
+    }
+
+    private bool MemoriaMuroValida()
+    {
+        return ultimoMovimentoFermatoDaMuro &&
+               Time.time - tempoUltimoBloccoMuro <= durataMemoriaMuro;
+    }
+
+    private void RegistraBloccoMuro()
+    {
+        ultimoMovimentoFermatoDaMuro = true;
+        tempoUltimoBloccoMuro = Time.time;
+    }
+
+    private void CancellaMemoriaMuro()
+    {
+        ultimoMovimentoFermatoDaMuro = false;
+        tempoUltimoBloccoMuro = -999f;
+    }
+
+    private bool RilevaMuroDavanti(Vector3 direzione, float distanza, out RaycastHit hit)
+    {
+        hit = new RaycastHit();
+
+        direzione = NormalizzaDirezioneOrizzontale(direzione);
+        Vector3 origine = GetOrigineSensoreMuro(direzione);
+
+        Collider[] collidersVicini = Physics.OverlapSphere(
+            origine,
+            raggioSensoreMuro,
+            layerOstacoli,
+            QueryTriggerInteraction.Ignore
+        );
+
+        foreach (Collider col in collidersVicini)
+        {
+            if (col == null)
+                continue;
+
+            if (col.isTrigger)
+                continue;
+
+            if (!ColliderEMuro(col))
+                continue;
+
+            if (!ColliderDavantiAlSensore(col, origine, direzione))
+                continue;
+
+            Debug.LogWarning(
+                "[Sensore Muro] Muro già vicino/sovrapposto: " + col.name +
+                " | Origine sensore: " + origine
+            );
+
+            return true;
+        }
+
+        bool haColpito = Physics.SphereCast(
+            origine,
+            raggioSensoreMuro,
+            direzione,
+            out hit,
+            distanza,
+            layerOstacoli,
+            QueryTriggerInteraction.Ignore
+        );
+
+        if (!haColpito)
+            return false;
+
+        bool eMuro = ColliderEMuro(hit.collider);
+
+        Debug.Log(
+            "[Sensore Muro] Hit: " + hit.collider.name +
+            " | È muro: " + eMuro +
+            " | Distanza hit: " + hit.distance +
+            " | Distanza controllo: " + distanza +
+            " | Origine: " + origine
+        );
+
+        return eMuro;
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Muro"))
+            Muori("Wall hit");
+    }
+
+
+    // ---------------------------------------------------------
+    // SENSORI NEMICO
+    // ---------------------------------------------------------
 
     private bool RilevaNemicoPerCondizione(out RaycastHit hit)
     {
@@ -584,23 +603,11 @@ public class RobotController : MonoBehaviour
 
     private bool RilevaMuroVicinoPerWarning(out RaycastHit hit)
     {
-        Vector3 origineRaggio = GetOrigineSensoreMovimento(transform.forward);
-
-        bool haColpito = Physics.SphereCast(
-            origineRaggio,
-            raggioControllo,
+        return RilevaMuroDavanti(
             transform.forward,
-            out hit,
             distanzaRilevamentoMuro,
-            layerOstacoli,
-            QueryTriggerInteraction.Ignore
+            out hit
         );
-
-        if (!haColpito)
-            return false;
-
-        return hit.collider.CompareTag("Muro") ||
-               hit.collider.transform.root.CompareTag("Muro");
     }
 
     private void ControllaWarningContinuo()
@@ -625,7 +632,7 @@ public class RobotController : MonoBehaviour
                     " | Distanza: " + hitNemico.distance
                 );
             }
-            else if (vedeMuroVicino)
+            else if (vedeMuroVicino && hitMuro.collider != null)
             {
                 Debug.Log(
                     "[Warning Continuo] Muro vicino davanti: " + hitMuro.collider.name +
@@ -635,35 +642,21 @@ public class RobotController : MonoBehaviour
         }
     }
 
-    
+    // ---------------------------------------------------------
+    // MOVIMENTO CORRETTO CON CONTROLLO MURO CONTINUO
+    // ---------------------------------------------------------
 
     private IEnumerator Muovi(Vector3 direzione)
     {
         if (robotColpito || staCadendo)
             yield break;
 
+        direzione = NormalizzaDirezioneOrizzontale(direzione);
+
+        CancellaMemoriaMuro();
+
         Vector3 targetPos = transform.position + direzione * dimensioneCella;
-        Vector3 origineRaggio = GetOrigineSensoreMovimento(direzione);
-
-        RaycastHit hit;
-
-        if (Physics.SphereCast(
-            origineRaggio,
-            raggioControllo,
-            direzione,
-            out hit,
-            distanzaBloccoMovimento,
-            layerOstacoli,
-            QueryTriggerInteraction.Ignore))
-        {
-            Debug.LogWarning(
-                "[Robot] Movimento bloccato da: " + hit.collider.name +
-                " | Distanza hit: " + hit.distance +
-                " | Layer: " + LayerMask.LayerToName(hit.collider.gameObject.layer)
-            );
-
-            yield break;
-        }
+        bool movimentoBloccatoDaMuro = false;
 
         if (animator != null)
             animator.SetBool(PARAM_CAMMINA, true);
@@ -673,7 +666,35 @@ public class RobotController : MonoBehaviour
         while (Vector3.Distance(transform.position, targetPos) > 0.01f)
         {
             if (robotColpito || staCadendo)
+            {
+                if (animator != null)
+                    animator.SetBool(PARAM_CAMMINA, false);
+
                 yield break;
+            }
+
+            float movimentoQuestoFrame = velocitaMovimento * Time.deltaTime;
+
+            float distanzaControlloMuro =
+                distanzaStopMuro +
+                movimentoQuestoFrame +
+                margineAnticipoMuro;
+
+            RaycastHit hit;
+
+            if (RilevaMuroDavanti(direzione, distanzaControlloMuro, out hit))
+            {
+                movimentoBloccatoDaMuro = true;
+                RegistraBloccoMuro();
+
+                Debug.LogWarning(
+                    "[Robot] Movimento fermato prima del muro." +
+                    " | Muro: " + (hit.collider != null ? hit.collider.name : "muro vicino/sovrapposto") +
+                    " | Distanza controllo: " + distanzaControlloMuro
+                );
+
+                break;
+            }
 
             if (Time.time >= prossimoSuonoPasso)
             {
@@ -684,16 +705,17 @@ public class RobotController : MonoBehaviour
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 targetPos,
-                velocitaMovimento * Time.deltaTime
+                movimentoQuestoFrame
             );
 
             yield return null;
         }
 
-        if (robotColpito || staCadendo)
-            yield break;
-
-        transform.position = targetPos;
+        if (!movimentoBloccatoDaMuro && !robotColpito && !staCadendo)
+        {
+            transform.position = targetPos;
+            CancellaMemoriaMuro();
+        }
 
         if (animator != null)
             animator.SetBool(PARAM_CAMMINA, false);
@@ -724,9 +746,13 @@ public class RobotController : MonoBehaviour
             yield break;
 
         transform.rotation = targetRot;
+
+        CancellaMemoriaMuro();
     }
 
-   
+    // ---------------------------------------------------------
+    // CONDIZIONI BLOCCHI
+    // ---------------------------------------------------------
 
     public bool VerificaCondizione(TipoBlocco condizione)
     {
@@ -741,55 +767,48 @@ public class RobotController : MonoBehaviour
 
             case TipoBlocco.Muro:
             {
-                Vector3 origineRaggio = GetOrigineSensoreMovimento(transform.forward);
+                if (MemoriaMuroValida())
+                {
+                    Debug.Log("[Condizione MURO] Vera per memoria: il movimento precedente è stato fermato da un muro.");
+                    return true;
+                }
 
-                bool vedeMuro = Physics.SphereCast(
-                    origineRaggio,
-                    raggioControllo,
+                bool muroDavanti = RilevaMuroDavanti(
                     transform.forward,
-                    out hit,
                     distanzaRilevamentoMuro,
-                    layerOstacoli,
-                    QueryTriggerInteraction.Ignore
+                    out hit
                 );
 
-                bool muroDavanti =
-                    vedeMuro &&
-                    (hit.collider.CompareTag("Muro") ||
-                     hit.collider.transform.root.CompareTag("Muro"));
+                Debug.Log("[Condizione MURO] Risultato: " + muroDavanti);
 
                 return muroDavanti;
             }
 
             case TipoBlocco.Libero:
             {
-                Vector3 origineRaggio = GetOrigineSensoreMovimento(transform.forward);
+                if (MemoriaMuroValida())
+                {
+                    Debug.Log("[Condizione LIBERO] Falsa per memoria: il movimento precedente è stato fermato da un muro.");
+                    return false;
+                }
 
-                bool trovaOstacolo = Physics.SphereCast(
-                    origineRaggio,
-                    raggioControllo,
+                bool muroDavanti = RilevaMuroDavanti(
                     transform.forward,
-                    out hit,
-                    distanzaBloccoMovimento,
-                    layerOstacoli,
-                    QueryTriggerInteraction.Ignore
+                    distanzaRilevamentoMuro,
+                    out hit
                 );
 
-                if (trovaOstacolo)
-                {
-                    Debug.Log(
-                        "[Sensore Libero] Strada bloccata da: " + hit.collider.name +
-                        " | Tag: " + hit.collider.tag +
-                        " | Root Tag: " + hit.collider.transform.root.tag +
-                        " | Layer: " + LayerMask.LayerToName(hit.collider.gameObject.layer)
-                    );
-                }
-                else
-                {
-                    Debug.Log("[Sensore Libero] Strada libera.");
-                }
+                bool libero = !muroDavanti;
 
-                return !trovaOstacolo;
+                Debug.Log("[Condizione LIBERO] Risultato: " + libero);
+
+                return libero;
+            }
+
+            case TipoBlocco.Sempre:
+            {
+                Debug.Log("[Condizione SEMPRE] Vera.");
+                return true;
             }
 
             default:
@@ -797,7 +816,9 @@ public class RobotController : MonoBehaviour
         }
     }
 
-   
+    // ---------------------------------------------------------
+    // VITA / MORTE
+    // ---------------------------------------------------------
 
     public void ColpitoDaLaser(int danno)
     {
@@ -809,9 +830,7 @@ public class RobotController : MonoBehaviour
         Debug.LogWarning("[Robot] Colpito dal laser! Danno: " + danno + " | Vita rimasta: " + currentHealth);
 
         if (currentHealth > 0)
-        {
             return;
-        }
 
         Muori("danno laser");
     }
@@ -846,9 +865,9 @@ public class RobotController : MonoBehaviour
             animator.SetTrigger(TRIGGER_COLPITO);
         }
 
-            Debug.LogWarning("[Robot] Morte robot. Motivo: " + motivo);
+        Debug.LogWarning("[Robot] Morte robot. Motivo: " + motivo);
 
-            StartCoroutine(MostraGameOverDopoRitardo());
+        StartCoroutine(MostraGameOverDopoRitardo());
     }
 
     private IEnumerator MostraGameOverDopoRitardo()
@@ -865,50 +884,206 @@ public class RobotController : MonoBehaviour
         }
     }
 
-    
+    // ---------------------------------------------------------
+    // CADUTA
+    // ---------------------------------------------------------
+
+    private void ControllaTerrenoSotto()
+    {
+        if (!gameOverSeCade)
+            return;
+
+        if (robotColpito || staCadendo)
+            return;
+
+        if (!HaTerrenoSotto(transform.position))
+        {
+            IniziaMorteDaCaduta();
+        }
+    }
+
+    private bool HaTerrenoSotto(Vector3 posizione)
+    {
+        Vector3 origine = posizione + Vector3.up * altezzaControlloTerreno;
+
+        return Physics.SphereCast(
+            origine,
+            raggioControlloTerreno,
+            Vector3.down,
+            out RaycastHit hit,
+            distanzaControlloTerreno,
+            layerTerreno,
+            QueryTriggerInteraction.Ignore
+        );
+    }
+
+    private void IniziaMorteDaCaduta()
+    {
+        if (staCadendo)
+            return;
+
+        staCadendo = true;
+        robotColpito = true;
+        currentHealth = 0;
+
+        StopAllCoroutines();
+
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+
+            if (deathSound != null)
+                audioSource.PlayOneShot(deathSound);
+        }
+
+        if (warningAudioSource != null && warningAudioSource != audioSource)
+            warningAudioSource.Stop();
+
+        if (animator != null)
+        {
+            animator.SetBool(PARAM_CAMMINA, false);
+            animator.SetBool("Open_Anim", false);
+
+            animator.ResetTrigger(TRIGGER_COLPITO);
+            animator.SetTrigger(TRIGGER_COLPITO);
+        }
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+
+            rb.isKinematic = true;
+            rb.useGravity = false;
+        }
+
+        StartCoroutine(TraslazioneCadutaPoiFisica());
+
+        Debug.LogWarning("[Robot] Ha perso il terreno sotto: avvio traslazione diagonale di caduta.");
+    }
+
+    private IEnumerator TraslazioneCadutaPoiFisica()
+    {
+        float tempo = 0f;
+        Vector3 direzioneAvanti = NormalizzaDirezioneOrizzontale(transform.forward);
+
+        while (tempo < durataTraslazioneCaduta)
+        {
+            Vector3 spostamento =
+                direzioneAvanti * velocitaTraslazioneAvanti +
+                Vector3.down * velocitaTraslazioneBasso;
+
+            transform.position += spostamento * Time.deltaTime;
+
+            tempo += Time.deltaTime;
+            yield return null;
+        }
+
+        if (rb != null)
+        {
+            rb.isKinematic = false;
+            rb.useGravity = true;
+            rb.constraints = RigidbodyConstraints.None;
+
+            rb.linearVelocity = Vector3.down * velocitaFisicaInizialeCaduta;
+            rb.angularVelocity = Vector3.zero;
+            rb.WakeUp();
+        }
+
+        Debug.Log("[Robot] Traslazione caduta finita: ora il Rigidbody cade liberamente.");
+    }
+
+    private void ControllaGameOverCaduta()
+    {
+        if (!gameOverSeCade)
+            return;
+
+        if (gameOverCadutaMostrato)
+            return;
+
+        if (transform.position.y > quotaYGameOver)
+            return;
+
+        gameOverCadutaMostrato = true;
+
+        Debug.LogWarning(
+            "[Robot] Sono sotto quota " + quotaYGameOver +
+            ". Posizione Y attuale: " + transform.position.y +
+            ". Provo a mostrare Game Over."
+        );
+
+        if (GameUIManager.Instance != null)
+        {
+            GameUIManager.Instance.MostraGameOver();
+        }
+        else
+        {
+            Debug.LogError(
+                "[Robot] GameUIManager.Instance è NULL. " +
+                "Controlla che GameUIManager sia su un GameObject attivo nella scena."
+            );
+        }
+    }
+
+    // ---------------------------------------------------------
+    // GIZMOS
+    // ---------------------------------------------------------
 
     private void OnDrawGizmosSelected()
     {
         if (mostraDebugSensoreNemico)
         {
-            Vector3 origine;
+            Vector3 origineNemico;
 
             if (eyePoint != null)
             {
-                origine = eyePoint.position;
+                origineNemico = eyePoint.position;
             }
             else
             {
-                origine = transform.position
+                origineNemico = transform.position
                     + Vector3.up * altezzaOcchi
                     + transform.forward * offsetAvantiOcchi;
             }
 
-            Vector3 fineRilevamento = origine + transform.forward * distanzaRilevamentoNemico;
-            Vector3 fineSparo = origine + transform.forward * distanzaSparo;
+            Vector3 fineRilevamentoNemico = origineNemico + transform.forward * distanzaRilevamentoNemico;
+            Vector3 fineSparo = origineNemico + transform.forward * distanzaSparo;
 
             Gizmos.color = Color.magenta;
-            Gizmos.DrawWireSphere(origine, raggioSensoreNemico);
-            Gizmos.DrawWireSphere(fineRilevamento, raggioSensoreNemico);
-            Gizmos.DrawLine(origine, fineRilevamento);
+            Gizmos.DrawWireSphere(origineNemico, raggioSensoreNemico);
+            Gizmos.DrawWireSphere(fineRilevamentoNemico, raggioSensoreNemico);
+            Gizmos.DrawLine(origineNemico, fineRilevamentoNemico);
 
             Gizmos.color = Color.cyan;
             Gizmos.DrawWireSphere(fineSparo, raggioSensoreSparo);
-            Gizmos.DrawLine(origine, fineSparo);
-
-            Vector3 origineMovimento = transform.position
-                + Vector3.up * altezzaOcchi
-                + transform.forward * offsetAvantiOcchi;
-
-            Vector3 fineMuro = origineMovimento + transform.forward * dimensioneCella;
-
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(origineMovimento, raggioControllo);
-            Gizmos.DrawWireSphere(fineMuro, raggioControllo);
-            Gizmos.DrawLine(origineMovimento, fineMuro);
+            Gizmos.DrawLine(origineNemico, fineSparo);
         }
 
-        // Debug controllo terreno sotto il robot.
+        Vector3 direzioneMuro = transform.forward;
+        direzioneMuro.y = 0f;
+
+        if (direzioneMuro.sqrMagnitude < 0.001f)
+            direzioneMuro = Vector3.forward;
+
+        direzioneMuro.Normalize();
+
+        Vector3 origineMuro =
+            transform.position +
+            Vector3.up * altezzaSensoreMuro +
+            direzioneMuro * offsetAvantiSensoreMuro;
+
+        Vector3 fineMuro = origineMuro + direzioneMuro * distanzaRilevamentoMuro;
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(origineMuro, raggioSensoreMuro);
+        Gizmos.DrawLine(origineMuro, fineMuro);
+        Gizmos.DrawWireSphere(fineMuro, raggioSensoreMuro);
+
+        Vector3 fineStopMuro = origineMuro + direzioneMuro * distanzaStopMuro;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(fineStopMuro, raggioSensoreMuro);
+
         Vector3 origineTerreno = transform.position + Vector3.up * altezzaControlloTerreno;
         Vector3 fineTerreno = origineTerreno + Vector3.down * distanzaControlloTerreno;
 

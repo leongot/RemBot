@@ -148,17 +148,16 @@ public class EsecutoreProgramma : MonoBehaviour
 
                     int limiteSicurezza = 0;
 
-                    while (ValutaCondizioneDelloSlot(slotCondWhile) && limiteSicurezza < 100000)
+                    while (ValutaCondizioneDelloSlot(slotCondWhile) && limiteSicurezza < 1000000)
                     {
                         yield return EseguiInsiemeBlocchi(slotPanciaWhile);
 
                         limiteSicurezza++;
 
-                        // Evita che Unity si blocchi se dentro al WHILE non c'è nessun comando che aspetta tempo.
                         yield return null;
                     }
 
-                    if (limiteSicurezza >= 100000)
+                    if (limiteSicurezza >= 1000000)
                     {
                         Debug.LogError("[Esecutore] Loop infinito rilevato nel WHILE!");
                     }

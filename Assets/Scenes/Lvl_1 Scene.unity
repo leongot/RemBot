@@ -4061,6 +4061,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 598800917}
     - target: {fileID: 7153388540262878294, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
+      propertyPath: prefabSempre
+      value: 
+      objectReference: {fileID: 4430852701626833204, guid: a42007b191c74384ea1e595a56de6e0f, type: 3}
+    - target: {fileID: 7153388540262878294, guid: e246bab336ef38546a9915d81e54cc72, type: 3}
       propertyPath: cameraSwitcher
       value: 
       objectReference: {fileID: 1588054787}

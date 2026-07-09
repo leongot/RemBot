@@ -3505,7 +3505,7 @@ MonoBehaviour:
   m_text: SCEGLI UN LIVELLO
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ffa046993785d2949b517e0e9663050e, type: 2}
-  m_sharedMaterial: {fileID: -6663708096564256855, guid: ffa046993785d2949b517e0e9663050e, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 57f94b29fed1a5c44a1fa64d5baf4b11, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6861,6 +6861,7 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   playerCamera: {fileID: 0}
   startMenu: {fileID: 0}
+  gridBorderGenerator: {fileID: 0}
 --- !u!114 &1567889182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6896,6 +6897,7 @@ MonoBehaviour:
   prefabLibero: {fileID: 4430852701626833204, guid: c21826590c1c7d74896dd1b36b64dbd7, type: 3}
   prefabMuro: {fileID: 4430852701626833204, guid: 86d453e15c2b90a4dbe395ee8628ff71, type: 3}
   prefabNemico: {fileID: 4430852701626833204, guid: 8cfe5287c46e1e949bffd11be01798cd, type: 3}
+  prefabSempre: {fileID: 0}
   areaPrincipaleCodice: {fileID: 0}
   slotAttivoComandi: {fileID: 0}
   slotAttivoCondizione: {fileID: 0}

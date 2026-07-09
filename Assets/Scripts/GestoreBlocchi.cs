@@ -23,6 +23,7 @@ public class GestoreBlocchi : MonoBehaviour
     public GameObject prefabLibero;
     public GameObject prefabMuro;
     public GameObject prefabNemico;
+    public GameObject prefabSempre;
 
     [Header("Riferimenti Aree Principali")]
     public Transform areaPrincipaleCodice;
@@ -504,5 +505,11 @@ public class GestoreBlocchi : MonoBehaviour
     {
         PlayButtonSound(suonoCondizione);
         InstanziaCondizione(prefabNemico);
+    }
+
+    public void BottoneSempre()
+    {
+        PlayButtonSound(suonoCondizione);
+        InstanziaCondizione(prefabSempre);
     }
 }
