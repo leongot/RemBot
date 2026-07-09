@@ -171,10 +171,6 @@ public class RobotController : MonoBehaviour
         ControllaTerrenoSotto();
     }
 
-    // ---------------------------------------------------------
-    // AUDIO
-    // ---------------------------------------------------------
-
     private void PlaySound(AudioClip clip)
     {
         if (robotColpito || staCadendo)
@@ -221,10 +217,6 @@ public class RobotController : MonoBehaviour
         prossimoWarningTime = Time.time + warningCooldown;
     }
 
-    // ---------------------------------------------------------
-    // RESET ROBOT
-    // ---------------------------------------------------------
-
     public void RipristinaPosizione()
     {
         StopAllCoroutines();
@@ -264,10 +256,6 @@ public class RobotController : MonoBehaviour
         }
     }
 
-    // ---------------------------------------------------------
-    // MOVIMENTO PUBBLICO
-    // ---------------------------------------------------------
-
     public IEnumerator MuoviAvanti()
     {
         if (robotColpito || staCadendo)
@@ -304,10 +292,6 @@ public class RobotController : MonoBehaviour
 
         yield return Ruota(90f);
     }
-
-    // ---------------------------------------------------------
-    // SPARO
-    // ---------------------------------------------------------
 
     public IEnumerator Spara()
     {
@@ -365,10 +349,6 @@ public class RobotController : MonoBehaviour
         yield return new WaitForSeconds(reloadDelay);
     }
 
-    // ---------------------------------------------------------
-    // ORIGINI SENSORI
-    // ---------------------------------------------------------
-
     private Vector3 GetOrigineOcchi()
     {
         if (eyePoint != null)
@@ -403,10 +383,6 @@ public class RobotController : MonoBehaviour
             + Vector3.up * altezzaSensoreMuro
             + direzione * offsetAvantiSensoreMuro;
     }
-
-    // ---------------------------------------------------------
-    // SENSORE MURO CORRETTO
-    // ---------------------------------------------------------
 
     private bool ColliderEMuro(Collider col)
     {
@@ -521,10 +497,6 @@ public class RobotController : MonoBehaviour
             Muori("Wall hit");
     }
 
-
-    // ---------------------------------------------------------
-    // SENSORI NEMICO
-    // ---------------------------------------------------------
 
     private bool RilevaNemicoPerCondizione(out RaycastHit hit)
     {
@@ -642,10 +614,6 @@ public class RobotController : MonoBehaviour
         }
     }
 
-    // ---------------------------------------------------------
-    // MOVIMENTO CORRETTO CON CONTROLLO MURO CONTINUO
-    // ---------------------------------------------------------
-
     private IEnumerator Muovi(Vector3 direzione)
     {
         if (robotColpito || staCadendo)
@@ -750,9 +718,6 @@ public class RobotController : MonoBehaviour
         CancellaMemoriaMuro();
     }
 
-    // ---------------------------------------------------------
-    // CONDIZIONI BLOCCHI
-    // ---------------------------------------------------------
 
     public bool VerificaCondizione(TipoBlocco condizione)
     {
@@ -816,9 +781,6 @@ public class RobotController : MonoBehaviour
         }
     }
 
-    // ---------------------------------------------------------
-    // VITA / MORTE
-    // ---------------------------------------------------------
 
     public void ColpitoDaLaser(int danno)
     {
@@ -883,10 +845,6 @@ public class RobotController : MonoBehaviour
             Debug.LogError("[Robot] GameUIManager.Instance è NULL. Non posso mostrare Game Over.");
         }
     }
-
-    // ---------------------------------------------------------
-    // CADUTA
-    // ---------------------------------------------------------
 
     private void ControllaTerrenoSotto()
     {
