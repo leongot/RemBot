@@ -21,9 +21,22 @@ public class AudioSettings : MonoBehaviour
     {
         if (volumeSlider != null)
         {
+            // 1. Definiamo i limiti dello slider
             volumeSlider.minValue = 0.0001f;
             volumeSlider.maxValue = 1f;
-            lastSoundValue = volumeSlider.value;
+
+            // 2. Prendiamo il valore che hai impostato nell'Editor di Unity
+            float editorSliderValue = volumeSlider.value;
+
+            // 3. Convertiamo quel valore in Decibel e aggiorniamo il Mixer all'avvio
+            if (myMixer != null)
+            {
+                float decibelValue = Mathf.Log10(Mathf.Max(editorSliderValue, 0.0001f)) * 20;
+                myMixer.SetFloat("Volume", decibelValue);
+            }
+
+            // 4. Sincronizziamo la variabile per i futuri ticchettii
+            lastSoundValue = editorSliderValue;
         }
 
         PlayBackgroundMusic();
